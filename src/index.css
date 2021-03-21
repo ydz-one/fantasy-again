@@ -22,19 +22,26 @@ code {
     display: none;
 }
 
+.sider-title {
+    color: #1890ff;
+    padding-bottom: 10px;
+}
+
 .sider-icon {
     display: inline-block;
-    color: #1890ff;
     font-size: x-large;
     padding: 10px;
     vertical-align: middle;
 }
 
-.sider-title {
+.sider-title-text {
     display: inline-block;
-    color: #1890ff;
     font-size: large;
     vertical-align: middle;
+}
+
+.slider-season {
+    text-align: center;
 }
 
 .site-layout-sub-header-background {
