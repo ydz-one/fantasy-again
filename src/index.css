@@ -14,10 +14,27 @@ code {
     monospace;
 }
 
-.logo {
-  height: 32px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.2);
+.app {
+    height: 100vh;
+}
+
+.mobile-text {
+    display: none;
+}
+
+.sider-icon {
+    display: inline-block;
+    color: #1890ff;
+    font-size: x-large;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.sider-title {
+    display: inline-block;
+    color: #1890ff;
+    font-size: large;
+    vertical-align: middle;
 }
 
 .site-layout-sub-header-background {
@@ -30,4 +47,20 @@ code {
 
 [data-theme="dark"] .site-layout-sub-header-background {
     background: #141414;
+}
+
+@media only screen and (max-width: 600px) {
+    .desktop-text {
+        display: none;
+    }
+
+    .mobile-text {
+        display: inline;
+    }
+
+    .ant-layout-sider {
+        min-width: 0 !important;
+        max-width: 100px !important;
+        width: 100px !important;
+    }
 }

@@ -1,11 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { SideMenu } from './SideMenu';
+import { Layout } from 'antd';
+import Sider from './Sider';
+import Header from './Header';
+import Content from './Content';
 
 const _App = () => (
-    <div className="App">
-        <SideMenu />
-    </div>
+    <Layout className='app'>
+        <Sider />
+        <Header />
+        <Content />
+    </Layout>
 );
 
 export const App = connect()(_App);
