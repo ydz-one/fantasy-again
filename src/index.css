@@ -1,17 +1,16 @@
 @import '~antd/dist/antd.css';
 
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .app {
@@ -19,12 +18,14 @@ code {
 }
 
 .mobile-text {
-    display: none;
+    display: none !important;
 }
 
 .sider-title {
     color: #1890ff;
-    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .sider-icon {
@@ -34,6 +35,12 @@ code {
     vertical-align: middle;
 }
 
+.sider-next-gw {
+    padding-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
 .sider-title-text {
     display: inline-block;
     font-size: large;
@@ -41,17 +48,23 @@ code {
 }
 
 .slider-season {
+    color: #1890ff;
     text-align: center;
+    padding-bottom: 15px;
 }
 
 .site-layout-sub-header-background {
-  background: #fff;
+    background: #fff;
 }
 
 .site-layout-background {
-  background: #fff;
-  padding: 24px;
-  min-height: 360px;
+    background: #fff;
+    padding: 24px;
+    min-height: 360px;
+}
+
+.site-layout-content {
+    margin: 24px 16px 0;
 }
 
 [data-theme="dark"] .site-layout-sub-header-background {
@@ -59,17 +72,25 @@ code {
 }
 
 @media only screen and (max-width: 600px) {
-    .desktop-text {
-        display: none;
-    }
-
-    .mobile-text {
-        display: inline;
-    }
-
     .ant-layout-sider {
         min-width: 0 !important;
         max-width: 100px !important;
         width: 100px !important;
+    }
+
+    .desktop-text {
+        display: none !important;
+    }
+
+    .mobile-text {
+        display: inline !important;
+    }
+
+    .sider-nav {
+        font-size: small;
+    }
+
+    .sider-season {
+        padding-bottom: 10px;
     }
 }

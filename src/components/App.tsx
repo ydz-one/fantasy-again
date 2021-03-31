@@ -9,6 +9,7 @@ import Fixtures from './Fixtures';
 import Points from './Points';
 import PickTeam from './PickTeam';
 import Transfers from './Transfers';
+import Settings from './Settings';
 
 const _App = () => (
     <Layout className='app'>
@@ -30,6 +31,10 @@ const _App = () => (
             <Route
                 path='/transfers'
                 render={() => <Transfers />}
+            />
+            <Route
+                path='/settings'
+                render={() => <Settings />}
             />
             <Redirect to="/fixtures" />
         </Switch>

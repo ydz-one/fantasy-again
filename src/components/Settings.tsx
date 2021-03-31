@@ -7,7 +7,7 @@ const { Content } = Layout;
 const _Content = () => (
     <Content className='site-layout-content'>
         <div className="site-layout-background">
-            Transfers
+            Settings
         </div>
     </Content>
 );
