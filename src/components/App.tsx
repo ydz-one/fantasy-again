@@ -7,7 +7,8 @@ import Sider from './Sider';
 import Header from './Header';
 import Fixtures from './Fixtures';
 import Points from './Points';
-import Manage from './Manage';
+import PickTeam from './PickTeam';
+import Transfers from './Transfers';
 
 const _App = () => (
     <Layout className='app'>
@@ -23,8 +24,12 @@ const _App = () => (
                 render={() => <Points />}
             />
             <Route
-                path='/manage'
-                render={() => <Manage />}
+                path='/pickteam'
+                render={() => <PickTeam />}
+            />
+            <Route
+                path='/transfers'
+                render={() => <Transfers />}
             />
             <Redirect to="/fixtures" />
         </Switch>

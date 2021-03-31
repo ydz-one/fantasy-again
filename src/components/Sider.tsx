@@ -44,9 +44,14 @@ const _Sider = ({ location }: Props) => (
                     Points
                 </Link>
             </Menu.Item>
-            <Menu.Item key="/manage">
-                <Link to='/manage'>
-                    Manage
+            <Menu.Item key="/pickteam">
+                <Link to='/pickteam'>
+                    Pick Team
+                </Link>
+            </Menu.Item>
+            <Menu.Item key="/transfers">
+                <Link to='/transfers'>
+                    Transfers
                 </Link>
             </Menu.Item>
         </Menu>

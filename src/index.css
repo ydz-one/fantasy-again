@@ -50,6 +50,8 @@ code {
 
 .site-layout-background {
   background: #fff;
+  padding: 24px;
+  min-height: 360px;
 }
 
 [data-theme="dark"] .site-layout-sub-header-background {
