@@ -17,6 +17,20 @@ code {
     height: 100vh;
 }
 
+.header-item {
+    line-height: normal;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.header-item-key {
+    font-weight: bold;
+}
+
+.header-item-value {
+    font-size: large;
+}
+
 .mobile-text {
     display: none !important;
 }
@@ -45,6 +59,7 @@ code {
     display: inline-block;
     font-size: large;
     vertical-align: middle;
+    padding-top: 8px;
 }
 
 .slider-season {
@@ -54,7 +69,11 @@ code {
 }
 
 .site-layout-sub-header-background {
+    display: flex;
     background: #fff;
+    padding: 0;
+    justify-content: flex-end;
+    align-content: center;
 }
 
 .site-layout-background {

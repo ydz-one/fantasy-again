@@ -6,20 +6,21 @@ import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
 import { Button } from 'antd';
 import { ScheduleOutlined } from '@ant-design/icons';
+import { incrementGameweek } from '../actions';
 
 interface Props extends RouteComponentProps<{}> {
+    incrementGameweek : typeof incrementGameweek
 }
 
 const { Sider } = Layout;
 
-const _Sider = ({ location }: Props) => (
+const _Sider = ({ location, incrementGameweek }: Props) => (
     <Sider
         className='sider'
         breakpoint='lg'
         collapsedWidth='0'
     >
         <div className='sider-title'>
-            <ScheduleOutlined className='sider-icon' />
             <div className='sider-title-text'>
                 <strong>
                     <span className='desktop-text'>Fantasy Again!</span>
@@ -64,7 +65,7 @@ const _Sider = ({ location }: Props) => (
             </Menu.Item>
         </Menu>
         <div className='sider-next-gw'>
-            <Button type='primary' shape='round' size={isMobile ? 'middle' : 'large'}>
+            <Button type='primary' shape='round' size={isMobile ? 'small' : 'middle'} onClick={incrementGameweek}>
                <span className='desktop-text'>Next Game Week</span>
                <span className='mobile-text'>Next GW</span>
             </Button>
@@ -72,4 +73,4 @@ const _Sider = ({ location }: Props) => (
     </Sider>
 );
 
-export default connect()(withRouter(_Sider));
+export default connect(null, { incrementGameweek })(withRouter(_Sider));

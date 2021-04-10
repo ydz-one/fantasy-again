@@ -12,33 +12,35 @@ import Transfers from './Transfers';
 import Settings from './Settings';
 
 const _App = () => (
-    <Layout className='app'>
-        <Sider />
-        <Header />
-        <Switch>
-            <Route
-                path='/fixtures'
-                render={() => <Fixtures />}
-            />
-            <Route
-                path='/points'
-                render={() => <Points />}
-            />
-            <Route
-                path='/pickteam'
-                render={() => <PickTeam />}
-            />
-            <Route
-                path='/transfers'
-                render={() => <Transfers />}
-            />
-            <Route
-                path='/settings'
-                render={() => <Settings />}
-            />
-            <Redirect to="/fixtures" />
-        </Switch>
-    </Layout>
+        <Layout className='app'>
+            <Sider />
+            <Layout className='app'>
+                <Header />
+                <Switch>
+                    <Route
+                        path='/fixtures'
+                        render={() => <Fixtures />}
+                    />
+                    <Route
+                        path='/points'
+                        render={() => <Points />}
+                    />
+                    <Route
+                        path='/pickteam'
+                        render={() => <PickTeam />}
+                    />
+                    <Route
+                        path='/transfers'
+                        render={() => <Transfers />}
+                    />
+                    <Route
+                        path='/settings'
+                        render={() => <Settings />}
+                    />
+                    <Redirect to="/fixtures" />
+                </Switch>
+            </Layout>
+        </Layout>
 );
 
 export const App = connect()(_App);
