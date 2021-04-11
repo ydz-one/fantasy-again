@@ -1,11 +1,14 @@
 import { combineReducers } from 'redux';
 import { gameReducer } from './game';
-import { GameState } from '../types';
+import { dataReducer } from './data';
+import { GameState, DataState } from '../types';
 
 export interface StoreState {
     game: GameState;
+    data: DataState;
 }
 
 export const reducers = combineReducers<StoreState>({
-    game: gameReducer
+    game: gameReducer,
+    data: dataReducer
 });

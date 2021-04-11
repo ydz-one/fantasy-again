@@ -5,7 +5,6 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
 import { Button } from 'antd';
-import { ScheduleOutlined } from '@ant-design/icons';
 import { incrementGameweek } from '../actions';
 
 interface Props extends RouteComponentProps<{}> {
