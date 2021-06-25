@@ -14,7 +14,49 @@ code {
 }
 
 .app {
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
+}
+
+.custom-table .ant-table-cell {
+    height: 50px;
+    padding: 0;
+    text-align: center;
+}
+
+.custom-table .ant-table-cell-fix-left {
+    padding: 16px;
+}
+
+.fdr {
+    height: 99%;
+    width: 99%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fdr-1 {
+    background-color: #375523;
+    color: white;
+}
+
+.fdr-2 {
+    background-color: #01fc7a;
+}
+
+.fdr-3 {
+    background-color: #e7e7e7;
+}
+
+.fdr-4 {
+    background-color: #ff1751;
+    color: white;
+}
+
+.fdr-5 {
+    background-color: #80072d;
+    color: white;
 }
 
 .header-item {
