@@ -102,6 +102,25 @@ const generateFDRTable = (fixtures: FixtureData, gameweek: number) => {
 const _Content = ({ fixtures, gameweek }: Props) => (
     <Content className='site-layout-content'>
         <div className='site-layout-background'>
+            <div className='fixtures-title page-title'>
+                <div>Fixture Difficulty Rating (FDR)</div>
+                <div className='fdr-section'>
+                    <div className='fdr-key-text'>FDR Key:</div>
+                    <div>
+                        <div className='fdr-key'>
+                            <div className='fdr-key-square fdr-1'>1</div>
+                            <div className='fdr-key-square fdr-2'>2</div>
+                            <div className='fdr-key-square fdr-3'>3</div>
+                            <div className='fdr-key-square fdr-4'>4</div>
+                            <div className='fdr-key-square fdr-5'>5</div>
+                        </div>
+                        <div className='fdr-key-label'>
+                            <div>Easy</div>
+                            <div>Hard</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {generateFDRTable(fixtures, gameweek)}
         </div>
     </Content>

@@ -81,6 +81,38 @@ code {
     color: white;
 }
 
+.fdr-key {
+    display: flex;
+}
+
+.fdr-key-label {
+    font-size: 14px;
+    display: flex;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+.fdr-key-square {
+    height: 25px;
+    width: 25px;
+    text-align: center;
+}
+
+.fdr-key-text {
+    margin-right: 10px;
+}
+
+.fdr-section {
+    display: flex;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.fixtures-title {
+    display: flex;
+    justify-content: space-between;
+}
+
 .header-item {
     line-height: normal;
     padding: 10px 30px 10px 0;
@@ -97,6 +129,12 @@ code {
 
 .mobile-text {
     display: none !important;
+}
+
+.page-title {
+    padding: 18px 12px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .sider-title {
@@ -163,6 +201,14 @@ code {
 
     .desktop-text {
         display: none !important;
+    }
+
+    .fdr-section {
+        margin-top: 10px;
+    }
+
+    .fixtures-title {
+        flex-wrap: wrap;
     }
 
     .mobile-text {
