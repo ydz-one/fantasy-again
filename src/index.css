@@ -36,6 +36,27 @@ code {
     align-items: center;
 }
 
+.fdr-sub {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fdr-double {
+    font-size: 12px;
+    width: 50%;
+}
+
+.fdr-triple {
+    font-size: 10px;
+    width: 33%;
+}
+
+.fdr-0 {
+    background-color: white;
+}
+
 .fdr-1 {
     background-color: #375523;
     color: white;

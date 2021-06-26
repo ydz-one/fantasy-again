@@ -6,7 +6,8 @@ export interface GameState {
 export enum Season {
     S2017_2018 = 'S2017_2018',
     S2018_2019 = 'S2018_2019',
-    S2019_2020 = 'S2019_2020'
+    S2019_2020 = 'S2019_2020',
+    S2020_2021 = 'S2020_2021'
 }
 
 export const DEFAULT_SEASON = Season.S2018_2019;

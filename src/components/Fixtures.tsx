@@ -14,11 +14,26 @@ interface Props {
 
 const renderCell = (gwFixtures: Fixture[]) => {
     const TEAM_NAMES = getTeamNames(Season.S2018_2019); // TODO: Remove hardcoded season
-    const firstFixture = gwFixtures[0]; // TODO: Make cells compatible with double and triple GWs
-    const cellText = firstFixture ? TEAM_NAMES[firstFixture.opponent] + (firstFixture.isHome ? ' (H)' : ' (A)') : '';
-    const difficulty = firstFixture ? firstFixture.difficulty : 3;
-    return <div className={'fdr fdr-' + difficulty}>
-        {cellText}
+    
+    if (gwFixtures.length === 0) {
+        return <div className={'fdr fdr-0'}></div>;
+    }
+    if (gwFixtures.length === 1) {
+        const fixture = gwFixtures[0];
+        const cellText = TEAM_NAMES[fixture.opponent] + (fixture.isHome ? ' (H)' : ' (A)');
+        return <div className={'fdr fdr-' + fixture.difficulty}>
+            {cellText}
+        </div>
+    }
+    const fdrClass = gwFixtures.length === 2 ? 'fdr-double' : 'fdr-triple';
+    return <div className='fdr'>
+        {gwFixtures.map(fixture => {
+            const team = TEAM_NAMES[fixture.opponent];
+            const location = fixture.isHome ? '(H)' : '(A)';
+            return <div className={fdrClass + ' fdr-sub fdr-' + fixture.difficulty}>
+                {team} <br/> {location}
+            </div>
+        })}
     </div>
 };
 
