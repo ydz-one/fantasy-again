@@ -26,6 +26,7 @@ code {
 
 .custom-table .ant-table-cell-fix-left {
     padding: 16px;
+    text-align: left;
 }
 
 .fdr {
