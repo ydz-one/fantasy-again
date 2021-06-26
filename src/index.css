@@ -29,6 +29,10 @@ code {
     text-align: left;
 }
 
+.custom-table thead.ant-table-thead > tr > th {
+    font-weight: bold;
+}
+
 .fdr {
     height: 99%;
     width: 99%;
@@ -108,7 +112,7 @@ code {
     font-weight: normal;
 }
 
-.fixtures-title {
+.page-title-two-sections {
     display: flex;
     justify-content: space-between;
 }
@@ -132,7 +136,7 @@ code {
 }
 
 .page-title {
-    padding: 18px 12px;
+    padding: 0 12px 18px;
     font-size: 18px;
     font-weight: bold;
 }
@@ -207,12 +211,12 @@ code {
         margin-top: 10px;
     }
 
-    .fixtures-title {
-        flex-wrap: wrap;
-    }
-
     .mobile-text {
         display: inline !important;
+    }
+
+    .page-title-two-sections {
+        flex-wrap: wrap;
     }
 
     .sider-nav {
