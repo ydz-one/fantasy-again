@@ -6,6 +6,7 @@ import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
 import { Button } from 'antd';
 import { incrementGameweek } from '../actions';
+import { DEFAULT_SEASON } from '../types';
 
 interface Props extends RouteComponentProps<{}> {
     incrementGameweek : typeof incrementGameweek
@@ -28,7 +29,7 @@ const _Sider = ({ location, incrementGameweek }: Props) => (
             </div>
         </div>
         <div className='slider-season'>
-            <span className='desktop-text'>Season:</span> 2019/2020
+            <span className='desktop-text'>Season:</span> {DEFAULT_SEASON}
         </div>
         <Menu
             theme='dark'

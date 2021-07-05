@@ -2,27 +2,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Layout, Table } from 'antd';
 import { StoreState } from '../reducers';
-import { FixtureData, Fixture, Season } from '../types';
+import { DEFAULT_SEASON, FdrData, FdrFixture, Season } from '../types';
 import { getTeamFullNames, getTeamNames } from '../data';
 
 const { Content } = Layout;
 
 interface Props {
-    fixtures: FixtureData;
+    fdr: FdrData;
     gameweek: number;
 }
 
 interface Row {
-    [key: string]: string | Fixture[];
+    [key: string]: string | FdrFixture[];
 };
 
-function assertIsArrayOfFixtures(obj: unknown): asserts obj is Fixture[] {
+function assertIsArrayOfFdrFixtures(obj: unknown): asserts obj is FdrFixture[] {
     if (Array.isArray(obj) && (obj.length === 0 || obj[0].opponent != null)) return;
     else throw new Error('Input must be a string!');
 }
 
-const renderCell = (gwFixtures: Fixture[]) => {
-    const TEAM_NAMES = getTeamNames(Season.S2018_2019); // TODO: Remove hardcoded season
+const renderCell = (gwFixtures: FdrFixture[]) => {
+    const TEAM_NAMES = getTeamNames(DEFAULT_SEASON);
 
     if (gwFixtures.length === 0) {
         return <div className={'fdr fdr-0'}></div>;
@@ -46,8 +46,8 @@ const renderCell = (gwFixtures: Fixture[]) => {
     </div>
 };
 
-const generateFDRTable = (fixtures: FixtureData, gameweek: number) => {
-    const TEAM_FULL_NAMES = getTeamFullNames(Season.S2018_2019); // TODO: Remove hardcoded season
+const createFdrTable = (fdr: FdrData, gameweek: number) => {
+    const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
     const columns: object[] = [
         {
             title: 'Team',
@@ -60,7 +60,7 @@ const generateFDRTable = (fixtures: FixtureData, gameweek: number) => {
             }
         }
     ];
-    const maxGW = fixtures[0].length;
+    const maxGW = fdr[0].length;
     for (let i = gameweek; i < maxGW; i++) {
         const gwTitle = 'GW' + (i + 1);
         columns.push({
@@ -75,8 +75,8 @@ const generateFDRTable = (fixtures: FixtureData, gameweek: number) => {
                     const bGW = b[gwTitle];
                     const result = aGW.length - bGW.length;
                     if (result !== 0 || aGW.length === 0) return result;
-                    assertIsArrayOfFixtures(aGW);
-                    assertIsArrayOfFixtures(bGW);
+                    assertIsArrayOfFdrFixtures(aGW);
+                    assertIsArrayOfFdrFixtures(bGW);
                     const aDiffiSum = aGW.reduce((acc, val) => acc + val.difficulty, 0);
                     const bDiffiSum = bGW.reduce((acc, val) => acc + val.difficulty, 0);
                     return bDiffiSum - aDiffiSum;
@@ -85,7 +85,7 @@ const generateFDRTable = (fixtures: FixtureData, gameweek: number) => {
         });
     }
     const data: object[] = [];
-    fixtures.forEach((teamGWs, teamIdx) => {
+    fdr.forEach((teamGWs, teamIdx) => {
         const row: Row = {
             team: TEAM_FULL_NAMES[teamIdx]
         };
@@ -99,7 +99,7 @@ const generateFDRTable = (fixtures: FixtureData, gameweek: number) => {
     return <Table dataSource={data} columns={columns} pagination={false} scroll={{ x: tableWidth }} className='custom-table' />;
 }
 
-const _Content = ({ fixtures, gameweek }: Props) => (
+const _Content = ({ fdr, gameweek }: Props) => (
     <Content className='site-layout-content'>
         <div className='site-layout-background'>
             <div className='page-title page-title-two-sections'>
@@ -121,7 +121,7 @@ const _Content = ({ fixtures, gameweek }: Props) => (
                     </div>
                 </div>
             </div>
-            {generateFDRTable(fixtures, gameweek)}
+            {createFdrTable(fdr, gameweek)}
         </div>
     </Content>
 );
@@ -130,11 +130,11 @@ const mapStateToProps = ({
     data,
     game
 }: StoreState) => {
-    const { fixtures } = data;
+    const { fdr } = data;
     const { gameweek } = game;
 
     return {
-        fixtures,
+        fdr,
         gameweek
     };
 }

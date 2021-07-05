@@ -4,13 +4,13 @@ export interface GameState {
 }
 
 export enum Season {
-    S2017_2018 = 'S2017_2018',
-    S2018_2019 = 'S2018_2019',
-    S2019_2020 = 'S2019_2020',
-    S2020_2021 = 'S2020_2021'
+    S2017_2018 = '2017/18',
+    S2018_2019 = '2018/19',
+    S2019_2020 = '2019/20',
+    S2020_2021 = '2020/21'
 }
 
-export const DEFAULT_SEASON = Season.S2018_2019;
+export const DEFAULT_SEASON = Season.S2020_2021;
 
 export enum GameActionTypes {
     IncrementGameweek = 'IncrementGameweek',

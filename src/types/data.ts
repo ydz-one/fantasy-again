@@ -1,7 +1,7 @@
 import { NumericLiteral } from "typescript";
 
 export interface DataState {
-    fixtures: FixtureData
+    fdr: FdrData
 }
 
 export enum DataActionTypes {
@@ -10,14 +10,14 @@ export enum DataActionTypes {
 
 export interface SetFixturesAction {
     type: DataActionTypes.SetFixturesAction;
-    payload: FixtureData;
+    payload: FdrData;
 }
 
 export type DataAction = SetFixturesAction;
 
-export type FixtureData = Fixture[][][];
+export type FdrData = FdrFixture[][][];
 
-export type Fixture = {
+export type FdrFixture = {
     opponent: number;
     isHome: boolean;
     difficulty: number;

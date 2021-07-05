@@ -1,9 +1,9 @@
-import { getFixtures } from '../data/api';
+import { getFdr } from '../data/api';
 import { DataAction, DataActionTypes, DataState, DEFAULT_SEASON } from '../types';
 
 const getInitialDataState = () => {
     return {
-        fixtures: getFixtures(DEFAULT_SEASON)
+        fdr: getFdr(DEFAULT_SEASON)
     };
 }
 
@@ -12,7 +12,7 @@ export const dataReducer = (state: DataState = getInitialDataState(), action: Da
         case DataActionTypes.SetFixturesAction:
             return {
                 ...state,
-                fixtures: action.payload
+                fdr: action.payload
             };
         default:
             return state;
