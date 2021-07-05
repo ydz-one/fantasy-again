@@ -1,8 +1,8 @@
-import { DataActionTypes, FdrData, SetFixturesAction } from "../types";
+import { DataActionTypes, FdrData, SetFdrAction } from "../types";
 
-export const SetFixtures = (fixtures: FdrData): SetFixturesAction => {
+export const SetFdr = (fdr: FdrData): SetFdrAction => {
     return {
-        type: DataActionTypes.SetFixturesAction,
-        payload: fixtures
+        type: DataActionTypes.SetFdrAction,
+        payload: fdr
     };
 }

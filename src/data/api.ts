@@ -1,11 +1,11 @@
 import { FdrData as FdrData, Season } from "../types";
-import fixtures2021 from './2020_2021/fdr.json';
+import fdr2021 from './2020_2021/fdr.json';
 import { TEAM_FULL_NAMES as TEAM_FULL_NAMES_2021, TEAM_NAMES as TEAM_NAMES_2021 } from "./2020_2021/teams";
 
 export const getFdr = (season: Season): FdrData => {
     switch (season) {
         case Season.S2020_2021:
-            return fixtures2021;
+            return fdr2021;
         default:
             return [];
     }

@@ -1,19 +1,17 @@
-import { NumericLiteral } from "typescript";
-
 export interface DataState {
     fdr: FdrData
 }
 
 export enum DataActionTypes {
-    SetFixturesAction = 'SetFixtureAction'
+    SetFdrAction = 'SetFdrAction'
 }
 
-export interface SetFixturesAction {
-    type: DataActionTypes.SetFixturesAction;
+export interface SetFdrAction {
+    type: DataActionTypes.SetFdrAction;
     payload: FdrData;
 }
 
-export type DataAction = SetFixturesAction;
+export type DataAction = SetFdrAction;
 
 export type FdrData = FdrFixture[][][];
 

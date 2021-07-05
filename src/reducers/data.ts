@@ -9,7 +9,7 @@ const getInitialDataState = () => {
 
 export const dataReducer = (state: DataState = getInitialDataState(), action: DataAction): DataState => {
     switch (action.type) {
-        case DataActionTypes.SetFixturesAction:
+        case DataActionTypes.SetFdrAction:
             return {
                 ...state,
                 fdr: action.payload
