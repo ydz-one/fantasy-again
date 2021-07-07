@@ -38,7 +38,7 @@ import gw37 from './gw37.json'
 import gw38 from './gw38.json'
 import { PlayerGw } from '../../../types'
 
-export const getGW = (gwNum: number): PlayerGw[] => {
+export const getGw = (gwNum: number): PlayerGw[] => {
     switch (gwNum) {
         case 1: return gw1;
         case 2: return gw2;

@@ -3,7 +3,10 @@ import { Moment } from "moment";
 export interface DataState {
     fdr: FdrData,
     fixtures: Fixtures,
-    playersHistory: PlayersHistory
+    injuryHistory: InjuryHistory,
+    playersHistory: PlayersHistory,
+    playersBio: PlayersBio,
+    playersStats: PlayersStats
 }
 
 export enum DataActionTypes {
@@ -27,8 +30,6 @@ export type FdrFixture = {
 
 export type PlayerGw = {
     name: string,
-    position: string,
-    team: string,
     xP: number,
     assists: number,
     bonus: number,
@@ -62,11 +63,7 @@ export type PlayerGw = {
     was_home: boolean,
     yellow_cards: number,
     web_name: string,
-    code: string,
-    team_code: string,
-    injured: number,
-    injury: string,
-    injury_end: string
+    code: string
 };
 
 export type PlayerBio = {
@@ -109,15 +106,15 @@ export type PlayerStats = {
     form: number,
     latest_gw_points: number,
     total_points: number,
-    price: number,
     selected: number,
     influence: number,
     creativity: number,
     threat: number,
     ict_index: number,
+    value: number,
     injured: number,
     injury: string,
-    injury_end: Moment,
+    injury_end: string,
     fixtureStats: PlayerFixtureStats[]
 };
 
@@ -170,5 +167,30 @@ export type HistoryRecord = {
 export type PlayersHistory = {
     [key: string] : {
         [key: string] : HistoryRecord
-    } | {}
+    }
 };
+
+export type InitialPlayersStats = {
+    [key: string] : InitialPlayerStats
+}
+
+export type InitialPlayerStats = {
+    value: number,
+    selected: number,
+    influence: number,
+    creativity: number,
+    threat: number,
+    ict_index: number
+}
+
+export type InjuryHistory = {
+    [key: string] : Injury[]
+}
+
+export type Injury = {
+    code: string,
+    web_name: string,
+    injured: number,
+    injury: string,
+    injury_end: string
+}
