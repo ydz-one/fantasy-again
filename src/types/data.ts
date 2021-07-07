@@ -1,7 +1,9 @@
 import { Moment } from "moment";
 
 export interface DataState {
-    fdr: FdrData
+    fdr: FdrData,
+    fixtures: Fixtures,
+    playersHistory: PlayersHistory
 }
 
 export enum DataActionTypes {
@@ -81,6 +83,27 @@ export type PlayersBio = {
     [key: string] : PlayerBio
 };
 
+export type PlayerFixtureStats = {
+    assists: number,
+    bonus: number,
+    clean_sheets: number,
+    fixture: string,
+    goals_conceded: number,
+    goals_scored: number,
+    minutes: number,
+    own_goals: number,
+    penalties_missed: number,
+    penalties_saved: number,
+    red_cards: number,
+    yellow_cards: number,
+    round: string,
+    saves: number,
+    total_points: number,
+    value: number,
+    injured: number,
+    injury: string
+}
+
 export type PlayerStats = {
     code: string,
     form: number,
@@ -94,7 +117,8 @@ export type PlayerStats = {
     ict_index: number,
     injured: number,
     injury: string,
-    injury_end: Moment
+    injury_end: Moment,
+    fixtureStats: PlayerFixtureStats[]
 };
 
 export type PlayersStats = {

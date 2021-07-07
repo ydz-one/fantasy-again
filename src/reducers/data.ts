@@ -1,9 +1,11 @@
-import { getFdr } from '../data/api';
+import { getFdr, getFixtures, getPlayersHistory } from '../data/api';
 import { DataAction, DataActionTypes, DataState, DEFAULT_SEASON } from '../types';
 
 const getInitialDataState = () => {
     return {
-        fdr: getFdr(DEFAULT_SEASON)
+        fdr: getFdr(DEFAULT_SEASON),
+        fixtures: getFixtures(DEFAULT_SEASON),
+        playersHistory: getPlayersHistory(DEFAULT_SEASON)
     };
 }
 
