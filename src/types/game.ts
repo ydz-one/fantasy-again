@@ -18,8 +18,7 @@ export const DEFAULT_SEASON = Season.S2020_2021;
 
 export enum GameActionTypes {
     IncrementGameweek = 'IncrementGameweek',
-    AddPoints = 'AddPoints',
-    SetFixtureData = 'SetFixtureData'
+    AddPoints = 'AddPoints'
 }
 
 export interface IncrementGameweekAction {

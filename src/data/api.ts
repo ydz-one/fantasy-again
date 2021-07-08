@@ -1,12 +1,14 @@
-import { FdrData, Fixtures, PlayersHistory, PlayersBio, PlayerGw, Season, InitialPlayersStats, InjuryHistory } from "../types";
+import { FdrData, Fixtures, PlayersHistory, PlayersBio, PlayerGw, Season, InitialPlayersStats, InjuryHistory, TransferData } from "../types";
 import fdr2021 from './2020_2021/fdr.json';
 import fixtures2021 from './2020_2021/fixtures.json';
 import history2021 from './2020_2021/history.json';
 import initialPlayerStats2021 from './2020_2021/initial_player_stats.json';
 import injuryHistory2021 from './2020_2021/injury_history.json';
 import players2021 from './2020_2021/players.json';
-import { TEAM_FULL_NAMES as TEAM_FULL_NAMES_2021, TEAM_NAMES as TEAM_NAMES_2021 } from "./2020_2021/teams";
+import { TEAM_FULL_NAMES as TEAM_FULL_NAMES_2021, TEAM_NAMES as TEAM_NAMES_2021, transfers as transfers2021 } from "./2020_2021/teams";
 import { getGw as getGw2021 } from './2020_2021/gw';
+import { preGwDates as preGwDates2021 } from "./2020_2021/preGwDates";
+import { Moment } from "moment";
 
 export const getFdr = (season: Season): FdrData => {
     switch (season) {
@@ -88,4 +90,22 @@ export const getTeamFullNames = (season: Season): string[] => {
             throw new Error('Season not found');
     }
 };
+
+export const getTransfers = (season: Season): TransferData => {
+    switch (season) {
+        case Season.S2020_2021:
+            return transfers2021;
+        default:
+            throw new Error('Season not found');
+    }
+}
+
+export const getPreGwDates = (season: Season, gwNum: number): Moment => {
+    switch (season) {
+        case Season.S2020_2021:
+            return preGwDates2021[gwNum];
+        default:
+            throw new Error('Season not found');
+    }
+}
 

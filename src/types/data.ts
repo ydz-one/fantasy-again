@@ -10,15 +10,17 @@ export interface DataState {
 }
 
 export enum DataActionTypes {
-    SetFdrAction = 'SetFdrAction'
+    loadNewGwData = 'loadNewGwData'
 }
 
-export interface SetFdrAction {
-    type: DataActionTypes.SetFdrAction;
-    payload: FdrData;
+export interface LoadNewGwDataAction {
+    type: DataActionTypes.loadNewGwData;
+    payload: PlayerGw[];
+    gwNum: number,
+    shouldResetPoints: boolean;
 }
 
-export type DataAction = SetFdrAction;
+export type DataAction = LoadNewGwDataAction;
 
 export type FdrData = FdrFixture[][][];
 
@@ -87,6 +89,7 @@ export type PlayerFixtureStats = {
     fixture: string,
     goals_conceded: number,
     goals_scored: number,
+    kickoff_time: Moment,
     minutes: number,
     own_goals: number,
     penalties_missed: number,
@@ -96,16 +99,15 @@ export type PlayerFixtureStats = {
     round: string,
     saves: number,
     total_points: number,
-    value: number,
-    injured: number,
-    injury: string
+    value: number
 }
 
 export type PlayerStats = {
     code: string,
     form: number,
     latest_gw_points: number,
-    total_points: number,
+    latest_gw: string,
+    season_points: number,
     selected: number,
     influence: number,
     creativity: number,
@@ -115,6 +117,8 @@ export type PlayerStats = {
     injured: number,
     injury: string,
     injury_end: string,
+    transfers_in: number,
+    transfers_out: number,
     fixtureStats: PlayerFixtureStats[]
 };
 
@@ -193,4 +197,14 @@ export type Injury = {
     injured: number,
     injury: string,
     injury_end: string
+}
+
+export type TransferData = {
+    [key: string]: TransferEvent[]
+}
+
+export type TransferEvent = {
+    code: string,
+    web_name: string,
+    target_team: string
 }
