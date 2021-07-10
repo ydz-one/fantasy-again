@@ -66,6 +66,11 @@ const _Sider = ({ gameweek, location, incrementGameweek, loadNewGwData }: Props)
                         Transfers
                     </Link>
                 </Menu.Item>
+                <Menu.Item key='/statistics'>
+                    <Link to='/statistics'>
+                        Statistics
+                    </Link>
+                </Menu.Item>
                 <Menu.Item key='/settings'>
                     <Link to='/settings'>
                         Settings

@@ -9,6 +9,7 @@ import Fixtures from './Fixtures';
 import Points from './Points';
 import PickTeam from './PickTeam';
 import Transfers from './Transfers';
+import Statistics from './Statistics';
 import Settings from './Settings';
 
 const _App = () => (
@@ -32,6 +33,10 @@ const _App = () => (
                     <Route
                         path='/transfers'
                         render={() => <Transfers />}
+                    />
+                    <Route
+                        path='/statistics'
+                        render={() => <Statistics />}
                     />
                     <Route
                         path='/settings'

@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Layout, Table } from 'antd';
 import { StoreState } from '../reducers';
-import { DEFAULT_SEASON, FdrData, FdrFixture, Season } from '../types';
-import { getTeamFullNames, getTeamNames } from '../data';
+import { DEFAULT_SEASON, FdrData, FdrFixture, FdrRow } from '../types';
+import { fdrFixtureComparatorFactory, getTeamFullNames } from '../data';
+import { FdrCell } from './FdrCell';
 
 const { Content } = Layout;
 
@@ -12,42 +13,9 @@ interface Props {
     gameweek: number;
 }
 
-interface Row {
-    [key: string]: string | FdrFixture[];
-};
-
-function assertIsArrayOfFdrFixtures(obj: unknown): asserts obj is FdrFixture[] {
-    if (Array.isArray(obj) && (obj.length === 0 || obj[0].opponent != null)) return;
-    else throw new Error('Input must be a string!');
-}
-
-const renderCell = (gwFixtures: FdrFixture[]) => {
-    const TEAM_NAMES = getTeamNames(DEFAULT_SEASON);
-
-    if (gwFixtures.length === 0) {
-        return <div className={'fdr fdr-0'}></div>;
-    }
-    if (gwFixtures.length === 1) {
-        const fixture = gwFixtures[0];
-        const cellText = TEAM_NAMES[fixture.opponent] + (fixture.isHome ? ' (H)' : ' (A)');
-        return <div className={'fdr fdr-' + fixture.difficulty}>
-            {cellText}
-        </div>
-    }
-    const fdrClass = gwFixtures.length === 2 ? 'fdr-double' : 'fdr-triple';
-    return <div className='fdr'>
-        {gwFixtures.map(fixture => {
-            const team = TEAM_NAMES[fixture.opponent];
-            const location = fixture.isHome ? '(H)' : '(A)';
-            return <div className={fdrClass + ' fdr-sub fdr-' + fixture.difficulty} key={fixture.opponent}>
-                {team} <br/> {location}
-            </div>
-        })}
-    </div>
-};
-
 const createFdrTable = (fdr: FdrData, gameweek: number) => {
     const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
+
     const columns: object[] = [
         {
             title: 'Team',
@@ -56,7 +24,7 @@ const createFdrTable = (fdr: FdrData, gameweek: number) => {
             fixed: 'left',
             width: 70,
             sorter: {
-                compare: (a: Row, b: Row) => a.team < b.team ? -1 : a.team > b.team ? 1 : 0
+                compare: (a: FdrRow, b: FdrRow) => a.team < b.team ? -1 : a.team > b.team ? 1 : 0
             }
         }
     ];
@@ -68,25 +36,15 @@ const createFdrTable = (fdr: FdrData, gameweek: number) => {
             dataIndex: gwTitle,
             key: gwTitle,
             width: 50,
-            render: renderCell,
+            render: (gwFixtures: FdrFixture[]) => <FdrCell gwFixtures={gwFixtures} />,
             sorter: {
-                compare: (a: Row, b: Row) => {
-                    const aGW = a[gwTitle];
-                    const bGW = b[gwTitle];
-                    const result = aGW.length - bGW.length;
-                    if (result !== 0 || aGW.length === 0) return result;
-                    assertIsArrayOfFdrFixtures(aGW);
-                    assertIsArrayOfFdrFixtures(bGW);
-                    const aDiffiSum = aGW.reduce((acc, val) => acc + val.difficulty, 0);
-                    const bDiffiSum = bGW.reduce((acc, val) => acc + val.difficulty, 0);
-                    return bDiffiSum - aDiffiSum;
-                }
+                compare: fdrFixtureComparatorFactory(gwTitle)
             }
         });
     }
     const data: object[] = [];
     fdr.forEach((teamGWs, teamIdx) => {
-        const row: Row = {
+        const row: FdrRow = {
             team: TEAM_FULL_NAMES[teamIdx]
         };
         teamGWs.forEach((teamGW, teamGWIdx) => {
@@ -132,7 +90,6 @@ const mapStateToProps = ({
 }: StoreState) => {
     const { fdr } = data;
     const { gameweek } = game;
-
     return {
         fdr,
         gameweek
