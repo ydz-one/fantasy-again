@@ -49,6 +49,7 @@ function assertIsNameCellData(obj: unknown): asserts obj is NameCellData {
 }
 
 const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersStats, fdr: FdrData, gameweek: number) => {
+    PLAYER_STATS_COLUMN_LABELS['latest_gw_points'] = 'GW' + (gameweek || 1);
     const columns: object[] = [
         {
             title: PLAYER_STATS_COLUMN_LABELS['player'],

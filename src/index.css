@@ -29,10 +29,6 @@ code {
     text-align: left;
 }
 
-.custom-table thead.ant-table-thead > tr > th {
-    font-weight: bold;
-}
-
 .fdr {
     height: 99%;
     width: 99%;

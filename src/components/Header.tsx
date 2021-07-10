@@ -18,7 +18,7 @@ const _Header = ({ gameweek, points }: Props) => (
         </div>
         <div className='header-item'>
             <div className='header-item-key'>Upcoming:</div>
-            <div className='header-item-value'>GW {gameweek + 1}</div>
+            <div className='header-item-value'>GW{gameweek + 1}</div>
         </div>
     </Header>
 );

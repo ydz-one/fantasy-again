@@ -79,7 +79,7 @@ const _Sider = ({ gameweek, location, incrementGameweek, loadNewGwData }: Props)
             </Menu>
             <div className='sider-next-gw'>
                 <Button type='primary' shape='round' size={isMobile ? 'small' : 'middle'} onClick={handleIncrementGameweek}>
-                <span className='desktop-text'>Next Game Week</span>
+                <span className='desktop-text'>Next Gameweek</span>
                 <span className='mobile-text'>Next GW</span>
                 </Button>
             </div>
