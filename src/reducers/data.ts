@@ -1,4 +1,5 @@
 import moment, { Moment } from 'moment';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'node:constants';
 import { moveMessagePortToContext } from 'node:worker_threads';
 import { getFdr, getFixtures, getInitialPlayerStats, getInjuryHistory, getPlayersBio, getPlayersHistory, getPreGwDates, getTransfers } from '../data/api';
 import { DataAction, DataActionTypes, DataState, DEFAULT_SEASON, InitialPlayersStats, InjuryHistory, PlayerFixtureStats, PlayersBio, PlayersHistory, PlayersStats, prevSeasonMap, TransferEvent } from '../types';
@@ -20,10 +21,15 @@ const populateInitialStats = (initialPlayersStats: InitialPlayersStats, injuryHi
     const playersStats: PlayersStats = {};
     const prevSeason = prevSeasonMap[DEFAULT_SEASON];
     for (const [key, obj] of Object.entries(initialPlayersStats)) {
-        const season_points = playersHistory[key] && Object.keys(playersHistory[key]).length && playersHistory[key][prevSeason] ?
-            playersHistory[key][prevSeason].total_points : 0;
+        let bonus = 0;
+        let season_points = 0;
+        if (playersHistory[key] && Object.keys(playersHistory[key]).length && playersHistory[key][prevSeason]) {
+            bonus = playersHistory[key][prevSeason].bonus;
+            season_points = playersHistory[key][prevSeason].total_points;
+        }
         const { value, selected, influence, creativity, threat, ict_index } = obj;
         const stats = {
+            bonus,
             code: key,
             form: 0,
             latest_gw_points: 0,
@@ -102,6 +108,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
     for (const [playerCode, playerStats] of Object.entries(state.playersStats)) {
         newPlayersStats[playerCode] = {
             ...playerStats,
+            bonus : shouldResetPoints ? 0 : playerStats.bonus,
             season_points: shouldResetPoints ? 0 : playerStats.season_points
         };
     }
@@ -133,7 +140,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             value,
             yellow_cards
         } = playerGwData;
-        const { fixtureStats } = newPlayersStats[code];
+        const { bonus: oldBonus, latest_gw, latest_gw_points, season_points, fixtureStats } = newPlayersStats[code];
         fixtureStats.push({
             assists,
             bonus,
@@ -153,9 +160,9 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             total_points,
             value
         });
-        const { latest_gw, latest_gw_points, season_points } = newPlayersStats[code];
         newPlayersStats[code] = {
             ...newPlayersStats[code],
+            bonus: oldBonus + bonus,
             form: calculateForm(getPreGwDates(DEFAULT_SEASON, gwNum), newPlayersStats[code].fixtureStats),
             latest_gw_points: latest_gw === round ? latest_gw_points + total_points : total_points,
             latest_gw: round,

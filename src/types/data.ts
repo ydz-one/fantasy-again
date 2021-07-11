@@ -103,6 +103,7 @@ export type PlayerFixtureStats = {
 }
 
 export type PlayerStats = {
+    bonus: number,
     code: string,
     form: number,
     latest_gw_points: number,
