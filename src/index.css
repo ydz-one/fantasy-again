@@ -25,8 +25,12 @@ code {
 }
 
 .custom-table .ant-table-cell-fix-left {
-    padding: 16px;
+    padding: 6px 0 6px 16px;
     text-align: left;
+}
+
+.custom-table .ant-table-column-sorters {
+    padding: 2px 16px;
 }
 
 .fdr {
@@ -135,6 +139,16 @@ code {
     padding: 0 12px 18px;
     font-size: 18px;
     font-weight: bold;
+}
+
+.player-cell-info {
+    display: flex;
+}
+
+.player-cell-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sider-title {

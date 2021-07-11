@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Layout, Table } from 'antd';
+import { Layout, Table, Tag, Tooltip } from 'antd';
+import { WarningTwoTone } from '@ant-design/icons';
 import { StoreState } from '../reducers';
-import { DEFAULT_SEASON, FdrData, FdrFixture, NameCellData, PlayersBio, PlayersStats, PlayerStats, PlayerStatsRow, Season } from '../types';
-import { columnComparatorFactory, formatOneDecimalPlace, formatPoints, formatSelected, formatValue, getPlayersBio, getTeamFullNames, getTeamNames, PLAYER_STATS_COLUMN_LABELS } from '../data';
+import { FdrData, NameCellData, PlayersBio, PlayersStats, PlayerStatsRow, } from '../types';
+import { columnComparatorFactory, formatOneDecimalPlace, formatPoints, formatSelected, formatValue, PLAYER_STATS_COLUMN_LABELS } from '../data';
+import { TEAMS } from '../data/teams';
+import moment from 'moment';
 
 const { Content } = Layout;
 
@@ -43,6 +46,22 @@ const columnFormatters: { [key: string]: (a: number) => string } = {
     // keep transfers_in and transfers_out as undefined because they don't need any special formatters
 };
 
+const renderPlayerCell = (player: NameCellData) => (
+    <div>
+        <div className='player-cell-name'>
+            {player.name}
+        </div>
+        <div className='player-cell-info'>
+            <Tag color={TEAMS[player.team_code].color}>
+                {TEAMS[player.team_code].name}
+            </Tag>
+            <div>
+                {player.injured === 1 && <Tooltip placement='topLeft' title={player.injury + ' until ' + moment(player.injury_end).format('LL')} arrowPointAtCenter><WarningTwoTone twoToneColor='red' /></Tooltip>}
+            </div>
+        </div>
+    </div>
+);
+
 function assertIsNameCellData(obj: unknown): asserts obj is NameCellData {
     if (typeof obj === 'object' && obj !== null && obj.hasOwnProperty('name')) return;
     else throw new Error('Input must be a NameCellData');
@@ -56,8 +75,8 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
             dataIndex: 'player',
             key: 'player',
             fixed: 'left',
-            width: 100,
-            render: (player: NameCellData) => player.name,
+            width: 90,
+            render: renderPlayerCell,
             sorter: {
                 compare: (a: PlayerStatsRow, b: PlayerStatsRow) => {
                     assertIsNameCellData(a.player);
@@ -84,14 +103,17 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
     // TODO: Add 3 FDR columns
     const data: PlayerStatsRow[] = [];
     for (const [code, player] of Object.entries(playersBio)) {
+        const playerStats: any = playersStats[code]; // TODO figure out correct type for playerStats
         const row: PlayerStatsRow = {
             player: {
                 name: player.web_name,
                 team_code: player.team_code,
-                position: player.position
+                position: player.position,
+                injured: playerStats.injured,
+                injury: playerStats.injury,
+                injury_end: playerStats.injury_end
             }
         }
-        const playerStats: PlayerStatsRow = playersStats[code]; // TODO figure out correct type for playerStats
         otherColumns.forEach(columnDataIndex => {
             row[columnDataIndex] = playerStats[columnDataIndex];
         });
