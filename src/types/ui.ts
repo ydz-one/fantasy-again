@@ -13,5 +13,5 @@ export interface NameCellData {
 }
 
 export interface PlayerStatsRow {
-    [key: string]: NameCellData | number | string | PlayerFixtureStats[];
+    [key: string]: NameCellData | number | string | FdrFixture[];
 };

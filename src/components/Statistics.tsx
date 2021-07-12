@@ -1,12 +1,13 @@
 import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { Layout, Table, Tag, Tooltip } from 'antd';
 import { WarningTwoTone } from '@ant-design/icons';
 import { StoreState } from '../reducers';
-import { DEFAULT_SEASON, FdrData, NameCellData, PlayersBio, PlayersStats, PlayerStatsRow, positions, positionData } from '../types';
-import { columnComparatorFactory, formatOneDecimalPlace, formatPoints, formatSelected, formatValue, getTeamCodeToId, getTeamFullNames, PLAYER_STATS_COLUMN_LABELS } from '../data';
+import { FdrCell } from './FdrCell';
+import { DEFAULT_SEASON, FdrData, NameCellData, PlayersBio, PlayersStats, PlayerStatsRow, positions, positionData, FdrFixture } from '../types';
+import { columnComparatorFactory, fdrFixtureComparatorFactory, formatOneDecimalPlace, formatPoints, formatSelected, formatValue, getTeamCodeToId, getTeamFullNames, PLAYER_STATS_COLUMN_LABELS } from '../data';
 import { TEAMS, TEAM_FULL_NAME_TO_CODE } from '../data/teams';
-import moment from 'moment';
 
 const { Content } = Layout;
 
@@ -16,8 +17,9 @@ interface Props {
     fdr: FdrData;
     gameweek: number;
 }
-const WIDER_COLUMN_WIDTH = 100;
+const WIDER_COLUMN_WIDTH = 105;
 const DEFAULT_COLUMN_WIDTH = 90;
+const FDR_COLUMN_WIDTH = 90;
 
 const otherColumns = [
     'form',
@@ -84,6 +86,7 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
     const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
     const TEAM_CODE_TO_ID = getTeamCodeToId(DEFAULT_SEASON);
     PLAYER_STATS_COLUMN_LABELS['latest_gw_points'] = 'GW' + (gameweek || 1);
+    // Define columns
     const columns: object[] = [
         {
             title: 'Team',
@@ -147,7 +150,28 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
             }
         })
     });
-    // TODO: Add 3 FDR columns
+    // Add FDR columns for next 3 GWs
+    const gwN = fdr[0].length;
+    const endIdx = Math.min(gwN, gameweek + 3);
+    const nextThreeGwFdr = [];
+    for (let i = gameweek; i < endIdx; i++) {
+        const gwTitle = 'GW' + (i + 1);
+        nextThreeGwFdr.push({
+            gwTitle,
+            gwIdx: i
+        });
+        columns.push({
+            title: gwTitle,
+            dataIndex: gwTitle,
+            key: gwTitle,
+            width: FDR_COLUMN_WIDTH,
+            render: (gwFixtures: FdrFixture[]) => <FdrCell gwFixtures={gwFixtures} />,
+            sorter: {
+                compare: fdrFixtureComparatorFactory(gwTitle)
+            }
+        });
+    }
+    // Populate data
     const data: PlayerStatsRow[] = [];
     for (const [code, player] of Object.entries(playersBio)) {
         const playerStats: any = playersStats[code]; // TODO figure out correct type for playerStats
@@ -164,10 +188,15 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
         otherColumns.forEach(columnDataIndex => {
             row[columnDataIndex] = playerStats[columnDataIndex];
         });
+        const teamId = TEAM_CODE_TO_ID[player.team_code];
+        nextThreeGwFdr.forEach(({ gwTitle, gwIdx }) => {
+            row[gwTitle] = fdr[teamId][gwIdx];
+        });
         data.push(row);
     }
-    const totalWidth = (columns.length - 2) * DEFAULT_COLUMN_WIDTH + 2 * WIDER_COLUMN_WIDTH;
+    // Sort columns to order by Selected descending
     data.sort((a: PlayerStatsRow, b: PlayerStatsRow) => b.selected < a.selected ? -1 : a.selected < b.selected ? 1 : 0);
+    const totalWidth = 2 * WIDER_COLUMN_WIDTH + (columns.length - 2 - nextThreeGwFdr.length) * DEFAULT_COLUMN_WIDTH + nextThreeGwFdr.length * FDR_COLUMN_WIDTH;
     return <Table dataSource={data} columns={columns} scroll={{ x: totalWidth }} className='custom-table'/>;
 }
 
