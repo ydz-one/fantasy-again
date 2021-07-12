@@ -15,7 +15,6 @@ interface Props {
 
 const createFdrTable = (fdr: FdrData, gameweek: number) => {
     const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
-
     const columns: object[] = [
         {
             title: 'Team',

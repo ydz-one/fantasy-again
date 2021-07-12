@@ -5,7 +5,7 @@ import history2021 from './2020_2021/history.json';
 import initialPlayerStats2021 from './2020_2021/initial_player_stats.json';
 import injuryHistory2021 from './2020_2021/injury_history.json';
 import players2021 from './2020_2021/players.json';
-import { TEAM_FULL_NAMES as TEAM_FULL_NAMES_2021, TEAM_NAMES as TEAM_NAMES_2021, transfers as transfers2021 } from "./2020_2021/teams";
+import { TEAM_CODE_TO_ID as TEAM_CODE_TO_ID_2021, TEAM_FULL_NAMES as TEAM_FULL_NAMES_2021, TEAM_NAMES as TEAM_NAMES_2021, transfers as transfers2021 } from "./2020_2021/teams";
 import { getGw as getGw2021 } from './2020_2021/gw';
 import { preGwDates as preGwDates2021 } from "./2020_2021/preGwDates";
 import { Moment } from "moment";
@@ -86,6 +86,15 @@ export const getTeamFullNames = (season: Season): string[] => {
     switch (season) {
         case Season.S2020_2021:
             return TEAM_FULL_NAMES_2021;
+        default:
+            throw new Error('Season not found');
+    }
+};
+
+export const getTeamCodeToId = (season: Season): { [key: string]: number } => {
+    switch (season) {
+        case Season.S2020_2021:
+            return TEAM_CODE_TO_ID_2021;
         default:
             throw new Error('Season not found');
     }

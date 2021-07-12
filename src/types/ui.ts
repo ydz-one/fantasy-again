@@ -6,11 +6,10 @@ export interface FdrRow {
 
 export interface NameCellData {
     name: string;
-    team_code: string;
     position: string;
-    injured: number,
-    injury: string,
-    injury_end: string 
+    injured: number;
+    injury: string;
+    injury_end: string; 
 }
 
 export interface PlayerStatsRow {

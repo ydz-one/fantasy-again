@@ -33,6 +33,10 @@ code {
     padding: 2px 16px;
 }
 
+.dark-font {
+    color: black;
+}
+
 .fdr {
     height: 99%;
     width: 99%;

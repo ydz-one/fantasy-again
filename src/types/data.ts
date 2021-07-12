@@ -209,3 +209,37 @@ export type TransferEvent = {
     web_name: string,
     target_team: string
 }
+
+export const positions = [
+    'GK',
+    'DEF',
+    'MID',
+    'FWD'
+];
+
+export const positionData: { [key: string]: { name: string, sortOrder: number, color: string, isDarkFont: boolean } } = {
+    GK: {
+        name: 'Goalkeeper',
+        sortOrder: 1,
+        color: '#ebff00',
+        isDarkFont: true
+    },
+    DEF: {
+        name: 'Defender',
+        sortOrder: 2,
+        color: '#00ff87',
+        isDarkFont: true
+    },
+    MID: {
+        name: 'Midfielder',
+        sortOrder: 3,
+        color: '#05f0ff',
+        isDarkFont: true
+    },
+    FWD: {
+        name: 'Forward',
+        sortOrder: 4,
+        color: '#e90052',
+        isDarkFont: false
+    }
+};

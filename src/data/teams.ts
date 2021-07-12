@@ -100,3 +100,26 @@ export const TEAMS: { [key: string]: { full_name: string, name: string, color: s
         color: '#70193d'
     }
 };
+
+export const TEAM_FULL_NAME_TO_CODE: { [key: string] : string } = {
+    'Arsenal': '3',
+    'Aston Villa': '7',
+    'Brighton': '36',
+    'Burnley': '90',
+    'Chelsea': '8',
+    'Crystal Palace': '31',
+    'Everton': '11',
+    'Fulham': '54',
+    'Leeds': '2',
+    'Leicester': '13',
+    'Liverpool': '14',
+    'Man City': '43',
+    'Man Utd': '1',
+    'Newcastle': '4',
+    'Sheffield': '49',
+    'Southampton': '20',
+    'Spurs': '6',
+    'West Brom': '35',
+    'West Ham': '21',
+    'Wolves': '39'
+};

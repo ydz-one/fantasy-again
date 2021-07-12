@@ -15,7 +15,7 @@ export const TEAM_FULL_NAMES = [
     'Newcastle',
     'Sheffield',
     'Southampton',
-    'Tottenham',
+    'Spurs',
     'West Brom',
     'West Ham',
     'Wolves',
@@ -44,7 +44,7 @@ export const TEAM_NAMES = [
     'WOL'
 ];
 
-export const TEAM_CODES = [
+export const TEAM_ID_TO_CODE = [
     3,
     7,
     36,
@@ -67,27 +67,27 @@ export const TEAM_CODES = [
     39
 ];
 
-export const TEAM_CODE_MAP = {
-    1: 12,
-    2: 8,
-    3: 0,
-    4: 13,
-    6: 16,
-    7: 1,
-    8: 4,
-    11: 6,
-    13: 9,
-    14: 10,
-    20: 15,
-    21: 18,
-    31: 5,
-    35: 17,
-    36: 2,
-    39: 19,
-    43: 11,
-    49: 14,
-    54: 7,
-    90: 3
+export const TEAM_CODE_TO_ID: { [key: string]: number } = {
+    '1': 12,
+    '2': 8,
+    '3': 0,
+    '4': 13,
+    '6': 16,
+    '7': 1,
+    '8': 4,
+    '11': 6,
+    '13': 9,
+    '14': 10,
+    '20': 15,
+    '21': 18,
+    '31': 5,
+    '35': 17,
+    '36': 2,
+    '39': 19,
+    '43': 11,
+    '49': 14,
+    '54': 7,
+    '90': 3
 };
 
 // the key is the GW number that the player first starts playing for the target team
