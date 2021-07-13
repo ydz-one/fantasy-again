@@ -1,7 +1,5 @@
 import moment, { Moment } from 'moment';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'node:constants';
-import { moveMessagePortToContext } from 'node:worker_threads';
-import { getFdr, getFixtures, getInitialPlayerStats, getInjuryHistory, getPlayersBio, getPlayersHistory, getPreGwDates, getTransfers } from '../data/api';
+import { getFdr, getFixtures, getInitialPlayerStats, getInjuryHistory, getPlayersBio, getPlayersHistory, getPreGwDate, getTransfers } from '../data/api';
 import { DataAction, DataActionTypes, DataState, DEFAULT_SEASON, InitialPlayersStats, InjuryHistory, PlayerFixtureStats, PlayersBio, PlayersHistory, PlayersStats, prevSeasonMap, TransferEvent } from '../types';
 
 const updateInjuryData = (playersStats: PlayersStats, injuryHistory: InjuryHistory, gwNum: number) => {
@@ -163,7 +161,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
         newPlayersStats[code] = {
             ...newPlayersStats[code],
             bonus: oldBonus + bonus,
-            form: calculateForm(getPreGwDates(DEFAULT_SEASON, gwNum), newPlayersStats[code].fixtureStats),
+            form: calculateForm(moment(getPreGwDate(DEFAULT_SEASON, gwNum)), newPlayersStats[code].fixtureStats),
             latest_gw_points: latest_gw === round ? latest_gw_points + total_points : total_points,
             latest_gw: round,
             season_points: season_points + total_points,

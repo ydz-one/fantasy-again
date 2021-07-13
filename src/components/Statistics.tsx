@@ -17,9 +17,20 @@ interface Props {
     fdr: FdrData;
     gameweek: number;
 }
-const WIDER_COLUMN_WIDTH = 105;
-const DEFAULT_COLUMN_WIDTH = 90;
+
+const TEAM_COLUMN_WIDTH = 90;
+const PLAYER_COLUMN_WIDTH = 100;
+const DEFAULT_COLUMN_WIDTH = 80;
+const WIDER_STATS_COLUMNS_WIDTH = 90;
 const FDR_COLUMN_WIDTH = 90;
+
+const WIDER_STATS_COLUMNS: { [key: string] : boolean } = {
+    selected: true,
+    influence: true,
+    creativity: true,
+    transfers_in: true,
+    transfers_out: true
+};
 
 const otherColumns = [
     'form',
@@ -93,7 +104,7 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
             dataIndex: 'team_code',
             key: 'team_code',
             fixed: 'left',
-            width: WIDER_COLUMN_WIDTH,
+            width: TEAM_COLUMN_WIDTH,
             render: renderTeamCell,
             filters: TEAM_FULL_NAMES.map(teamFullName => ({
                         text: teamFullName,
@@ -117,7 +128,7 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
             dataIndex: 'player',
             key: 'player',
             fixed: 'left',
-            width: WIDER_COLUMN_WIDTH,
+            width: PLAYER_COLUMN_WIDTH,
             render: renderPlayerCell,
             filters:  positions.map(position => ({
                         text: positionData[position].name,
@@ -143,7 +154,7 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
             title: PLAYER_STATS_COLUMN_LABELS[columnDataIndex],
             dataIndex: columnDataIndex,
             key: columnDataIndex,
-            width: DEFAULT_COLUMN_WIDTH,
+            width: WIDER_STATS_COLUMNS[columnDataIndex] ? WIDER_STATS_COLUMNS_WIDTH : DEFAULT_COLUMN_WIDTH,
             render: columnFormatters[columnDataIndex],
             sorter: {
                 compare: columnComparatorFactory(columnDataIndex)
@@ -196,7 +207,7 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
     }
     // Sort columns to order by Selected descending
     data.sort((a: PlayerStatsRow, b: PlayerStatsRow) => b.selected < a.selected ? -1 : a.selected < b.selected ? 1 : 0);
-    const totalWidth = 2 * WIDER_COLUMN_WIDTH + (columns.length - 2 - nextThreeGwFdr.length) * DEFAULT_COLUMN_WIDTH + nextThreeGwFdr.length * FDR_COLUMN_WIDTH;
+    const totalWidth = TEAM_COLUMN_WIDTH + PLAYER_COLUMN_WIDTH + 5 * WIDER_STATS_COLUMNS_WIDTH + 7 * DEFAULT_COLUMN_WIDTH + nextThreeGwFdr.length * FDR_COLUMN_WIDTH;
     return <Table dataSource={data} columns={columns} scroll={{ x: totalWidth }} className='custom-table'/>;
 }
 

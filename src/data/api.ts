@@ -8,7 +8,6 @@ import players2021 from './2020_2021/players.json';
 import { TEAM_CODE_TO_ID as TEAM_CODE_TO_ID_2021, TEAM_FULL_NAMES as TEAM_FULL_NAMES_2021, TEAM_NAMES as TEAM_NAMES_2021, transfers as transfers2021 } from "./2020_2021/teams";
 import { getGw as getGw2021 } from './2020_2021/gw';
 import { preGwDates as preGwDates2021 } from "./2020_2021/preGwDates";
-import { Moment } from "moment";
 
 export const getFdr = (season: Season): FdrData => {
     switch (season) {
@@ -109,7 +108,7 @@ export const getTransfers = (season: Season): TransferData => {
     }
 }
 
-export const getPreGwDates = (season: Season, gwNum: number): Moment => {
+export const getPreGwDate = (season: Season, gwNum: number): string => {
     switch (season) {
         case Season.S2020_2021:
             return preGwDates2021[gwNum];
