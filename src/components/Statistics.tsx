@@ -18,7 +18,7 @@ interface Props {
     gameweek: number;
 }
 
-const TEAM_COLUMN_WIDTH = 90;
+const TEAM_COLUMN_WIDTH = 76;
 const PLAYER_COLUMN_WIDTH = 100;
 const DEFAULT_COLUMN_WIDTH = 80;
 const WIDER_STATS_COLUMNS_WIDTH = 90;
@@ -88,11 +88,6 @@ function assertIsNameCellData(obj: unknown): asserts obj is NameCellData {
     else throw new Error('Input must be a NameCellData');
 }
 
-function assertIsString(obj: unknown): asserts obj is string {
-    if (Object.prototype.toString.call(obj) === '[object String]') return;
-    else throw new Error('Input must be a string');
-}
-
 const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersStats, fdr: FdrData, gameweek: number) => {
     const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
     const TEAM_CODE_TO_ID = getTeamCodeToId(DEFAULT_SEASON);
@@ -112,15 +107,6 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
                     })),
             onFilter: (value: string, record: PlayerStatsRow) => {
                 return record.team_code === value;
-            },
-            sorter: {
-                compare: (a: PlayerStatsRow, b: PlayerStatsRow) => {
-                    assertIsString(a.team_code);
-                    assertIsString(b.team_code);
-                    const aId = TEAM_CODE_TO_ID[a.team_code];
-                    const bId = TEAM_CODE_TO_ID[b.team_code];
-                    return aId < bId ? -1 : bId < aId ? 1 : 0;
-                }
             }
         },
         {
