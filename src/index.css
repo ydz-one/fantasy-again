@@ -33,6 +33,10 @@ code {
     padding: 2px 16px;
 }
 
+.player-table .ant-table-row {
+    cursor: pointer;
+}
+
 .dark-font {
     color: black;
 }

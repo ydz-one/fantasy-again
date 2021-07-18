@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Layout, Table, Tag, Tooltip } from 'antd';
@@ -8,6 +8,7 @@ import { FdrCell } from './FdrCell';
 import { DEFAULT_SEASON, FdrData, NameCellData, PlayersBio, PlayersStats, PlayerStatsRow, positions, positionData, FdrFixture } from '../types';
 import { columnComparatorFactory, fdrFixtureComparatorFactory, formatOneDecimalPlace, formatPoints, formatSelected, formatValue, getTeamCodeToId, getTeamFullNames, PLAYER_STATS_COLUMN_LABELS } from '../data';
 import { TEAMS, TEAM_FULL_NAME_TO_CODE } from '../data/teams';
+import PlayerModal from './PlayerModal';
 
 const { Content } = Layout;
 
@@ -88,7 +89,7 @@ function assertIsNameCellData(obj: unknown): asserts obj is NameCellData {
     else throw new Error('Input must be a NameCellData');
 }
 
-const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersStats, fdr: FdrData, gameweek: number) => {
+const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersStats, fdr: FdrData, gameweek: number, setSelectedPlayer: Function) => {
     const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
     const TEAM_CODE_TO_ID = getTeamCodeToId(DEFAULT_SEASON);
     PLAYER_STATS_COLUMN_LABELS['latest_gw_points'] = 'GW' + (gameweek || 1);
@@ -173,6 +174,7 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
     for (const [code, player] of Object.entries(playersBio)) {
         const playerStats: any = playersStats[code]; // TODO figure out correct type for playerStats
         const row: PlayerStatsRow = {
+            code: player.code,
             team_code: player.team_code,
             player: {
                 name: player.web_name,
@@ -194,19 +196,42 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
     // Sort columns to order by Selected descending
     data.sort((a: PlayerStatsRow, b: PlayerStatsRow) => b.selected < a.selected ? -1 : a.selected < b.selected ? 1 : 0);
     const totalWidth = TEAM_COLUMN_WIDTH + PLAYER_COLUMN_WIDTH + 5 * WIDER_STATS_COLUMNS_WIDTH + 7 * DEFAULT_COLUMN_WIDTH + nextThreeGwFdr.length * FDR_COLUMN_WIDTH;
-    return <Table dataSource={data} columns={columns} scroll={{ x: totalWidth }} className='custom-table'/>;
+    return (
+        <Table
+            dataSource={data}
+            columns={columns}
+            scroll={{ x: totalWidth }}
+            className='custom-table player-table'
+            onRow={(record, rowIndex) => (
+                {
+                    onClick: () => {
+                        setSelectedPlayer(record.code);
+                    }
+                }
+            )}
+        />
+    );
 }
 
-const _Content = ({ playersBio, playersStats, fdr, gameweek }: Props) => (
-    <Content className='site-layout-content'>
-        <div className='site-layout-background'>
-            <div className='page-title'>
-                <div>Statistics</div>
+const _Content = ({ playersBio, playersStats, fdr, gameweek }: Props) => {
+    const [selectedPlayer, setSelectedPlayer] = useState('');
+  
+    const handleClose = () => {
+      setSelectedPlayer('');
+    };
+
+    return (
+        <Content className='site-layout-content'>
+            <div className='site-layout-background'>
+                <div className='page-title'>
+                    <div>Statistics</div>
+                </div>
+                {createPlayerStatsTable(playersBio, playersStats, fdr, gameweek, setSelectedPlayer)}
+                <PlayerModal selectedPlayer={selectedPlayer} handleClose={handleClose} />
             </div>
-            {createPlayerStatsTable(playersBio, playersStats, fdr, gameweek)}
-        </div>
-    </Content>
-);
+        </Content>
+    );
+};
 
 const mapStateToProps = ({
     data,
