@@ -4,7 +4,16 @@ const getInitialGameState = (): GameState => {
     return {
         gameweek: 0,
         points: 0,
-        isSquadComplete: false
+        isSquadComplete: false,
+        squad: {
+            GK: [],
+            DEF: [],
+            MID: [],
+            FWD: [],
+            SUB: [],
+            CAP: '-1',
+            VC: '-1'
+        }
     };
 }
 

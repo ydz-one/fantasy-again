@@ -75,7 +75,8 @@ export type PlayerBio = {
     second_name: string,
     team_code: string,
     web_name: string,
-    position: string
+    position: string,
+    transfers?: TransferEvent[]
 };
 
 export type PlayersBio = {
@@ -205,8 +206,10 @@ export type TransferData = {
 }
 
 export type TransferEvent = {
+    gw: number,
     code: string,
     web_name: string,
+    source_team: string,
     target_team: string
 }
 
@@ -216,6 +219,13 @@ export const positions = [
     'MID',
     'FWD'
 ];
+
+export enum Position {
+    GK = 'GK',
+    DEF = 'DEF',
+    MID = 'MID',
+    FWD = 'FWD'
+}
 
 export const positionData: { [key: string]: { name: string, sortOrder: number, color: string, isDarkFont: boolean } } = {
     GK: {

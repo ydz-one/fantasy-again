@@ -1,8 +1,19 @@
 export interface GameState {
     gameweek: number,
     points: number,
-    isSquadComplete: boolean
+    isSquadComplete: boolean,
+    squad: Squad
 }
+
+export type Squad = {
+    GK: string[];
+    DEF: string[];
+    MID: string[];
+    FWD: string[];
+    SUB: string[];
+    CAP: string;
+    VC: string;
+};
 
 export enum Season {
     S2017_2018 = '2017/18',
@@ -12,7 +23,7 @@ export enum Season {
 }
 
 export const prevSeasonMap = {
-    [Season.S2020_2021] : Season.S2019_2020.toString()
+    [Season.S2020_2021]: Season.S2019_2020.toString()
 }
 
 export const DEFAULT_SEASON = Season.S2020_2021;

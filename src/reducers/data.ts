@@ -79,8 +79,9 @@ const updatePlayersBio = (state: DataState, action: DataAction): PlayersBio => {
             const { code, target_team } = transfer;
             acc[code] = {
                 ...state.playersBio[code],
-                team_code: target_team
-            }
+                team_code: target_team,
+                transfers: (state.playersBio[code].transfers || []).concat(transfer)
+            };
             return acc;
         }, {})
     }

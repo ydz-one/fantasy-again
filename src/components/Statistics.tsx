@@ -10,6 +10,7 @@ import { columnComparatorFactory, fdrFixtureComparatorFactory, formatOneDecimalP
 import { TEAMS, TEAM_FULL_NAME_TO_CODE } from '../data/teams';
 import PlayerModal from './PlayerModal';
 import { PositionTag } from './PositionTag';
+import { TeamTag } from './TeamTag';
 
 const { Content } = Layout;
 
@@ -64,9 +65,7 @@ const columnFormatters: { [key: string]: (a: number) => string } = {
 };
 
 const renderTeamCell = (team_code: string) => {
-    return <Tag color={TEAMS[team_code].color}>
-        {TEAMS[team_code].name}
-    </Tag>
+    return <TeamTag team_code={team_code} />;
 }
 
 const renderPlayerCell = (player: NameCellData) => (
