@@ -9,6 +9,7 @@ import { DEFAULT_SEASON, FdrData, NameCellData, PlayersBio, PlayersStats, Player
 import { columnComparatorFactory, fdrFixtureComparatorFactory, formatOneDecimalPlace, formatPoints, formatSelected, formatValue, getTeamCodeToId, getTeamFullNames, PLAYER_STATS_COLUMN_LABELS } from '../data';
 import { TEAMS, TEAM_FULL_NAME_TO_CODE } from '../data/teams';
 import PlayerModal from './PlayerModal';
+import { PositionTag } from './PositionTag';
 
 const { Content } = Layout;
 
@@ -74,9 +75,7 @@ const renderPlayerCell = (player: NameCellData) => (
             {player.name}
         </div>
         <div className='player-cell-info'>
-            <Tag color={positionData[player.position].color} className={positionData[player.position].isDarkFont ? 'dark-font' : ''}>
-                {player.position}
-            </Tag>
+            <PositionTag position={player.position} />
             <div>
                 {player.injured === 1 && <Tooltip placement='topLeft' title={player.injury + ' until ' + moment(player.injury_end).format('LL')} arrowPointAtCenter><WarningTwoTone twoToneColor='red' /></Tooltip>}
             </div>

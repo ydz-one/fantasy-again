@@ -6,22 +6,13 @@ const { Content } = Layout;
 
 const _Content = () => (
     <Content className='site-layout-content'>
-        <div className="site-layout-background">
+        <div className='site-layout-background'>
             <div className='page-title page-title-two-sections'>
                 Points
             </div>
-            <Card title="Goalkeeper">
-                <Card type="inner" title="Inner Card title" extra={<a href="#">More</a>}>
-                    Inner Card content
-                </Card>
-                <Card
-                    style={{ marginTop: 16 }}
-                    type="inner"
-                    title="Inner Card title"
-                    extra={<a href="#">More</a>}
-                >
-                    Inner Card content
-                </Card>
+            <Card title='Goalkeeper' bordered={false}>
+                <div className='player-section'>
+                </div>
             </Card>
         </div>
     </Content>

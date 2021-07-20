@@ -3,7 +3,8 @@ import { GameState, GameAction, GameActionTypes } from '../types';
 const getInitialGameState = (): GameState => {
     return {
         gameweek: 0,
-        points: 0
+        points: 0,
+        isSquadComplete: false
     };
 }
 

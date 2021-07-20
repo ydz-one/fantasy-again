@@ -33,10 +33,6 @@ code {
     padding: 2px 16px;
 }
 
-.player-table .ant-table-row {
-    cursor: pointer;
-}
-
 .dark-font {
     color: black;
 }
@@ -143,10 +139,33 @@ code {
     display: none !important;
 }
 
+.opacity-50 {
+    opacity: 50%;
+}
+
 .page-title {
     padding: 0 12px 18px;
     font-size: 18px;
     font-weight: bold;
+}
+
+.player-add-card {
+    text-align: center;
+}
+
+.player-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    margin-bottom: 36px;
+    height: 50px;
+    width: 200px;
+    font-size: 1em;
+}
+
+.player-card .ant-card-body {
+    padding: 6px;
 }
 
 .player-cell-info {
@@ -157,6 +176,40 @@ code {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.player-section {
+    display: flex;
+}
+
+.player-table .ant-table-row {
+    cursor: pointer;
+}
+
+.position-card {
+    display: inline-block;
+}
+
+.position-card .ant-card-head {
+    min-height: 36px;
+}
+
+.position-card .ant-card-head-title {
+    padding: 6px 0;
+}
+
+.position-gk .ant-card-head {
+    background-color: #ebff00;
+}
+
+.position-def .ant-card-head {
+    background-color: #00ff87;
+}
+
+.position-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .sider-title {
@@ -235,6 +288,10 @@ code {
 
     .page-title-two-sections {
         flex-wrap: wrap;
+    }
+
+    .player-card {
+        margin-bottom: 12px;
     }
 
     .sider-nav {

@@ -11,6 +11,7 @@ import PickTeam from './PickTeam';
 import Transfers from './Transfers';
 import Statistics from './Statistics';
 import Settings from './Settings';
+import SquadSelection from './SquadSelection';
 
 const _App = () => (
         <Layout className='app'>
@@ -21,6 +22,10 @@ const _App = () => (
                     <Route
                         path='/fixtures'
                         render={() => <Fixtures />}
+                    />
+                    <Route
+                        path='/squadselection'
+                        render={() => <SquadSelection />}
                     />
                     <Route
                         path='/points'

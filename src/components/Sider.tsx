@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { RouteComponentProps, Link } from 'react-router-dom';
@@ -10,14 +10,15 @@ import { DEFAULT_SEASON } from '../types';
 import { StoreState } from '../reducers';
 
 interface Props extends RouteComponentProps<{}> {
-    gameweek : number,
-    incrementGameweek : typeof incrementGameweek,
-    loadNewGwData : typeof loadNewGwData
+    gameweek: number,
+    isSquadComplete: boolean,
+    incrementGameweek: typeof incrementGameweek,
+    loadNewGwData: typeof loadNewGwData
 }
 
 const { Sider } = Layout;
 
-const _Sider = ({ gameweek, location, incrementGameweek, loadNewGwData }: Props) => {
+const _Sider = ({ gameweek, isSquadComplete, location, incrementGameweek, loadNewGwData }: Props) => {
     const handleIncrementGameweek = () => {
         loadNewGwData(gameweek + 1);
         incrementGameweek();
@@ -51,21 +52,29 @@ const _Sider = ({ gameweek, location, incrementGameweek, loadNewGwData }: Props)
                         Fixtures
                     </Link>
                 </Menu.Item>
-                <Menu.Item key='/points'>
-                    <Link to='/points'>
-                        Points
+                {isSquadComplete
+                ? <Fragment>
+                    <Menu.Item key='/points'>
+                        <Link to='/points'>
+                            Points
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key='/pickteam'>
+                        <Link to='/pickteam'>
+                            Pick Team
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Item key='/transfers'>
+                        <Link to='/transfers'>
+                            Transfers
+                        </Link>
+                    </Menu.Item>
+                </Fragment>
+                : <Menu.Item key='/squadselection'>
+                    <Link to='/squadselection'>
+                        Squad Selection
                     </Link>
-                </Menu.Item>
-                <Menu.Item key='/pickteam'>
-                    <Link to='/pickteam'>
-                        Pick Team
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key='/transfers'>
-                    <Link to='/transfers'>
-                        Transfers
-                    </Link>
-                </Menu.Item>
+                </Menu.Item>}
                 <Menu.Item key='/statistics'>
                     <Link to='/statistics'>
                         Statistics
@@ -89,9 +98,10 @@ const _Sider = ({ gameweek, location, incrementGameweek, loadNewGwData }: Props)
 const mapStateToProps = ({
     game
 }: StoreState) => {
-    const { gameweek } = game;
+    const { gameweek, isSquadComplete } = game;
     return {
-        gameweek
+        gameweek,
+        isSquadComplete
     };
 }
 

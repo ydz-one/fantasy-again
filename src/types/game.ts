@@ -1,6 +1,7 @@
 export interface GameState {
     gameweek: number,
-    points: number
+    points: number,
+    isSquadComplete: boolean
 }
 
 export enum Season {
