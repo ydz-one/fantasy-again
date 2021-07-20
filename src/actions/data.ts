@@ -1,13 +1,6 @@
 import { DataActionTypes, DEFAULT_SEASON, FdrData, LoadNewGwDataAction } from "../types";
 import { getGw } from "../data";
 
-// export const SetFdr = (fdr: FdrData): SetFdrAction => {
-//     return {
-//         type: DataActionTypes.SetFdrAction,
-//         payload: fdr
-//     };
-// }
-
 export const loadNewGwData = (gwNum: number): LoadNewGwDataAction => (
     {
         type: DataActionTypes.loadNewGwData,
