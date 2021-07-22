@@ -15,14 +15,14 @@ const renderSquad = (playersBio: PlayersBio, squad: Squad) => {
     const renderPlayerCard = (position: Position) => (idx: number) =>{
         const code = squad[position][idx];
         let name = '';
-        let team_code = '';
-        let player_code = '-1';
+        let teamCode = '';
+        let playerCode = '-1';
         if (code) {
-            player_code = code;
-            name = playersBio[code].web_name;
-            team_code = playersBio[code].team_code;
+            playerCode = code;
+            name = playersBio[code].webName;
+            teamCode = playersBio[code].teamCode;
         }
-        return <PlayerCard position={position} code={player_code} name={name} team_code={team_code} />
+        return <PlayerCard position={position} code={playerCode} name={name} teamCode={teamCode} />
     };
     
     return (

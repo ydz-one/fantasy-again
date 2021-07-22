@@ -15,7 +15,7 @@ interface Props {
 
 const _PlayerModal = ({ selectedPlayer, handleClose, playersBio, playersStats, fdr, gameweek }: Props) => (
     <Modal title="Basic Modal" visible={selectedPlayer.length > 0} onOk={handleClose} onCancel={handleClose}>
-        <p>{selectedPlayer && playersBio[selectedPlayer].web_name}</p>
+        <p>{selectedPlayer && playersBio[selectedPlayer].webName}</p>
         <p>Some contents...</p>
         <p>Some contents...</p>
   </Modal>

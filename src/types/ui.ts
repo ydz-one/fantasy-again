@@ -9,7 +9,7 @@ export interface NameCellData {
     position: string;
     injured: number;
     injury: string;
-    injury_end: string; 
+    injuryEnd: string; 
 }
 
 export interface PlayerStatsRow {

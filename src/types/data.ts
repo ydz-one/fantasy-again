@@ -36,45 +36,45 @@ export type PlayerGw = {
     assists: number,
     bonus: number,
     bps: number,
-    clean_sheets: number,
+    cleanSheets: number,
     creativity: number,
     element: string,
     fixture: string,
-    goals_conceded: number,
-    goals_scored: number,
-    ict_index: number,
+    goalsConceded: number,
+    goalsScored: number,
+    ictIndex: number,
     influence: number,
-    kickoff_time: string,
+    kickoffTime: string,
     minutes: number,
-    opponent_team: number,
-    own_goals: number,
-    penalties_missed: number,
-    penalties_saved: number,
-    red_cards: number,
+    opponentTeam: number,
+    ownGoals: number,
+    penaltiesMissed: number,
+    penaltiesSaved: number,
+    redCards: number,
     round: string,
     saves: number,
     selected: number,
-    team_a_score: number,
-    team_h_score: number,
+    teamAScore: number,
+    teamHScore: number,
     threat: number,
-    total_points: number,
-    transfers_balance: number,
-    transfers_in: number,
-    transfers_out: number,
+    totalPoints: number,
+    transfersBalance: number,
+    transfersIn: number,
+    transfersOut: number,
     value: number,
-    was_home: boolean,
-    yellow_cards: number,
-    web_name: string,
+    wasHome: boolean,
+    yellowCards: number,
+    webName: string,
     code: string
 };
 
 export type PlayerBio = {
     code: string,
-    first_name: string,
+    firstName: string,
     id: string,
-    second_name: string,
-    team_code: string,
-    web_name: string,
+    secondName: string,
+    teamCode: string,
+    webName: string,
     position: string,
     transfers?: TransferEvent[]
 };
@@ -86,20 +86,20 @@ export type PlayersBio = {
 export type PlayerFixtureStats = {
     assists: number,
     bonus: number,
-    clean_sheets: number,
+    cleanSheets: number,
     fixture: string,
-    goals_conceded: number,
-    goals_scored: number,
-    kickoff_time: Moment,
+    goalsConceded: number,
+    goalsScored: number,
+    kickoffTime: Moment,
     minutes: number,
-    own_goals: number,
-    penalties_missed: number,
-    penalties_saved: number,
-    red_cards: number,
-    yellow_cards: number,
+    ownGoals: number,
+    penaltiesMissed: number,
+    penaltiesSaved: number,
+    redCards: number,
+    yellowCards: number,
     round: string,
     saves: number,
-    total_points: number,
+    totalPoints: number,
     value: number
 }
 
@@ -107,20 +107,20 @@ export type PlayerStats = {
     bonus: number,
     code: string,
     form: number,
-    latest_gw_points: number,
-    latest_gw: string,
-    season_points: number,
+    latestGwPoints: number,
+    latestGw: string,
+    seasonPoints: number,
     selected: number,
     influence: number,
     creativity: number,
     threat: number,
-    ict_index: number,
+    ictIndex: number,
     value: number,
     injured: number,
     injury: string,
-    injury_end: string,
-    transfers_in: number,
-    transfers_out: number,
+    injuryEnd: string,
+    transfersIn: number,
+    transfersOut: number,
     fixtureStats: PlayerFixtureStats[]
 };
 
@@ -132,13 +132,13 @@ export type Fixture = {
     code: string,
     event: string,
     id: string,
-    kickoff_time: string,
-    team_a: number,
-    team_a_score: number,
-    team_h: number,
-    team_h_score: number,
-    team_h_difficulty: number,
-    team_a_difficulty: number
+    kickoffTime: string,
+    teamA: number,
+    teamAScore: number,
+    teamH: number,
+    teamHScore: number,
+    teamHDifficulty: number,
+    teamADifficulty: number
 };
 
 export type Fixtures = {
@@ -149,25 +149,25 @@ export type HistoryRecord = {
     assists: number,
     bonus: number,
     bps: number,
-    clean_sheets: number,
+    cleanSheets: number,
     creativity: number,
-    element_code: string,
-    end_cost: number,
-    goals_conceded: number,
-    goals_scored: number,
-    ict_index: number,
+    elementCode: string,
+    endCost: number,
+    goalsConceded: number,
+    goalsScored: number,
+    ictIndex: number,
     influence: number,
     minutes: number,
-    own_goals: number,
-    penalties_missed: number,
-    penalties_saved: number,
-    red_cards: number,
+    ownGoals: number,
+    penaltiesMissed: number,
+    penaltiesSaved: number,
+    redCards: number,
     saves: number,
-    season_name: string,
-    start_cost: number,
+    seasonName: string,
+    startCost: number,
     threat: number,
-    total_points: number,
-    yellow_cards: number
+    totalPoints: number,
+    yellowCards: number
 };
 
 export type PlayersHistory = {
@@ -186,7 +186,7 @@ export type InitialPlayerStats = {
     influence: number,
     creativity: number,
     threat: number,
-    ict_index: number
+    ictIndex: number
 }
 
 export type InjuryHistory = {
@@ -195,10 +195,10 @@ export type InjuryHistory = {
 
 export type Injury = {
     code: string,
-    web_name: string,
+    webName: string,
     injured: number,
     injury: string,
-    injury_end: string
+    injuryEnd: string
 }
 
 export type TransferData = {
@@ -208,9 +208,9 @@ export type TransferData = {
 export type TransferEvent = {
     gw: number,
     code: string,
-    web_name: string,
-    source_team: string,
-    target_team: string
+    webName: string,
+    sourceTeam: string,
+    targetTeam: string
 }
 
 export const positions = [

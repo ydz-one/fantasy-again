@@ -31,22 +31,22 @@ const WIDER_STATS_COLUMNS: { [key: string] : boolean } = {
     selected: true,
     influence: true,
     creativity: true,
-    transfers_in: true,
-    transfers_out: true
+    transfersIn: true,
+    transfersOut: true
 };
 
 const otherColumns = [
     'form',
     'value',
     'selected',
-    'latest_gw_points',
-    'season_points',
-    'ict_index',
+    'latestGwPoints',
+    'seasonPoints',
+    'ictIndex',
     'influence',
     'creativity',
     'threat',
-    'transfers_in',
-    'transfers_out',
+    'transfersIn',
+    'transfersOut',
     'bonus'
 ];
 
@@ -54,18 +54,18 @@ const columnFormatters: { [key: string]: (a: number) => string } = {
     form: formatOneDecimalPlace,
     value: formatValue,
     selected: formatSelected,
-    latest_gw_points: formatPoints,
-    season_points: formatPoints,
-    ict_index: formatOneDecimalPlace,
+    latestGwPoints: formatPoints,
+    seasonPoints: formatPoints,
+    ictIndex: formatOneDecimalPlace,
     influence: formatOneDecimalPlace,
     creativity: formatOneDecimalPlace,
     threat: formatOneDecimalPlace,
     bonus: formatPoints
-    // keep transfers_in and transfers_out as undefined because they don't need any special formatters
+    // keep transfersIn and transfersOut as undefined because they don't need any special formatters
 };
 
-const renderTeamCell = (team_code: string) => {
-    return <TeamTag team_code={team_code} />;
+const renderTeamCell = (teamCode: string) => {
+    return <TeamTag teamCode={teamCode} />;
 }
 
 const renderPlayerCell = (player: NameCellData) => (
@@ -76,7 +76,7 @@ const renderPlayerCell = (player: NameCellData) => (
         <div className='player-cell-info'>
             <PositionTag position={player.position} />
             <div>
-                {player.injured === 1 && <Tooltip placement='topLeft' title={player.injury + ' until ' + moment(player.injury_end).format('LL')} arrowPointAtCenter><WarningTwoTone twoToneColor='red' /></Tooltip>}
+                {player.injured === 1 && <Tooltip placement='topLeft' title={player.injury + ' until ' + moment(player.injuryEnd).format('LL')} arrowPointAtCenter><WarningTwoTone twoToneColor='red' /></Tooltip>}
             </div>
         </div>
     </div>
@@ -90,13 +90,13 @@ function assertIsNameCellData(obj: unknown): asserts obj is NameCellData {
 const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersStats, fdr: FdrData, gameweek: number, setSelectedPlayer: Function) => {
     const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
     const TEAM_CODE_TO_ID = getTeamCodeToId(DEFAULT_SEASON);
-    PLAYER_STATS_COLUMN_LABELS['latest_gw_points'] = 'GW' + (gameweek || 1);
+    PLAYER_STATS_COLUMN_LABELS['latestGwPoints'] = 'GW' + (gameweek || 1);
     // Define columns
     const columns: object[] = [
         {
             title: 'Team',
-            dataIndex: 'team_code',
-            key: 'team_code',
+            dataIndex: 'teamCode',
+            key: 'teamCode',
             fixed: 'left',
             width: TEAM_COLUMN_WIDTH,
             render: renderTeamCell,
@@ -105,7 +105,7 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
                         value: TEAM_FULL_NAME_TO_CODE[teamFullName]
                     })),
             onFilter: (value: string, record: PlayerStatsRow) => {
-                return record.team_code === value;
+                return record.teamCode === value;
             }
         },
         {
@@ -173,19 +173,19 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
         const playerStats: any = playersStats[code]; // TODO figure out correct type for playerStats
         const row: PlayerStatsRow = {
             code: player.code,
-            team_code: player.team_code,
+            teamCode: player.teamCode,
             player: {
-                name: player.web_name,
+                name: player.webName,
                 position: player.position,
                 injured: playerStats.injured,
                 injury: playerStats.injury,
-                injury_end: playerStats.injury_end
+                injuryEnd: playerStats.injuryEnd
             }
         };
         otherColumns.forEach(columnDataIndex => {
             row[columnDataIndex] = playerStats[columnDataIndex];
         });
-        const teamId = TEAM_CODE_TO_ID[player.team_code];
+        const teamId = TEAM_CODE_TO_ID[player.teamCode];
         nextThreeGwFdr.forEach(({ gwTitle, gwIdx }) => {
             row[gwTitle] = fdr[teamId][gwIdx];
         });

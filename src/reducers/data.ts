@@ -5,11 +5,11 @@ import { DataAction, DataActionTypes, DataState, DEFAULT_SEASON, InitialPlayersS
 const updateInjuryData = (playersStats: PlayersStats, injuryHistory: InjuryHistory, gwNum: number) => {
     if (injuryHistory[gwNum]) {
         injuryHistory[gwNum].forEach(injuryData => {
-            const { code, injured, injury, injury_end } = injuryData;
+            const { code, injured, injury, injuryEnd } = injuryData;
             if (injured === 1 && playersStats[code]) {
                 playersStats[code].injured = injured;
                 playersStats[code].injury = injury;
-                playersStats[code].injury_end = injury_end;
+                playersStats[code].injuryEnd = injuryEnd;
             }
         });
     }
@@ -20,30 +20,30 @@ const populateInitialStats = (initialPlayersStats: InitialPlayersStats, injuryHi
     const prevSeason = prevSeasonMap[DEFAULT_SEASON];
     for (const [key, obj] of Object.entries(initialPlayersStats)) {
         let bonus = 0;
-        let season_points = 0;
+        let seasonPoints = 0;
         if (playersHistory[key] && Object.keys(playersHistory[key]).length && playersHistory[key][prevSeason]) {
             bonus = playersHistory[key][prevSeason].bonus;
-            season_points = playersHistory[key][prevSeason].total_points;
+            seasonPoints = playersHistory[key][prevSeason].totalPoints;
         }
-        const { value, selected, influence, creativity, threat, ict_index } = obj;
+        const { value, selected, influence, creativity, threat, ictIndex } = obj;
         const stats = {
             bonus,
             code: key,
             form: 0,
-            latest_gw_points: 0,
-            latest_gw: '0',
-            season_points,
+            latestGwPoints: 0,
+            latestGw: '0',
+            seasonPoints,
             value,
             selected,
             influence,
             creativity,
             threat,
-            ict_index,
+            ictIndex,
             injured: 0,
             injury: '',
-            injury_end: '',
-            transfers_in: 0,
-            transfers_out: 0,
+            injuryEnd: '',
+            transfersIn: 0,
+            transfersOut: 0,
             fixtureStats: []
         }
         updateInjuryData(playersStats, injuryHistory, 0);
@@ -76,10 +76,10 @@ const updatePlayersBio = (state: DataState, action: DataAction): PlayersBio => {
     return {
         ...state.playersBio,
         ...transfers[gwNum].reduce((acc: PlayersBio, transfer: TransferEvent) => {
-            const { code, target_team } = transfer;
+            const { code, targetTeam } = transfer;
             acc[code] = {
                 ...state.playersBio[code],
-                team_code: target_team,
+                teamCode: targetTeam,
                 transfers: (state.playersBio[code].transfers || []).concat(transfer)
             };
             return acc;
@@ -92,10 +92,10 @@ const calculateForm = (preGwDate: Moment, playerFixtures: PlayerFixtureStats[]):
     let n = 0;
     const cutoffDate = preGwDate.subtract(30, 'days');
     for (let i = playerFixtures.length - 1; i >= 0; i--) {
-        if (playerFixtures[i].kickoff_time.isBefore(cutoffDate)) {
+        if (playerFixtures[i].kickoffTime.isBefore(cutoffDate)) {
             break;
         }
-        sum += playerFixtures[i].total_points;
+        sum += playerFixtures[i].totalPoints;
         n++;
     }
     return sum / n;
@@ -107,8 +107,8 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
     for (const [playerCode, playerStats] of Object.entries(state.playersStats)) {
         newPlayersStats[playerCode] = {
             ...playerStats,
-            bonus : shouldResetPoints ? 0 : playerStats.bonus,
-            season_points: shouldResetPoints ? 0 : playerStats.season_points
+            bonus: shouldResetPoints ? 0 : playerStats.bonus,
+            seasonPoints: shouldResetPoints ? 0 : playerStats.seasonPoints
         };
     }
     payload.forEach(playerGwData => {
@@ -116,67 +116,67 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             code,
             assists,
             bonus,
-            clean_sheets,
+            cleanSheets,
             creativity,
             fixture,
-            goals_conceded,
-            goals_scored,
-            ict_index,
+            goalsConceded,
+            goalsScored,
+            ictIndex,
             influence,
             minutes,
-            own_goals,
-            penalties_missed,
-            penalties_saved,
-            kickoff_time,
-            red_cards,
+            ownGoals,
+            penaltiesMissed,
+            penaltiesSaved,
+            kickoffTime,
+            redCards,
             round,
             saves,
             selected,
             threat,
-            total_points,
-            transfers_in,
-            transfers_out,
+            totalPoints,
+            transfersIn,
+            transfersOut,
             value,
-            yellow_cards
+            yellowCards
         } = playerGwData;
-        const { bonus: oldBonus, latest_gw, latest_gw_points, season_points, fixtureStats } = newPlayersStats[code];
+        const { bonus: oldBonus, latestGw, latestGwPoints, seasonPoints, fixtureStats } = newPlayersStats[code];
         fixtureStats.push({
             assists,
             bonus,
-            clean_sheets,
+            cleanSheets,
             fixture,
-            goals_conceded,
-            goals_scored,
-            kickoff_time: moment(kickoff_time),
+            goalsConceded,
+            goalsScored,
+            kickoffTime: moment(kickoffTime),
             minutes,
-            own_goals,
-            penalties_missed,
-            penalties_saved,
-            red_cards,
-            yellow_cards,
+            ownGoals,
+            penaltiesMissed,
+            penaltiesSaved,
+            redCards,
+            yellowCards,
             round,
             saves,
-            total_points,
+            totalPoints,
             value
         });
         newPlayersStats[code] = {
             ...newPlayersStats[code],
             bonus: oldBonus + bonus,
             form: calculateForm(moment(getPreGwDate(DEFAULT_SEASON, gwNum)), newPlayersStats[code].fixtureStats),
-            latest_gw_points: latest_gw === round ? latest_gw_points + total_points : total_points,
-            latest_gw: round,
-            season_points: season_points + total_points,
+            latestGwPoints: latestGw === round ? latestGwPoints + totalPoints : totalPoints,
+            latestGw: round,
+            seasonPoints: seasonPoints + totalPoints,
             selected,
             influence,
             creativity,
             threat,
-            ict_index,
+            ictIndex,
             value,
             injured: 0,
             injury: '',
-            injury_end: '',
-            transfers_in,
-            transfers_out,
+            injuryEnd: '',
+            transfersIn,
+            transfersOut,
             fixtureStats
         }
     });

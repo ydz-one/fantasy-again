@@ -7,15 +7,15 @@ interface Props {
     position: string;
     code: string;
     name: string;
-    team_code: string;
+    teamCode: string;
 }
 
-export const PlayerCard = ({ position, code, name, team_code }: Props) => (
+export const PlayerCard = ({ position, code, name, teamCode }: Props) => (
     <Card hoverable className='player-card'>
         <div>
             {code === '-1'
                 ? <Fragment>Select a <PositionTag position={position} /></Fragment> 
-                : <Fragment><div>{name}</div><TeamTag team_code={team_code} /></Fragment>
+                : <Fragment><div>{name}</div><TeamTag teamCode={teamCode} /></Fragment>
             }
         </div>
     </Card>

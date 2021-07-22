@@ -3,11 +3,11 @@ import { Tag } from 'antd';
 import { TEAMS } from '../data/teams';
 
 interface Props {
-    team_code: string;
+    teamCode: string;
 }
 
-export const TeamTag = ({ team_code }: Props) => (
-    <Tag color={TEAMS[team_code].color}>
-        {TEAMS[team_code].name}
+export const TeamTag = ({ teamCode }: Props) => (
+    <Tag color={TEAMS[teamCode].color}>
+        {TEAMS[teamCode].name}
     </Tag>
 );
