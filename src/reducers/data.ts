@@ -25,7 +25,7 @@ const populateInitialStats = (initialPlayersStats: InitialPlayersStats, injuryHi
             bonus = playersHistory[key][prevSeason].bonus;
             seasonPoints = playersHistory[key][prevSeason].totalPoints;
         }
-        const { value, selected, influence, creativity, threat, ictIndex } = obj;
+        const { value, selected } = obj;
         const stats = {
             bonus,
             code: key,
@@ -35,10 +35,10 @@ const populateInitialStats = (initialPlayersStats: InitialPlayersStats, injuryHi
             seasonPoints,
             value,
             selected,
-            influence,
-            creativity,
-            threat,
-            ictIndex,
+            influence: -1, //set ICT values to -1 so that they don't get rendered. This is because we don't have accurate values for before GW1
+            creativity: -1,
+            threat: -1,
+            ictIndex: -1,
             injured: 0,
             injury: '',
             injuryEnd: '',

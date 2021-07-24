@@ -23,6 +23,8 @@ export const columnComparatorFactory = (dataIndex: string) => (a: PlayerStatsRow
 
 export const formatOneDecimalPlace = (num: number) => Number(num).toFixed(1);
 
+export const formatIctValues = (num: number) => num < 0 ? '-' : formatOneDecimalPlace(num);
+
 export const formatValue = (value: number) => '£' + formatOneDecimalPlace(value / 10) + 'M';
 
 export const formatSelected = (selected: number) => Number(selected/TOTAL_MANAGERS).toLocaleString(undefined, { style: 'percent', minimumFractionDigits:2 });

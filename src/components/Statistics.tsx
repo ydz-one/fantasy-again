@@ -6,7 +6,7 @@ import { WarningTwoTone } from '@ant-design/icons';
 import { StoreState } from '../reducers';
 import { FdrCell } from './FdrCell';
 import { DEFAULT_SEASON, FdrData, NameCellData, PlayersBio, PlayersStats, PlayerStatsRow, positions, positionData, FdrFixture } from '../types';
-import { columnComparatorFactory, fdrFixtureComparatorFactory, formatOneDecimalPlace, formatPoints, formatSelected, formatValue, getTeamCodeToId, getTeamFullNames, PLAYER_STATS_COLUMN_LABELS } from '../data';
+import { columnComparatorFactory, fdrFixtureComparatorFactory, formatIctValues, formatOneDecimalPlace, formatPoints, formatSelected, formatValue, getTeamCodeToId, getTeamFullNames, PLAYER_STATS_COLUMN_LABELS } from '../data';
 import { TEAMS, TEAM_FULL_NAME_TO_CODE } from '../data/teams';
 import PlayerModal from './PlayerModal';
 import { PositionTag } from './PositionTag';
@@ -56,10 +56,10 @@ const columnFormatters: { [key: string]: (a: number) => string } = {
     selected: formatSelected,
     latestGwPoints: formatPoints,
     seasonPoints: formatPoints,
-    ictIndex: formatOneDecimalPlace,
-    influence: formatOneDecimalPlace,
-    creativity: formatOneDecimalPlace,
-    threat: formatOneDecimalPlace,
+    ictIndex: formatIctValues,
+    influence: formatIctValues,
+    creativity: formatIctValues,
+    threat: formatIctValues,
     bonus: formatPoints
     // keep transfersIn and transfersOut as undefined because they don't need any special formatters
 };
