@@ -15,7 +15,10 @@ export enum DataActionTypes {
 
 export interface LoadNewGwDataAction {
     type: DataActionTypes.loadNewGwData;
-    payload: PlayerGw[];
+    payload: {
+        gw: PlayerGw[],
+        gwMeta: PlayerGwMeta[]
+    },
     gwNum: number,
     shouldResetPoints: boolean;
 }
@@ -53,19 +56,23 @@ export type PlayerGw = {
     redCards: number,
     round: string,
     saves: number,
-    selected: number,
     teamAScore: number,
     teamHScore: number,
     threat: number,
     totalPoints: number,
-    transfersBalance: number,
-    transfersIn: number,
-    transfersOut: number,
-    value: number,
     wasHome: boolean,
     yellowCards: number,
     webName: string,
     code: string
+};
+
+export type PlayerGwMeta = {
+    code: string,
+    selected: number,
+    transfersBalance: number,
+    transfersIn: number,
+    transfersOut: number,
+    value: number
 };
 
 export type PlayerBio = {
@@ -99,8 +106,7 @@ export type PlayerFixtureStats = {
     yellowCards: number,
     round: string,
     saves: number,
-    totalPoints: number,
-    value: number
+    totalPoints: number
 }
 
 export type PlayerStats = {

@@ -111,7 +111,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             seasonPoints: shouldResetPoints ? 0 : playerStats.seasonPoints
         };
     }
-    payload.forEach(playerGwData => {
+    payload.gw.forEach(playerGwData => {
         const { 
             code,
             assists,
@@ -131,12 +131,8 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             redCards,
             round,
             saves,
-            selected,
             threat,
             totalPoints,
-            transfersIn,
-            transfersOut,
-            value,
             yellowCards
         } = playerGwData;
         const { bonus: oldBonus, latestGw, latestGwPoints, seasonPoints, fixtureStats } = newPlayersStats[code];
@@ -156,8 +152,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             yellowCards,
             round,
             saves,
-            totalPoints,
-            value
+            totalPoints
         });
         newPlayersStats[code] = {
             ...newPlayersStats[code],
@@ -166,20 +161,32 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             latestGwPoints: latestGw === round ? latestGwPoints + totalPoints : totalPoints,
             latestGw: round,
             seasonPoints: seasonPoints + totalPoints,
-            selected,
             influence,
             creativity,
             threat,
             ictIndex,
-            value,
             injured: 0,
             injury: '',
             injuryEnd: '',
+            fixtureStats
+        };
+    });
+    payload.gwMeta.forEach(playerGwMetaData => {
+        const {
+            code,
+            selected,
             transfersIn,
             transfersOut,
-            fixtureStats
-        }
-    });
+            value
+        } = playerGwMetaData;
+        newPlayersStats[code] = {
+            ...newPlayersStats[code],
+            selected,
+            transfersIn,
+            transfersOut,
+            value
+        };
+    })
     updateInjuryData(newPlayersStats, state.injuryHistory, action.gwNum);
     return newPlayersStats;
 }
