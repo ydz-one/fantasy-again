@@ -4,7 +4,7 @@ import { Layout, Card } from 'antd';
 
 const { Content } = Layout;
 
-const _Content = () => (
+const _Points = () => (
     <Content className='site-layout-content'>
         <div className='site-layout-background'>
             <div className='page-title page-title-two-sections'>
@@ -18,4 +18,4 @@ const _Content = () => (
     </Content>
 );
 
-export default connect()(_Content);
+export default connect()(_Points);

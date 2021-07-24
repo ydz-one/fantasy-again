@@ -211,7 +211,7 @@ const createPlayerStatsTable = (playersBio: PlayersBio, playersStats: PlayersSta
     );
 }
 
-const _Content = ({ playersBio, playersStats, fdr, gameweek }: Props) => {
+const _Statistics = ({ playersBio, playersStats, fdr, gameweek }: Props) => {
     const [selectedPlayer, setSelectedPlayer] = useState('');
   
     const handleClose = () => {
@@ -223,7 +223,7 @@ const _Content = ({ playersBio, playersStats, fdr, gameweek }: Props) => {
             <div className='site-layout-background'>
                 <div className='page-title'>
                     <div>Statistics</div>
-                </div>
+                </div>             
                 {createPlayerStatsTable(playersBio, playersStats, fdr, gameweek, setSelectedPlayer)}
                 <PlayerModal selectedPlayer={selectedPlayer} handleClose={handleClose} />
             </div>
@@ -245,4 +245,4 @@ const mapStateToProps = ({
     };
 }
 
-export default connect(mapStateToProps)(_Content);
+export default connect(mapStateToProps)(_Statistics);

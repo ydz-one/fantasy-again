@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 
 const { Content } = Layout;
 
-const _Content = () => (
+const _Settings = () => (
     <Content className='site-layout-content'>
         <div className="site-layout-background">
             Settings
@@ -12,4 +12,4 @@ const _Content = () => (
     </Content>
 );
 
-export default connect()(_Content);
+export default connect()(_Settings);

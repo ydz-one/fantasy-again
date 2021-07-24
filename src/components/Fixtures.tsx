@@ -56,7 +56,7 @@ const createFdrTable = (fdr: FdrData, gameweek: number) => {
     return <Table dataSource={data} columns={columns} pagination={false} scroll={{ x: tableWidth }} className='custom-table' />;
 }
 
-const _Content = ({ fdr, gameweek }: Props) => (
+const _Fixtures = ({ fdr, gameweek }: Props) => (
     <Content className='site-layout-content'>
         <div className='site-layout-background'>
             <div className='page-title page-title-two-sections'>
@@ -95,4 +95,4 @@ const mapStateToProps = ({
     };
 }
 
-export default connect(mapStateToProps)(_Content);
+export default connect(mapStateToProps)(_Fixtures);
