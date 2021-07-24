@@ -6,15 +6,15 @@ import { FdrData, PlayersBio, PlayersStats } from '../types';
 
 interface Props {
     selectedPlayer: string,
-    handleClose: MouseEventHandler,
+    onClose: MouseEventHandler,
     playersBio: PlayersBio;
     playersStats: PlayersStats;
     fdr: FdrData;
     gameweek: number;
 }
 
-const _PlayerModal = ({ selectedPlayer, handleClose, playersBio, playersStats, fdr, gameweek }: Props) => (
-    <Modal title="Basic Modal" visible={selectedPlayer.length > 0} onOk={handleClose} onCancel={handleClose}>
+const _PlayerModal = ({ selectedPlayer, onClose, playersBio, playersStats, fdr, gameweek }: Props) => (
+    <Modal title="Basic Modal" visible={selectedPlayer.length > 0} onOk={onClose} onCancel={onClose}>
         <p>{selectedPlayer && playersBio[selectedPlayer].webName}</p>
         <p>Some contents...</p>
         <p>Some contents...</p>
@@ -24,13 +24,13 @@ const _PlayerModal = ({ selectedPlayer, handleClose, playersBio, playersStats, f
 const mapStateToProps = ({
     data,
     game
-}: StoreState, ownProps: { selectedPlayer: string, handleClose: MouseEventHandler }) => {
+}: StoreState, ownProps: { selectedPlayer: string, onClose: MouseEventHandler }) => {
     const { fdr, playersBio, playersStats } = data;
     const { gameweek } = game;
-    const { selectedPlayer, handleClose } = ownProps;
+    const { selectedPlayer, onClose } = ownProps;
     return {
         selectedPlayer,
-        handleClose,
+        onClose,
         playersBio,
         playersStats,
         fdr,
