@@ -13,7 +13,7 @@ interface Props {
     gameweek: number;
 }
 
-const _PlayerModal = ({ selectedPlayer, onClose, playersBio, playersStats, fdr, gameweek }: Props) => (
+const _PlayerDataModal = ({ selectedPlayer, onClose, playersBio, playersStats, fdr, gameweek }: Props) => (
     <Modal title="Basic Modal" visible={selectedPlayer.length > 0} onOk={onClose} onCancel={onClose}>
         <p>{selectedPlayer && playersBio[selectedPlayer].webName}</p>
         <p>Some contents...</p>
@@ -38,4 +38,4 @@ const mapStateToProps = ({
     };
 }
 
-export default connect(mapStateToProps)(_PlayerModal);
+export default connect(mapStateToProps)(_PlayerDataModal);

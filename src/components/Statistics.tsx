@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout } from 'antd';
-import PlayerModal from './PlayerModal';
+import PlayerDataModal from './PlayerDataModal';
 import PlayerStatsTable from './PlayerStatsTable';
 
 const { Content } = Layout;
@@ -18,8 +18,8 @@ const Statistics = () => {
                 <div className='page-title'>
                     <div>Statistics</div>
                 </div>             
-                <PlayerStatsTable filterFn={() => true} onClickPlayer={setSelectedPlayer} />
-                <PlayerModal selectedPlayer={selectedPlayer} onClose={handleClose} />
+                <PlayerStatsTable filterFn={() => true} disableFn={() => false} onClickPlayer={setSelectedPlayer} />
+                <PlayerDataModal selectedPlayer={selectedPlayer} onClose={handleClose} />
             </div>
         </Content>
     );

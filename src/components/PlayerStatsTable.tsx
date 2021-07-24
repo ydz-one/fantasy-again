@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Table, Tooltip } from 'antd';
@@ -17,6 +17,7 @@ interface Props {
     fdr: FdrData;
     gameweek: number;
     filterFn: (row: PlayerBio) => boolean,
+    disableFn: (row: PlayerStatsRow) => boolean,
     onClickPlayer: Function
 }
 
@@ -86,7 +87,7 @@ function assertIsNameCellData(obj: unknown): asserts obj is NameCellData {
     else throw new Error('Input must be a NameCellData');
 }
 
-const _PlayerStatsTable = ({ playersBio, playersStats, fdr, gameweek, filterFn, onClickPlayer }: Props) => {
+const _PlayerStatsTable = ({ playersBio, playersStats, fdr, gameweek, filterFn, disableFn, onClickPlayer }: Props) => {
     const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
     const TEAM_CODE_TO_ID = getTeamCodeToId(DEFAULT_SEASON);
     PLAYER_STATS_COLUMN_LABELS['latestGwPoints'] = 'GW' + (gameweek || 1);
@@ -200,6 +201,7 @@ const _PlayerStatsTable = ({ playersBio, playersStats, fdr, gameweek, filterFn, 
             columns={columns}
             scroll={{ x: totalWidth }}
             className='custom-table player-table'
+            rowClassName={record => disableFn(record) ? 'disabled-row' : ''}
             onRow={(record, rowIndex) => (
                 {
                     onClick: () => {
@@ -214,16 +216,17 @@ const _PlayerStatsTable = ({ playersBio, playersStats, fdr, gameweek, filterFn, 
 const mapStateToProps = ({
     data,
     game
-}: StoreState, ownProps: { filterFn: (row: PlayerBio) => boolean, onClickPlayer: Function }) => {
+}: StoreState, ownProps: { filterFn: (row: PlayerBio) => boolean, disableFn: (row: PlayerStatsRow) => boolean, onClickPlayer: Function }) => {
     const { fdr, playersBio, playersStats } = data;
     const { gameweek } = game;
-    const { filterFn, onClickPlayer } = ownProps;
+    const { filterFn, disableFn, onClickPlayer } = ownProps;
     return {
         playersBio,
         playersStats,
         fdr,
         gameweek,
         filterFn,
+        disableFn,
         onClickPlayer
     };
 }

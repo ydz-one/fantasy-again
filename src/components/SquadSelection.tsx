@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, MouseEventHandler, useState } from 'react';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import { StoreState } from '../reducers';
-import { PlayersBio, Position, Squad } from '../types';
+import { PlayersBio, Position, positions, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
+import SelectPlayerModal from './SelectPlayerModal';
 
 const { Content } = Layout;
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
     squad: Squad;
 }
 
-const renderSquad = (playersBio: PlayersBio, squad: Squad) => {
+const renderSquad = (playersBio: PlayersBio, squad: Squad, handleClickPlayer: Function) => {
     const renderPlayerCard = (position: Position) => (idx: number) =>{
         const code = squad[position][idx];
         let name = '';
@@ -22,7 +23,16 @@ const renderSquad = (playersBio: PlayersBio, squad: Squad) => {
             name = playersBio[code].webName;
             teamCode = playersBio[code].teamCode;
         }
-        return <PlayerCard position={position} code={playerCode} name={name} teamCode={teamCode} />
+        return (
+            <PlayerCard
+                key={idx}
+                position={position}
+                code={playerCode}
+                name={name}
+                teamCode={teamCode}
+                onClick={() => handleClickPlayer(playerCode, position)}
+            />
+        );
     };
     
     return (
@@ -43,16 +53,36 @@ const renderSquad = (playersBio: PlayersBio, squad: Squad) => {
     );
 };
 
-const _SquadSelection = ({ playersBio, squad }: Props) => (
-    <Content className='site-layout-content'>
-        <div className="site-layout-background">
-            <div className='page-title page-title-two-sections'>
-                Squad Selection
+const _SquadSelection = ({ playersBio, squad }: Props) => {
+    const [replacementInfo, setReplacementInfo] = useState({ playerToReplace: '', position: Position.GK });
+    const { playerToReplace, position } = replacementInfo;
+
+    const handleClickPlayer = (playerToReplace: string, position: Position) => {
+        setReplacementInfo({
+            playerToReplace,
+            position
+        });
+    };
+
+    const handleClosePlayerModal = () => {
+        setReplacementInfo({
+            playerToReplace: '',
+            position: Position.GK
+        });
+    }
+
+    return (
+        <Content className='site-layout-content'>
+            <div className="site-layout-background">
+                <div className='page-title page-title-two-sections'>
+                    Squad Selection
+                </div>
+                {renderSquad(playersBio, squad, handleClickPlayer)}
+                <SelectPlayerModal playerToReplace={playerToReplace} position={position} onClose={handleClosePlayerModal} />
             </div>
-            {renderSquad(playersBio, squad)}
-        </div>
-    </Content>
-);
+        </Content>
+    );
+};
 
 const mapStateToProps = ({
     data,

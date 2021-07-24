@@ -18,6 +18,10 @@ code {
     height: 100%;
 }
 
+.custom-modal {
+    top: 60px;
+}
+
 .custom-table .ant-table-cell {
     height: 50px;
     padding: 0;
@@ -35,6 +39,11 @@ code {
 
 .dark-font {
     color: black;
+}
+
+.disabled-row {
+    color: #8c8c8c;
+    pointer-events: none;
 }
 
 .fdr {
