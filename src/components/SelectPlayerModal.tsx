@@ -10,10 +10,12 @@ import { StoreState } from '../reducers';
 
 interface Props {
     squad: Squad;
-    playerToReplace: string;
     position: Position;
+    playerToReplace: string;
+    playerToAdd: string;
+    onChangePlayerToAdd: Function;
     onClose: MouseEventHandler;
-    onAddPlayerToSquad: (a: string) => void;
+    onAddPlayerToSquad: () => void;
 }
 
 function assertIsString(obj: unknown): asserts obj is string {
@@ -21,17 +23,24 @@ function assertIsString(obj: unknown): asserts obj is string {
     else throw new Error('Input must be a string');
 }
 
-const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose, onAddPlayerToSquad }: Props) => {
-    const [selectedPlayer, setSelectedPlayer] = useState('');
+const _SelectPlayerModal = ({
+    squad,
+    position,
+    playerToReplace,
+    playerToAdd,
+    onChangePlayerToAdd,
+    onClose,
+    onAddPlayerToSquad,
+}: Props) => {
     const [searchText, setSearchText] = useState('');
     const isVisible = playerToReplace.length > 0;
 
-    const handleClosePlayerDataModal = () => {
-        setSelectedPlayer('');
+    const handleAddPlayerToSquad = () => {
+        onAddPlayerToSquad();
     };
 
-    const handleAddPlayerToSquad = () => {
-        onAddPlayerToSquad(selectedPlayer);
+    const handleClickPlayer = (player: string) => {
+        onChangePlayerToAdd(player);
     };
 
     // Use this function to only display rows of players in the position we're drafting for
@@ -56,11 +65,6 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose, onAddPl
     // Reset searchbox when user closes this modal
     if (!isVisible && searchText.length > 0) {
         setSearchText('');
-    }
-
-    // Need to close the player data modal before closing this modal
-    if (!isVisible && selectedPlayer.length > 0) {
-        setSelectedPlayer('');
     }
 
     return (
@@ -88,13 +92,8 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose, onAddPl
             <PlayerStatsTable
                 filterFn={filterFn}
                 disableFn={disableFn}
-                onClickPlayer={setSelectedPlayer}
+                onClickPlayer={handleClickPlayer}
                 showPositionFilter={false}
-            />
-            <PlayerDataModal
-                selectedPlayer={selectedPlayer}
-                onClose={handleClosePlayerDataModal}
-                onAccept={handleAddPlayerToSquad}
             />
         </Modal>
     );
@@ -103,18 +102,22 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose, onAddPl
 const mapStateToProps = (
     { game }: StoreState,
     ownProps: {
-        playerToReplace: string;
         position: Position;
+        playerToReplace: string;
+        playerToAdd: string;
+        onChangePlayerToAdd: Function;
         onClose: MouseEventHandler;
-        onAddPlayerToSquad: (a: string) => void;
+        onAddPlayerToSquad: () => void;
     }
 ) => {
     const { squad } = game;
-    const { playerToReplace, position, onClose, onAddPlayerToSquad } = ownProps;
+    const { position, playerToReplace, playerToAdd, onChangePlayerToAdd, onClose, onAddPlayerToSquad } = ownProps;
     return {
         squad,
-        playerToReplace,
         position,
+        playerToReplace,
+        playerToAdd,
+        onChangePlayerToAdd,
         onClose,
         onAddPlayerToSquad,
     };

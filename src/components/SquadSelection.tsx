@@ -6,6 +6,7 @@ import { addPlayerToSquad } from '../actions';
 import { PlayersBio, Position, positions, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
+import PlayerDataModal from './PlayerDataModal';
 
 const { Content } = Layout;
 interface Props {
@@ -48,26 +49,39 @@ const renderSquad = (playersBio: PlayersBio, squad: Squad, handleClickPlayer: Fu
 };
 
 const _SquadSelection = ({ playersBio, squad, addPlayerToSquad }: Props) => {
-    const [replacementInfo, setReplacementInfo] = useState({ playerToReplace: '', position: Position.GK });
-    const { playerToReplace, position } = replacementInfo;
+    const [replacementInfo, setReplacementInfo] = useState({
+        position: Position.GK,
+        playerToReplace: '',
+    });
+    const [playerToAdd, setPlayerToAdd] = useState('');
+    const { position, playerToReplace } = replacementInfo;
 
     const handleClickPlayer = (playerToReplace: string, position: Position) => {
         setReplacementInfo({
-            playerToReplace,
             position,
+            playerToReplace,
         });
     };
 
     const handleCloseSelectPlayerModal = () => {
-        setReplacementInfo({
-            playerToReplace: '',
+        setPlayerToAdd(() => '');
+        setReplacementInfo(() => ({
             position: Position.GK,
-        });
+            playerToReplace: '',
+        }));
     };
 
-    const handleAddPlayerToSquad = (playerToAdd: string) => {
+    const handleAddPlayerToSquad = () => {
         addPlayerToSquad(position, playerToReplace, playerToAdd);
         handleCloseSelectPlayerModal();
+    };
+
+    const handleChangePlayerToAdd = (player: string) => {
+        setPlayerToAdd(player);
+    };
+
+    const handleClosePlayerDataModal = () => {
+        setPlayerToAdd('');
     };
 
     return (
@@ -76,10 +90,17 @@ const _SquadSelection = ({ playersBio, squad, addPlayerToSquad }: Props) => {
                 <div className="page-title page-title-two-sections">Squad Selection</div>
                 {renderSquad(playersBio, squad, handleClickPlayer)}
                 <SelectPlayerModal
-                    playerToReplace={playerToReplace}
                     position={position}
+                    playerToReplace={playerToReplace}
+                    playerToAdd={playerToAdd}
+                    onChangePlayerToAdd={handleChangePlayerToAdd}
                     onClose={handleCloseSelectPlayerModal}
                     onAddPlayerToSquad={handleAddPlayerToSquad}
+                />
+                <PlayerDataModal
+                    selectedPlayer={playerToAdd}
+                    onClose={handleClosePlayerDataModal}
+                    onAccept={handleAddPlayerToSquad}
                 />
             </div>
         </Content>
