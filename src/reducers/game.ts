@@ -39,7 +39,7 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                     [position]:
                         playerToReplace === '-1'
                             ? playersInRole.concat(playerToAdd)
-                            : playersInRole.splice(playersInRole.indexOf(playerToReplace), 1, playerToAdd),
+                            : playersInRole.map((player) => (player === playerToReplace ? playerToAdd : player)),
                 },
             };
         default:
