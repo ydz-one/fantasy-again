@@ -192,6 +192,9 @@ code {
 
 .player-search-input {
     width: 200px;
+}
+
+.player-search-input-modal {
     margin-right: 30px;
 }
 
@@ -305,7 +308,7 @@ code {
     }
 
     .player-search-input {
-        width: 180px;
+        width: 160px;
     }
 
     .page-title-two-sections {

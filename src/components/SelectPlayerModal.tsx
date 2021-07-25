@@ -61,7 +61,7 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
                     <Input
                         placeholder="Search by name"
                         prefix={<SearchOutlined />}
-                        className="player-search-input"
+                        className="player-search-input player-search-input-modal"
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                     />
