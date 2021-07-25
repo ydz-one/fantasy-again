@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Input } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 import PlayerDataModal from './PlayerDataModal';
 import PlayerStatsTable from './PlayerStatsTable';
@@ -64,6 +64,7 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
                         className="player-search-input player-search-input-modal"
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
+                        suffix={searchText.length && <CloseOutlined onClick={() => setSearchText('')} />}
                     />
                 </div>
             }

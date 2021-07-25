@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Layout } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
 import PlayerDataModal from './PlayerDataModal';
 import PlayerStatsTable from './PlayerStatsTable';
 import { PlayerBio } from '../types';
@@ -37,6 +37,7 @@ const Statistics = () => {
                         className="player-search-input"
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
+                        suffix={searchText.length && <CloseOutlined onClick={() => setSearchText('')} />}
                     />
                 </div>
                 <PlayerStatsTable
