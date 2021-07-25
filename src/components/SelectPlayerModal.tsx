@@ -74,7 +74,12 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
             width={isMobile ? '100vw' : '80vw'}
             className="custom-modal"
         >
-            <PlayerStatsTable filterFn={filterFn} disableFn={disableFn} onClickPlayer={setSelectedPlayer} />
+            <PlayerStatsTable
+                filterFn={filterFn}
+                disableFn={disableFn}
+                onClickPlayer={setSelectedPlayer}
+                showPositionFilter={false}
+            />
             <PlayerDataModal selectedPlayer={selectedPlayer} onClose={handleClosePlayerModal} />
         </Modal>
     );

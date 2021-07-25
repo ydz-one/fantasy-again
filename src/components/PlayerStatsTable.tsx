@@ -41,6 +41,7 @@ interface Props {
     filterFn: (row: PlayerBio) => boolean;
     disableFn: (row: PlayerStatsRow) => boolean;
     onClickPlayer: Function;
+    showPositionFilter: boolean;
 }
 
 const TEAM_COLUMN_WIDTH = 76;
@@ -115,7 +116,16 @@ function assertIsNameCellData(obj: unknown): asserts obj is NameCellData {
     else throw new Error('Input must be a NameCellData');
 }
 
-const _PlayerStatsTable = ({ playersBio, playersStats, fdr, gameweek, filterFn, disableFn, onClickPlayer }: Props) => {
+const _PlayerStatsTable = ({
+    playersBio,
+    playersStats,
+    fdr,
+    gameweek,
+    filterFn,
+    disableFn,
+    onClickPlayer,
+    showPositionFilter,
+}: Props) => {
     const TEAM_FULL_NAMES = getTeamFullNames(DEFAULT_SEASON);
     const TEAM_CODE_TO_ID = getTeamCodeToId(DEFAULT_SEASON);
     PLAYER_STATS_COLUMN_LABELS['latestGwPoints'] = 'GW' + (gameweek || 1);
@@ -143,14 +153,6 @@ const _PlayerStatsTable = ({ playersBio, playersStats, fdr, gameweek, filterFn, 
             fixed: 'left',
             width: PLAYER_COLUMN_WIDTH,
             render: renderPlayerCell,
-            filters: positions.map((position) => ({
-                text: positionData[position].name,
-                value: position,
-            })),
-            onFilter: (value: string, record: PlayerStatsRow) => {
-                assertIsNameCellData(record.player);
-                return record.player.position === value;
-            },
             sorter: {
                 compare: (a: PlayerStatsRow, b: PlayerStatsRow) => {
                     assertIsNameCellData(a.player);
@@ -160,6 +162,16 @@ const _PlayerStatsTable = ({ playersBio, playersStats, fdr, gameweek, filterFn, 
                     return aName < bName ? -1 : bName < aName ? 1 : 0;
                 },
             },
+            ...(showPositionFilter && {
+                filters: positions.map((position) => ({
+                    text: positionData[position].name,
+                    value: position,
+                })),
+                onFilter: (value: string, record: PlayerStatsRow) => {
+                    assertIsNameCellData(record.player);
+                    return record.player.position === value;
+                },
+            }),
         },
     ];
     otherColumns.forEach((columnDataIndex) => {
@@ -252,11 +264,12 @@ const mapStateToProps = (
         filterFn: (row: PlayerBio) => boolean;
         disableFn: (row: PlayerStatsRow) => boolean;
         onClickPlayer: Function;
+        showPositionFilter: boolean;
     }
 ) => {
     const { fdr, playersBio, playersStats } = data;
     const { gameweek } = game;
-    const { filterFn, disableFn, onClickPlayer } = ownProps;
+    const { filterFn, disableFn, onClickPlayer, showPositionFilter } = ownProps;
     return {
         playersBio,
         playersStats,
@@ -265,6 +278,7 @@ const mapStateToProps = (
         filterFn,
         disableFn,
         onClickPlayer,
+        showPositionFilter,
     };
 };
 

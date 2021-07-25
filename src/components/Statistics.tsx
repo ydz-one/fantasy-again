@@ -39,7 +39,12 @@ const Statistics = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                     />
                 </div>
-                <PlayerStatsTable filterFn={filterFn} disableFn={() => false} onClickPlayer={setSelectedPlayer} />
+                <PlayerStatsTable
+                    filterFn={filterFn}
+                    disableFn={() => false}
+                    onClickPlayer={setSelectedPlayer}
+                    showPositionFilter={true}
+                />
                 <PlayerDataModal selectedPlayer={selectedPlayer} onClose={handleClose} />
             </div>
         </Content>
