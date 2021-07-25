@@ -1,6 +1,7 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'antd';
+import { Modal, Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 import PlayerDataModal from './PlayerDataModal';
 import PlayerStatsTable from './PlayerStatsTable';
@@ -21,13 +22,25 @@ function assertIsString(obj: unknown): asserts obj is string {
 
 const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props) => {
     const [selectedPlayer, setSelectedPlayer] = useState('');
+    const [searchText, setSearchText] = useState('');
+    const isVisible = playerToReplace.length > 0;
 
     const handleClosePlayerModal = () => {
         setSelectedPlayer('');
     };
 
     // Only display rows of players in the position we're drafting for
-    const filterFn = (row: PlayerBio) => row.position === position;
+    // Also use this function to work with the searchbox to search for players by name
+    const filterFn = (row: PlayerBio) => {
+        const lowerCaseSearchText = searchText.toLowerCase();
+        return (
+            row.position === position &&
+            (searchText.length === 0 ||
+                row.webName.toLowerCase().includes(lowerCaseSearchText) ||
+                row.secondName.toLowerCase().includes(lowerCaseSearchText) ||
+                row.firstName.toLowerCase().includes(lowerCaseSearchText))
+        );
+    };
 
     // Disable rows of players already in the squad
     const disableFn = (row: PlayerStatsRow) => {
@@ -35,10 +48,26 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
         return squad[position].includes(row.code);
     };
 
+    // Reset searchbox when user closes this modal
+    if (!isVisible && searchText.length > 0) {
+        setSearchText('');
+    }
+
     return (
         <Modal
-            title="Player Selection"
-            visible={playerToReplace.length > 0}
+            title={
+                <div className="select-player-modal-title">
+                    <div>Player Selection</div>
+                    <Input
+                        placeholder="Search by name"
+                        prefix={<SearchOutlined />}
+                        className="player-search-input"
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                    />
+                </div>
+            }
+            visible={isVisible}
             onOk={onClose}
             onCancel={onClose}
             footer={[]}
