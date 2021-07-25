@@ -2,7 +2,8 @@ import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import { StoreState } from '../reducers';
-import { PlayersBio, Position, Squad } from '../types';
+import { addPlayerToSquad } from '../actions';
+import { PlayersBio, Position, positions, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 
@@ -10,6 +11,7 @@ const { Content } = Layout;
 interface Props {
     playersBio: PlayersBio;
     squad: Squad;
+    addPlayerToSquad: typeof addPlayerToSquad;
 }
 
 const renderSquad = (playersBio: PlayersBio, squad: Squad, handleClickPlayer: Function) => {
@@ -45,7 +47,7 @@ const renderSquad = (playersBio: PlayersBio, squad: Squad, handleClickPlayer: Fu
     );
 };
 
-const _SquadSelection = ({ playersBio, squad }: Props) => {
+const _SquadSelection = ({ playersBio, squad, addPlayerToSquad }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({ playerToReplace: '', position: Position.GK });
     const { playerToReplace, position } = replacementInfo;
 
@@ -56,11 +58,16 @@ const _SquadSelection = ({ playersBio, squad }: Props) => {
         });
     };
 
-    const handleClosePlayerModal = () => {
+    const handleCloseSelectPlayerModal = () => {
         setReplacementInfo({
             playerToReplace: '',
             position: Position.GK,
         });
+    };
+
+    const handleAddPlayerToSquad = (playerToAdd: string) => {
+        addPlayerToSquad(position, playerToReplace, playerToAdd);
+        handleCloseSelectPlayerModal();
     };
 
     return (
@@ -71,7 +78,8 @@ const _SquadSelection = ({ playersBio, squad }: Props) => {
                 <SelectPlayerModal
                     playerToReplace={playerToReplace}
                     position={position}
-                    onClose={handleClosePlayerModal}
+                    onClose={handleCloseSelectPlayerModal}
+                    onAddPlayerToSquad={handleAddPlayerToSquad}
                 />
             </div>
         </Content>
@@ -87,4 +95,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps)(_SquadSelection);
+export default connect(mapStateToProps, { addPlayerToSquad })(_SquadSelection);

@@ -1,4 +1,4 @@
-import { GameState, GameAction, GameActionTypes } from '../types';
+import { GameState, GameAction, GameActionTypes, Position } from '../types';
 
 const getInitialGameState = (): GameState => {
     return {
@@ -28,6 +28,19 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
             return {
                 ...state,
                 points: state.points + action.payload,
+            };
+        case GameActionTypes.AddPlayerToSquad:
+            const { position, playerToReplace, playerToAdd } = action.payload;
+            const playersInRole = state.squad[position];
+            return {
+                ...state,
+                squad: {
+                    ...state.squad,
+                    [position]:
+                        playerToReplace === '-1'
+                            ? playersInRole.concat(playerToAdd)
+                            : playersInRole.splice(playersInRole.indexOf(playerToReplace), 1, playerToAdd),
+                },
             };
         default:
             return state;

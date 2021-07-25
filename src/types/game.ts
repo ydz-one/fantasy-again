@@ -1,3 +1,5 @@
+import { Position } from './data';
+
 export interface GameState {
     gameweek: number;
     points: number;
@@ -31,6 +33,7 @@ export const DEFAULT_SEASON = Season.S2020_2021;
 export enum GameActionTypes {
     IncrementGameweek = 'IncrementGameweek',
     AddPoints = 'AddPoints',
+    AddPlayerToSquad = 'AddPlayerToSquad',
 }
 
 export interface IncrementGameweekAction {
@@ -42,4 +45,13 @@ export interface AddPointsAction {
     payload: number;
 }
 
-export type GameAction = IncrementGameweekAction | AddPointsAction;
+export interface AddPlayerToSquad {
+    type: GameActionTypes.AddPlayerToSquad;
+    payload: {
+        position: Position;
+        playerToReplace: string;
+        playerToAdd: string;
+    };
+}
+
+export type GameAction = IncrementGameweekAction | AddPointsAction | AddPlayerToSquad;

@@ -13,6 +13,7 @@ interface Props {
     playerToReplace: string;
     position: Position;
     onClose: MouseEventHandler;
+    onAddPlayerToSquad: (a: string) => void;
 }
 
 function assertIsString(obj: unknown): asserts obj is string {
@@ -20,13 +21,17 @@ function assertIsString(obj: unknown): asserts obj is string {
     else throw new Error('Input must be a string');
 }
 
-const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props) => {
+const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose, onAddPlayerToSquad }: Props) => {
     const [selectedPlayer, setSelectedPlayer] = useState('');
     const [searchText, setSearchText] = useState('');
     const isVisible = playerToReplace.length > 0;
 
-    const handleClosePlayerModal = () => {
+    const handleClosePlayerDataModal = () => {
         setSelectedPlayer('');
+    };
+
+    const handleAddPlayerToSquad = () => {
+        onAddPlayerToSquad(selectedPlayer);
     };
 
     // Use this function to only display rows of players in the position we're drafting for
@@ -53,6 +58,11 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
         setSearchText('');
     }
 
+    // Need to close the player data modal before closing this modal
+    if (!isVisible && selectedPlayer.length > 0) {
+        setSelectedPlayer('');
+    }
+
     return (
         <Modal
             title={
@@ -71,7 +81,7 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
             visible={isVisible}
             onOk={onClose}
             onCancel={onClose}
-            footer={[]}
+            footer={null}
             width={isMobile ? '100vw' : '80vw'}
             className="custom-modal"
         >
@@ -81,22 +91,32 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
                 onClickPlayer={setSelectedPlayer}
                 showPositionFilter={false}
             />
-            <PlayerDataModal selectedPlayer={selectedPlayer} onClose={handleClosePlayerModal} />
+            <PlayerDataModal
+                selectedPlayer={selectedPlayer}
+                onClose={handleClosePlayerDataModal}
+                onAccept={handleAddPlayerToSquad}
+            />
         </Modal>
     );
 };
 
 const mapStateToProps = (
     { game }: StoreState,
-    ownProps: { playerToReplace: string; position: Position; onClose: MouseEventHandler }
+    ownProps: {
+        playerToReplace: string;
+        position: Position;
+        onClose: MouseEventHandler;
+        onAddPlayerToSquad: (a: string) => void;
+    }
 ) => {
     const { squad } = game;
-    const { playerToReplace, position, onClose } = ownProps;
+    const { playerToReplace, position, onClose, onAddPlayerToSquad } = ownProps;
     return {
         squad,
         playerToReplace,
         position,
         onClose,
+        onAddPlayerToSquad,
     };
 };
 
