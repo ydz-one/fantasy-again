@@ -3,7 +3,7 @@ import { getTeamNames } from '../data';
 import { DEFAULT_SEASON, FdrFixture } from '../types';
 
 interface Props {
-    gwFixtures: FdrFixture[]
+    gwFixtures: FdrFixture[];
 }
 
 export const FdrCell = ({ gwFixtures }: Props) => {
@@ -15,18 +15,20 @@ export const FdrCell = ({ gwFixtures }: Props) => {
     if (gwFixtures.length === 1) {
         const fixture = gwFixtures[0];
         const cellText = TEAM_NAMES[fixture.opponent] + (fixture.isHome ? ' (H)' : ' (A)');
-        return <div className={'fdr fdr-' + fixture.difficulty}>
-            {cellText}
-        </div>
+        return <div className={'fdr fdr-' + fixture.difficulty}>{cellText}</div>;
     }
     const fdrClass = gwFixtures.length === 2 ? 'fdr-double' : 'fdr-triple';
-    return <div className='fdr'>
-        {gwFixtures.map(fixture => {
-            const team = TEAM_NAMES[fixture.opponent];
-            const location = fixture.isHome ? '(H)' : '(A)';
-            return <div className={fdrClass + ' fdr-sub fdr-' + fixture.difficulty} key={fixture.opponent}>
-                {team} <br/> {location}
-            </div>
-        })}
-    </div>
+    return (
+        <div className="fdr">
+            {gwFixtures.map((fixture) => {
+                const team = TEAM_NAMES[fixture.opponent];
+                const location = fixture.isHome ? '(H)' : '(A)';
+                return (
+                    <div className={fdrClass + ' fdr-sub fdr-' + fixture.difficulty} key={fixture.opponent}>
+                        {team} <br /> {location}
+                    </div>
+                );
+            })}
+        </div>
+    );
 };

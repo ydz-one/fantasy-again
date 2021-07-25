@@ -12,12 +12,18 @@ interface Props {
 }
 
 export const PlayerCard = ({ position, code, name, teamCode, onClick }: Props) => (
-    <Card hoverable className='player-card' onClick={onClick}>
+    <Card hoverable className="player-card" onClick={onClick}>
         <div>
-            {code === '-1'
-                ? <Fragment>Select a <PositionTag position={position} /></Fragment> 
-                : <Fragment><div>{name}</div><TeamTag teamCode={teamCode} /></Fragment>
-            }
+            {code === '-1' ? (
+                <Fragment>
+                    Select a <PositionTag position={position} />
+                </Fragment>
+            ) : (
+                <Fragment>
+                    <div>{name}</div>
+                    <TeamTag teamCode={teamCode} />
+                </Fragment>
+            )}
         </div>
     </Card>
 );

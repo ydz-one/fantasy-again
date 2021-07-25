@@ -8,7 +8,7 @@ import { PlayerBio, PlayerStatsRow, Position, Squad } from '../types';
 import { StoreState } from '../reducers';
 
 interface Props {
-    squad: Squad
+    squad: Squad;
     playerToReplace: string;
     position: Position;
     onClose: MouseEventHandler;
@@ -21,7 +21,7 @@ function assertIsString(obj: unknown): asserts obj is string {
 
 const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props) => {
     const [selectedPlayer, setSelectedPlayer] = useState('');
-  
+
     const handleClosePlayerModal = () => {
         setSelectedPlayer('');
     };
@@ -36,24 +36,33 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
     };
 
     return (
-        <Modal title='Player Selection' visible={playerToReplace.length > 0} onOk={onClose} onCancel={onClose} footer={[]} width={isMobile ? '100vw' : '80vw'} className='custom-modal'>           
+        <Modal
+            title="Player Selection"
+            visible={playerToReplace.length > 0}
+            onOk={onClose}
+            onCancel={onClose}
+            footer={[]}
+            width={isMobile ? '100vw' : '80vw'}
+            className="custom-modal"
+        >
             <PlayerStatsTable filterFn={filterFn} disableFn={disableFn} onClickPlayer={setSelectedPlayer} />
             <PlayerDataModal selectedPlayer={selectedPlayer} onClose={handleClosePlayerModal} />
         </Modal>
     );
 };
 
-const mapStateToProps = ({
-    game
-}: StoreState, ownProps: { playerToReplace: string, position: Position, onClose: MouseEventHandler }) => {
+const mapStateToProps = (
+    { game }: StoreState,
+    ownProps: { playerToReplace: string; position: Position; onClose: MouseEventHandler }
+) => {
     const { squad } = game;
     const { playerToReplace, position, onClose } = ownProps;
     return {
         squad,
         playerToReplace,
         position,
-        onClose
+        onClose,
     };
-}
+};
 
 export default connect(mapStateToProps)(_SelectPlayerModal);

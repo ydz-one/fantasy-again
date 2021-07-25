@@ -1,8 +1,8 @@
-import React, { Fragment, MouseEventHandler, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import { StoreState } from '../reducers';
-import { PlayersBio, Position, positions, Squad } from '../types';
+import { PlayersBio, Position, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const renderSquad = (playersBio: PlayersBio, squad: Squad, handleClickPlayer: Function) => {
-    const renderPlayerCard = (position: Position) => (idx: number) =>{
+    const renderPlayerCard = (position: Position) => (idx: number) => {
         const code = squad[position][idx];
         let name = '';
         let teamCode = '';
@@ -34,21 +34,13 @@ const renderSquad = (playersBio: PlayersBio, squad: Squad, handleClickPlayer: Fu
             />
         );
     };
-    
+
     return (
         <Fragment>
-            <div className='position-row'>
-                {[0, 1].map(renderPlayerCard(Position.GK))}
-            </div>
-            <div className='position-row'>
-                {[0, 1, 2, 3, 4].map(renderPlayerCard(Position.DEF))}
-            </div>
-            <div className='position-row'>
-                {[0, 1, 2, 3, 4].map(renderPlayerCard(Position.MID))}
-            </div>
-            <div className='position-row'>
-                {[0, 1, 2].map(renderPlayerCard(Position.FWD))}
-            </div>
+            <div className="position-row">{[0, 1].map(renderPlayerCard(Position.GK))}</div>
+            <div className="position-row">{[0, 1, 2, 3, 4].map(renderPlayerCard(Position.DEF))}</div>
+            <div className="position-row">{[0, 1, 2, 3, 4].map(renderPlayerCard(Position.MID))}</div>
+            <div className="position-row">{[0, 1, 2].map(renderPlayerCard(Position.FWD))}</div>
         </Fragment>
     );
 };
@@ -60,40 +52,39 @@ const _SquadSelection = ({ playersBio, squad }: Props) => {
     const handleClickPlayer = (playerToReplace: string, position: Position) => {
         setReplacementInfo({
             playerToReplace,
-            position
+            position,
         });
     };
 
     const handleClosePlayerModal = () => {
         setReplacementInfo({
             playerToReplace: '',
-            position: Position.GK
+            position: Position.GK,
         });
-    }
+    };
 
     return (
-        <Content className='site-layout-content'>
+        <Content className="site-layout-content">
             <div className="site-layout-background">
-                <div className='page-title page-title-two-sections'>
-                    Squad Selection
-                </div>
+                <div className="page-title page-title-two-sections">Squad Selection</div>
                 {renderSquad(playersBio, squad, handleClickPlayer)}
-                <SelectPlayerModal playerToReplace={playerToReplace} position={position} onClose={handleClosePlayerModal} />
+                <SelectPlayerModal
+                    playerToReplace={playerToReplace}
+                    position={position}
+                    onClose={handleClosePlayerModal}
+                />
             </div>
         </Content>
     );
 };
 
-const mapStateToProps = ({
-    data,
-    game
-}: StoreState) => {
+const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio } = data;
     const { squad } = game;
     return {
         playersBio,
-        squad
+        squad,
     };
-}
+};
 
 export default connect(mapStateToProps)(_SquadSelection);

@@ -6,8 +6,4 @@ interface Props {
     teamCode: string;
 }
 
-export const TeamTag = ({ teamCode }: Props) => (
-    <Tag color={TEAMS[teamCode].color}>
-        {TEAMS[teamCode].name}
-    </Tag>
-);
+export const TeamTag = ({ teamCode }: Props) => <Tag color={TEAMS[teamCode].color}>{TEAMS[teamCode].name}</Tag>;

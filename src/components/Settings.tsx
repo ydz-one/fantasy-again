@@ -5,10 +5,8 @@ import { Layout } from 'antd';
 const { Content } = Layout;
 
 const _Settings = () => (
-    <Content className='site-layout-content'>
-        <div className="site-layout-background">
-            Settings
-        </div>
+    <Content className="site-layout-content">
+        <div className="site-layout-background">Settings</div>
     </Content>
 );
 

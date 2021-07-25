@@ -23,9 +23,9 @@ const createFdrTable = (fdr: FdrData, gameweek: number) => {
             fixed: 'left',
             width: 70,
             sorter: {
-                compare: (a: FdrRow, b: FdrRow) => a.team < b.team ? -1 : a.team > b.team ? 1 : 0
-            }
-        }
+                compare: (a: FdrRow, b: FdrRow) => (a.team < b.team ? -1 : a.team > b.team ? 1 : 0),
+            },
+        },
     ];
     const maxGW = fdr[0].length;
     for (let i = gameweek; i < maxGW; i++) {
@@ -37,14 +37,14 @@ const createFdrTable = (fdr: FdrData, gameweek: number) => {
             width: 50,
             render: (gwFixtures: FdrFixture[]) => <FdrCell gwFixtures={gwFixtures} />,
             sorter: {
-                compare: fdrFixtureComparatorFactory(gwTitle)
-            }
+                compare: fdrFixtureComparatorFactory(gwTitle),
+            },
         });
     }
     const data: object[] = [];
     fdr.forEach((teamGWs, teamIdx) => {
         const row: FdrRow = {
-            team: TEAM_FULL_NAMES[teamIdx]
+            team: TEAM_FULL_NAMES[teamIdx],
         };
         teamGWs.forEach((teamGW, teamGWIdx) => {
             if (teamGWIdx < gameweek) return;
@@ -53,25 +53,33 @@ const createFdrTable = (fdr: FdrData, gameweek: number) => {
         data.push(row);
     });
     const tableWidth = 90 * (maxGW - gameweek + 1);
-    return <Table dataSource={data} columns={columns} pagination={false} scroll={{ x: tableWidth }} className='custom-table' />;
-}
+    return (
+        <Table
+            dataSource={data}
+            columns={columns}
+            pagination={false}
+            scroll={{ x: tableWidth }}
+            className="custom-table"
+        />
+    );
+};
 
 const _Fixtures = ({ fdr, gameweek }: Props) => (
-    <Content className='site-layout-content'>
-        <div className='site-layout-background'>
-            <div className='page-title page-title-two-sections'>
+    <Content className="site-layout-content">
+        <div className="site-layout-background">
+            <div className="page-title page-title-two-sections">
                 <div>Fixture Difficulty Rating (FDR)</div>
-                <div className='fdr-section'>
-                    <div className='fdr-key-text'>FDR Key:</div>
+                <div className="fdr-section">
+                    <div className="fdr-key-text">FDR Key:</div>
                     <div>
-                        <div className='fdr-key'>
-                            <div className='fdr-key-square fdr-1'>1</div>
-                            <div className='fdr-key-square fdr-2'>2</div>
-                            <div className='fdr-key-square fdr-3'>3</div>
-                            <div className='fdr-key-square fdr-4'>4</div>
-                            <div className='fdr-key-square fdr-5'>5</div>
+                        <div className="fdr-key">
+                            <div className="fdr-key-square fdr-1">1</div>
+                            <div className="fdr-key-square fdr-2">2</div>
+                            <div className="fdr-key-square fdr-3">3</div>
+                            <div className="fdr-key-square fdr-4">4</div>
+                            <div className="fdr-key-square fdr-5">5</div>
                         </div>
-                        <div className='fdr-key-label'>
+                        <div className="fdr-key-label">
                             <div>Easy</div>
                             <div>Hard</div>
                         </div>
@@ -83,16 +91,13 @@ const _Fixtures = ({ fdr, gameweek }: Props) => (
     </Content>
 );
 
-const mapStateToProps = ({
-    data,
-    game
-}: StoreState) => {
+const mapStateToProps = ({ data, game }: StoreState) => {
     const { fdr } = data;
     const { gameweek } = game;
     return {
         fdr,
-        gameweek
+        gameweek,
     };
-}
+};
 
 export default connect(mapStateToProps)(_Fixtures);

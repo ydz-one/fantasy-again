@@ -10,5 +10,5 @@ export interface StoreState {
 
 export const reducers = combineReducers<StoreState>({
     game: gameReducer,
-    data: dataReducer
+    data: dataReducer,
 });

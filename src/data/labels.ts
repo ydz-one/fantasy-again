@@ -1,5 +1,5 @@
 export const PLAYER_STATS_COLUMN_LABELS: { [key: string]: string } = {
-    player : 'Player',
+    player: 'Player',
     form: 'Form',
     value: 'Value',
     selected: 'Selected',
@@ -11,5 +11,5 @@ export const PLAYER_STATS_COLUMN_LABELS: { [key: string]: string } = {
     threat: 'Threat',
     transfersIn: 'GW Transfers In',
     transfersOut: 'GW Transfers Out',
-    bonus: 'Bonus Points'
-}
+    bonus: 'Bonus Points',
+};

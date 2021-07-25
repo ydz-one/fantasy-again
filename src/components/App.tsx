@@ -14,43 +14,22 @@ import Settings from './Settings';
 import SquadSelection from './SquadSelection';
 
 const _App = () => (
-        <Layout className='app'>
-            <Sider />
-            <Layout className='app'>
-                <Header />
-                <Switch>
-                    <Route
-                        path='/fixtures'
-                        render={() => <Fixtures />}
-                    />
-                    <Route
-                        path='/squadselection'
-                        render={() => <SquadSelection />}
-                    />
-                    <Route
-                        path='/points'
-                        render={() => <Points />}
-                    />
-                    <Route
-                        path='/pickteam'
-                        render={() => <PickTeam />}
-                    />
-                    <Route
-                        path='/transfers'
-                        render={() => <Transfers />}
-                    />
-                    <Route
-                        path='/statistics'
-                        render={() => <Statistics />}
-                    />
-                    <Route
-                        path='/settings'
-                        render={() => <Settings />}
-                    />
-                    <Redirect to="/fixtures" />
-                </Switch>
-            </Layout>
+    <Layout className="app">
+        <Sider />
+        <Layout className="app">
+            <Header />
+            <Switch>
+                <Route path="/fixtures" render={() => <Fixtures />} />
+                <Route path="/squadselection" render={() => <SquadSelection />} />
+                <Route path="/points" render={() => <Points />} />
+                <Route path="/pickteam" render={() => <PickTeam />} />
+                <Route path="/transfers" render={() => <Transfers />} />
+                <Route path="/statistics" render={() => <Statistics />} />
+                <Route path="/settings" render={() => <Settings />} />
+                <Redirect to="/fixtures" />
+            </Switch>
         </Layout>
+    </Layout>
 );
 
 export const App = connect()(_App);

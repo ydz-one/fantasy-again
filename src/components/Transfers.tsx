@@ -5,10 +5,8 @@ import { Layout } from 'antd';
 const { Content } = Layout;
 
 const _Transfers = () => (
-    <Content className='site-layout-content'>
-        <div className="site-layout-background">
-            Transfers
-        </div>
+    <Content className="site-layout-content">
+        <div className="site-layout-background">Transfers</div>
     </Content>
 );
 

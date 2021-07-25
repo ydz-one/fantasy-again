@@ -1,10 +1,32 @@
 import moment, { Moment } from 'moment';
-import { getFdr, getFixtures, getInitialPlayerStats, getInjuryHistory, getPlayersBio, getPlayersHistory, getPreGwDate, getTransfers } from '../data/api';
-import { DataAction, DataActionTypes, DataState, DEFAULT_SEASON, InitialPlayersStats, InjuryHistory, PlayerFixtureStats, PlayersBio, PlayersHistory, PlayersStats, prevSeasonMap, TransferEvent } from '../types';
+import {
+    getFdr,
+    getFixtures,
+    getInitialPlayerStats,
+    getInjuryHistory,
+    getPlayersBio,
+    getPlayersHistory,
+    getPreGwDate,
+    getTransfers,
+} from '../data/api';
+import {
+    DataAction,
+    DataActionTypes,
+    DataState,
+    DEFAULT_SEASON,
+    InitialPlayersStats,
+    InjuryHistory,
+    PlayerFixtureStats,
+    PlayersBio,
+    PlayersHistory,
+    PlayersStats,
+    prevSeasonMap,
+    TransferEvent,
+} from '../types';
 
 const updateInjuryData = (playersStats: PlayersStats, injuryHistory: InjuryHistory, gwNum: number) => {
     if (injuryHistory[gwNum]) {
-        injuryHistory[gwNum].forEach(injuryData => {
+        injuryHistory[gwNum].forEach((injuryData) => {
             const { code, injured, injury, injuryEnd } = injuryData;
             if (injured === 1 && playersStats[code]) {
                 playersStats[code].injured = injured;
@@ -15,7 +37,11 @@ const updateInjuryData = (playersStats: PlayersStats, injuryHistory: InjuryHisto
     }
 };
 
-const populateInitialStats = (initialPlayersStats: InitialPlayersStats, injuryHistory: InjuryHistory, playersHistory: PlayersHistory): PlayersStats => {
+const populateInitialStats = (
+    initialPlayersStats: InitialPlayersStats,
+    injuryHistory: InjuryHistory,
+    playersHistory: PlayersHistory
+): PlayersStats => {
     const playersStats: PlayersStats = {};
     const prevSeason = prevSeasonMap[DEFAULT_SEASON];
     for (const [key, obj] of Object.entries(initialPlayersStats)) {
@@ -44,13 +70,13 @@ const populateInitialStats = (initialPlayersStats: InitialPlayersStats, injuryHi
             injuryEnd: '',
             transfersIn: 0,
             transfersOut: 0,
-            fixtureStats: []
-        }
+            fixtureStats: [],
+        };
         updateInjuryData(playersStats, injuryHistory, 0);
         playersStats[key] = stats;
     }
     return playersStats;
-}
+};
 
 const getInitialDataState = () => {
     const playersBio = getPlayersBio(DEFAULT_SEASON);
@@ -63,9 +89,9 @@ const getInitialDataState = () => {
         injuryHistory,
         playersBio,
         playersHistory,
-        playersStats: populateInitialStats(initialPlayerStats, injuryHistory, playersHistory)
+        playersStats: populateInitialStats(initialPlayerStats, injuryHistory, playersHistory),
     };
-}
+};
 
 const updatePlayersBio = (state: DataState, action: DataAction): PlayersBio => {
     const { gwNum } = action;
@@ -80,11 +106,11 @@ const updatePlayersBio = (state: DataState, action: DataAction): PlayersBio => {
             acc[code] = {
                 ...state.playersBio[code],
                 teamCode: targetTeam,
-                transfers: (state.playersBio[code].transfers || []).concat(transfer)
+                transfers: (state.playersBio[code].transfers || []).concat(transfer),
             };
             return acc;
-        }, {})
-    }
+        }, {}),
+    };
 };
 
 const calculateForm = (preGwDate: Moment, playerFixtures: PlayerFixtureStats[]): number => {
@@ -99,7 +125,7 @@ const calculateForm = (preGwDate: Moment, playerFixtures: PlayerFixtureStats[]):
         n++;
     }
     return sum / n;
-}
+};
 
 const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats => {
     const { gwNum, payload, shouldResetPoints } = action;
@@ -108,11 +134,11 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
         newPlayersStats[playerCode] = {
             ...playerStats,
             bonus: shouldResetPoints ? 0 : playerStats.bonus,
-            seasonPoints: shouldResetPoints ? 0 : playerStats.seasonPoints
+            seasonPoints: shouldResetPoints ? 0 : playerStats.seasonPoints,
         };
     }
-    payload.gw.forEach(playerGwData => {
-        const { 
+    payload.gw.forEach((playerGwData) => {
+        const {
             code,
             assists,
             bonus,
@@ -133,7 +159,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             saves,
             threat,
             totalPoints,
-            yellowCards
+            yellowCards,
         } = playerGwData;
         const { bonus: oldBonus, latestGw, latestGwPoints, seasonPoints, fixtureStats } = newPlayersStats[code];
         fixtureStats.push({
@@ -152,7 +178,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             yellowCards,
             round,
             saves,
-            totalPoints
+            totalPoints,
         });
         newPlayersStats[code] = {
             ...newPlayersStats[code],
@@ -168,28 +194,22 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             injured: 0,
             injury: '',
             injuryEnd: '',
-            fixtureStats
+            fixtureStats,
         };
     });
-    payload.gwMeta.forEach(playerGwMetaData => {
-        const {
-            code,
-            selected,
-            transfersIn,
-            transfersOut,
-            value
-        } = playerGwMetaData;
+    payload.gwMeta.forEach((playerGwMetaData) => {
+        const { code, selected, transfersIn, transfersOut, value } = playerGwMetaData;
         newPlayersStats[code] = {
             ...newPlayersStats[code],
             selected,
             transfersIn,
             transfersOut,
-            value
+            value,
         };
-    })
+    });
     updateInjuryData(newPlayersStats, state.injuryHistory, action.gwNum);
     return newPlayersStats;
-}
+};
 
 export const dataReducer = (state: DataState = getInitialDataState(), action: DataAction): DataState => {
     switch (action.type) {
@@ -197,9 +217,9 @@ export const dataReducer = (state: DataState = getInitialDataState(), action: Da
             return {
                 ...state,
                 playersBio: updatePlayersBio(state, action),
-                playersStats: updatePlayersStats(state, action)
-            }
+                playersStats: updatePlayersStats(state, action),
+            };
         default:
             return state;
     }
-}
+};

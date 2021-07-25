@@ -5,8 +5,8 @@ import { StoreState } from '../reducers';
 import { FdrData, PlayersBio, PlayersStats } from '../types';
 
 interface Props {
-    selectedPlayer: string,
-    onClose: MouseEventHandler,
+    selectedPlayer: string;
+    onClose: MouseEventHandler;
     playersBio: PlayersBio;
     playersStats: PlayersStats;
     fdr: FdrData;
@@ -18,13 +18,13 @@ const _PlayerDataModal = ({ selectedPlayer, onClose, playersBio, playersStats, f
         <p>{selectedPlayer && playersBio[selectedPlayer].webName}</p>
         <p>Some contents...</p>
         <p>Some contents...</p>
-  </Modal>
+    </Modal>
 );
 
-const mapStateToProps = ({
-    data,
-    game
-}: StoreState, ownProps: { selectedPlayer: string, onClose: MouseEventHandler }) => {
+const mapStateToProps = (
+    { data, game }: StoreState,
+    ownProps: { selectedPlayer: string; onClose: MouseEventHandler }
+) => {
     const { fdr, playersBio, playersStats } = data;
     const { gameweek } = game;
     const { selectedPlayer, onClose } = ownProps;
@@ -34,8 +34,8 @@ const mapStateToProps = ({
         playersBio,
         playersStats,
         fdr,
-        gameweek
+        gameweek,
     };
-}
+};
 
 export default connect(mapStateToProps)(_PlayerDataModal);

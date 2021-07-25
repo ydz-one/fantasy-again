@@ -1,4 +1,4 @@
-import { FdrFixture, FdrRow, NameCellData, PlayerStatsRow } from "../types";
+import { FdrFixture, FdrRow, NameCellData, PlayerStatsRow } from '../types';
 
 const TOTAL_MANAGERS = 6_000_000;
 
@@ -19,14 +19,16 @@ export const fdrFixtureComparatorFactory = (gwTitle: string) => (a: FdrRow, b: F
     return bDiffiSum - aDiffiSum;
 };
 
-export const columnComparatorFactory = (dataIndex: string) => (a: PlayerStatsRow, b: PlayerStatsRow) => a[dataIndex] < b[dataIndex] ? -1 : b[dataIndex] < a[dataIndex] ? 1 : 0;
+export const columnComparatorFactory = (dataIndex: string) => (a: PlayerStatsRow, b: PlayerStatsRow) =>
+    a[dataIndex] < b[dataIndex] ? -1 : b[dataIndex] < a[dataIndex] ? 1 : 0;
 
 export const formatOneDecimalPlace = (num: number) => Number(num).toFixed(1);
 
-export const formatIctValues = (num: number) => num < 0 ? '-' : formatOneDecimalPlace(num);
+export const formatIctValues = (num: number) => (num < 0 ? '-' : formatOneDecimalPlace(num));
 
 export const formatValue = (value: number) => '£' + formatOneDecimalPlace(value / 10) + 'M';
 
-export const formatSelected = (selected: number) => Number(selected/TOTAL_MANAGERS).toLocaleString(undefined, { style: 'percent', minimumFractionDigits:2 });
+export const formatSelected = (selected: number) =>
+    Number(selected / TOTAL_MANAGERS).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 });
 
 export const formatPoints = (points: number) => points + ' pts';

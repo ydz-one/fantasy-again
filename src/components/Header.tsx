@@ -15,29 +15,27 @@ interface Props {
 
 const _Header = ({ gameweek, points }: Props) => (
     <Header className="site-layout-sub-header-background">
-        <div className='header-item'>
-            <div className='header-item-key'>Points:</div>
-            <div className='header-item-value'>{points}</div>
+        <div className="header-item">
+            <div className="header-item-key">Points:</div>
+            <div className="header-item-value">{points}</div>
         </div>
-        <div className='header-item'>
-            <div className='header-item-key'>Upcoming:</div>
-            <div className='header-item-value'>GW{gameweek + 1}</div>
+        <div className="header-item">
+            <div className="header-item-key">Upcoming:</div>
+            <div className="header-item-value">GW{gameweek + 1}</div>
         </div>
-        <div className='header-item'>
-            <div className='header-item-key'>Today:</div>
-            <div className='header-item-value'>{moment(getPreGwDate(DEFAULT_SEASON, gameweek)).format('ll')}</div>
+        <div className="header-item">
+            <div className="header-item-key">Today:</div>
+            <div className="header-item-value">{moment(getPreGwDate(DEFAULT_SEASON, gameweek)).format('ll')}</div>
         </div>
     </Header>
 );
 
-const mapStateToProps = ({
-    game
-}: StoreState) => {
+const mapStateToProps = ({ game }: StoreState) => {
     const { gameweek, points } = game;
     return {
         gameweek,
-        points
+        points,
     };
-}
+};
 
 export default connect(mapStateToProps)(_Header);
