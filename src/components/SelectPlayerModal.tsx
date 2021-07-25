@@ -29,8 +29,8 @@ const _SelectPlayerModal = ({ squad, playerToReplace, position, onClose }: Props
         setSelectedPlayer('');
     };
 
-    // Only display rows of players in the position we're drafting for
-    // Also use this function to work with the searchbox to search for players by name
+    // Use this function to only display rows of players in the position we're drafting for
+    // and to work with the searchbox to search for players by name
     const filterFn = (row: PlayerBio) => {
         const lowerCaseSearchText = searchText.toLowerCase();
         return (
