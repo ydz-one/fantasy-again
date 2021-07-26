@@ -8,22 +8,30 @@ interface Props {
     code: string;
     name: string;
     teamCode: string;
+    valueOrPoints: string;
     onClick: MouseEventHandler;
 }
 
-export const PlayerCard = ({ position, code, name, teamCode, onClick }: Props) => (
-    <Card hoverable className="player-card" onClick={onClick}>
-        <div>
-            {code === '-1' ? (
-                <Fragment>
+export const PlayerCard = ({ position, code, name, teamCode, valueOrPoints, onClick }: Props) => {
+    const isEmpty = code === '-1';
+    return (
+        <Card hoverable className="player-card" onClick={onClick}>
+            {isEmpty ? (
+                <span>
                     Select a <PositionTag position={position} />
-                </Fragment>
+                </span>
             ) : (
-                <Fragment>
-                    <div>{name}</div>
-                    <TeamTag teamCode={teamCode} />
-                </Fragment>
+                <div className="player-card-content">
+                    <div>
+                        <div>{name}</div>
+                        <div>
+                            <PositionTag position={position} />
+                            <TeamTag teamCode={teamCode} />
+                        </div>
+                    </div>
+                    <div className="value-or-points">{valueOrPoints}</div>
+                </div>
             )}
-        </div>
-    </Card>
-);
+        </Card>
+    );
+};

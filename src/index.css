@@ -167,13 +167,20 @@ code {
     justify-content: center;
     margin-right: 12px;
     margin-bottom: 36px;
-    height: 50px;
+    height: 60px;
     width: 200px;
     font-size: 1em;
 }
 
 .player-card .ant-card-body {
     padding: 6px;
+}
+
+.player-card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180px;
 }
 
 .player-cell-info {
@@ -286,6 +293,10 @@ code {
 
 [data-theme='dark'] .site-layout-sub-header-background {
     background: #141414;
+}
+
+.value-or-points {
+    font-size: 1.15em;
 }
 
 @media only screen and (max-width: 600px) {
