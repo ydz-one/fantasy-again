@@ -71,7 +71,7 @@ const _SelectPlayerModal = ({ squad, position, playerToReplace, onChangePlayerTo
             onOk={onClose}
             onCancel={onClose}
             footer={null}
-            width={isMobile ? '100vw' : '80vw'}
+            width={isMobile ? '100vw' : '90vw'}
             className="custom-modal"
         >
             <PlayerStatsTable
