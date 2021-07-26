@@ -1,9 +1,8 @@
-import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Input } from 'antd';
 import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
-import PlayerDataModal from './PlayerDataModal';
 import PlayerStatsTable from './PlayerStatsTable';
 import { PlayerBio, PlayerStatsRow, Position, Squad } from '../types';
 import { StoreState } from '../reducers';
@@ -12,10 +11,8 @@ interface Props {
     squad: Squad;
     position: Position;
     playerToReplace: string;
-    playerToAdd: string;
     onChangePlayerToAdd: Function;
     onClose: MouseEventHandler;
-    onAddPlayerToSquad: () => void;
 }
 
 function assertIsString(obj: unknown): asserts obj is string {
@@ -23,21 +20,9 @@ function assertIsString(obj: unknown): asserts obj is string {
     else throw new Error('Input must be a string');
 }
 
-const _SelectPlayerModal = ({
-    squad,
-    position,
-    playerToReplace,
-    playerToAdd,
-    onChangePlayerToAdd,
-    onClose,
-    onAddPlayerToSquad,
-}: Props) => {
+const _SelectPlayerModal = ({ squad, position, playerToReplace, onChangePlayerToAdd, onClose }: Props) => {
     const [searchText, setSearchText] = useState('');
     const isVisible = playerToReplace.length > 0;
-
-    const handleAddPlayerToSquad = () => {
-        onAddPlayerToSquad();
-    };
 
     const handleClickPlayer = (player: string) => {
         onChangePlayerToAdd(player);
@@ -104,22 +89,18 @@ const mapStateToProps = (
     ownProps: {
         position: Position;
         playerToReplace: string;
-        playerToAdd: string;
         onChangePlayerToAdd: Function;
         onClose: MouseEventHandler;
-        onAddPlayerToSquad: () => void;
     }
 ) => {
     const { squad } = game;
-    const { position, playerToReplace, playerToAdd, onChangePlayerToAdd, onClose, onAddPlayerToSquad } = ownProps;
+    const { position, playerToReplace, onChangePlayerToAdd, onClose } = ownProps;
     return {
         squad,
         position,
         playerToReplace,
-        playerToAdd,
         onChangePlayerToAdd,
         onClose,
-        onAddPlayerToSquad,
     };
 };
 

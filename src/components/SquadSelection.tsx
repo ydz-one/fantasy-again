@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad } from '../actions';
-import { PlayersBio, PlayersStats, Position, positions, Squad } from '../types';
+import { PlayersBio, PlayersStats, Position, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDataModal from './PlayerDataModal';
@@ -97,10 +97,8 @@ const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: 
                 <SelectPlayerModal
                     position={position}
                     playerToReplace={playerToReplace}
-                    playerToAdd={playerToAdd}
                     onChangePlayerToAdd={handleChangePlayerToAdd}
                     onClose={handleCloseSelectPlayerModal}
-                    onAddPlayerToSquad={handleAddPlayerToSquad}
                 />
                 <PlayerDataModal
                     selectedPlayer={playerToAdd}
