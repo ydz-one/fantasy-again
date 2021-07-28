@@ -8,6 +8,7 @@ import { PlayerCard, PlayerCardProps } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDataModal from './PlayerDataModal';
 import { formatValue } from '../data';
+import { EmptyPlayerCard } from './EmptyPlayerCard';
 
 const { Content } = Layout;
 interface Props {
@@ -17,34 +18,35 @@ interface Props {
     addPlayerToSquad: typeof addPlayerToSquad;
 }
 
-const renderSquad = (playersBio: PlayersBio, playersStats: PlayersStats, squad: Squad, handleClickPlayer: Function) => {
+const renderSquad = (
+    playersBio: PlayersBio,
+    playersStats: PlayersStats,
+    squad: Squad,
+    handleClickPlayer: Function,
+    handleSetReplacePlayer: Function
+) => {
     const renderPlayerCard = (position: Position) => (idx: number) => {
         const code = squad[position][idx];
-        const playerCardProps: PlayerCardProps = {
-            position,
-            name: '',
-            teamCode: '',
-            code: '-1',
-            valueOrPoints: '0',
-            injured: 0,
-            injury: '',
-            injuryEnd: '',
-            hasRedCard: false,
-            captainStatus: '',
-            onClick: () => handleClickPlayer(code || '-1', position),
-        };
-        if (code) {
-            const playerBio = playersBio[code];
-            const playerStats = playersStats[code];
-            playerCardProps.code = code;
-            playerCardProps.name = playerBio.webName;
-            playerCardProps.teamCode = playerBio.teamCode;
-            playerCardProps.valueOrPoints = formatValue(playerStats.value);
-            playerCardProps.injured = playerStats.injured;
-            playerCardProps.injury = playerStats.injury;
-            playerCardProps.injuryEnd = playerStats.injuryEnd;
+        if (!code) {
+            return <EmptyPlayerCard position={position} onClick={() => handleSetReplacePlayer('-1', position)} />;
         }
-        return <PlayerCard key={idx} {...playerCardProps} />;
+        const { webName, teamCode } = playersBio[code];
+        const { value, injured, injury, injuryEnd } = playersStats[code];
+        return (
+            <PlayerCard
+                key={idx}
+                position={position}
+                name={webName}
+                teamCode={teamCode}
+                valueOrPoints={formatValue(value)}
+                injured={injured}
+                injury={injury}
+                injuryEnd={injuryEnd}
+                hasRedCard={false}
+                captainStatus=""
+                onClick={() => handleClickPlayer(code)}
+            />
+        );
     };
 
     return (
@@ -57,15 +59,32 @@ const renderSquad = (playersBio: PlayersBio, playersStats: PlayersStats, squad: 
     );
 };
 
+function assertIsPosition(obj: unknown): asserts obj is Position {
+    if (
+        typeof obj === 'string' &&
+        (obj === Position.GK || obj === Position.DEF || obj === Position.MID || obj === Position.FWD)
+    )
+        return;
+    else throw new Error('Input must be a Position');
+}
+
 const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
     });
+    // playerClicked is the non-empty player card clicked in the Squad Selection screen; when set, it opens up a player data modal with a button to set that player to be replaced
+    const [playerClicked, setPlayerClicked] = useState('');
+    // playerToAdd is the player selected from the Player Stats Table; when set, it opens up a player data modal with a button to confirm transfer in
     const [playerToAdd, setPlayerToAdd] = useState('');
+    // playerToReplace is the empty or non-empty player selected to be replaced; when set, it opens up the Player Stats Table
     const { position, playerToReplace } = replacementInfo;
 
-    const handleClickPlayer = (playerToReplace: string, position: Position) => {
+    const handleClickPlayer = (playerClicked: string) => {
+        setPlayerClicked(playerClicked);
+    };
+
+    const handleSetReplacePlayer = (playerToReplace: string, position: Position) => {
         setReplacementInfo({
             position,
             playerToReplace,
@@ -78,6 +97,7 @@ const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: 
             position: Position.GK,
             playerToReplace: '',
         }));
+        setPlayerClicked(() => '');
     };
 
     const handleAddPlayerToSquad = () => {
@@ -85,28 +105,33 @@ const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: 
         handleCloseSelectPlayerModal();
     };
 
-    const handleChangePlayerToAdd = (player: string) => {
-        setPlayerToAdd(player);
-    };
-
-    const handleClosePlayerDataModal = () => {
-        setPlayerToAdd('');
+    const handleReadyReplacePlayer = (playerClicked: string) => {
+        const key = playersBio[playerClicked].position;
+        assertIsPosition(key);
+        const position = Position[key];
+        handleSetReplacePlayer(playerClicked, position);
+        setPlayerClicked('');
     };
 
     return (
         <Content className="site-layout-content">
             <div className="site-layout-background">
                 <div className="page-title page-title-two-sections">Squad Selection</div>
-                {renderSquad(playersBio, playersStats, squad, handleClickPlayer)}
+                {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
+                <PlayerDataModal
+                    selectedPlayer={playerClicked}
+                    onClose={() => setPlayerClicked('')}
+                    onAccept={() => handleReadyReplacePlayer(playerClicked)}
+                />
                 <SelectPlayerModal
                     position={position}
                     playerToReplace={playerToReplace}
-                    onChangePlayerToAdd={handleChangePlayerToAdd}
+                    onChangePlayerToAdd={(playerToAdd: string) => setPlayerToAdd(playerToAdd)}
                     onClose={handleCloseSelectPlayerModal}
                 />
                 <PlayerDataModal
                     selectedPlayer={playerToAdd}
-                    onClose={handleClosePlayerDataModal}
+                    onClose={() => setPlayerToAdd('')}
                     onAccept={handleAddPlayerToSquad}
                 />
             </div>
