@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import { Table, Tooltip } from 'antd';
-import { WarningTwoTone } from '@ant-design/icons';
+import { Table } from 'antd';
 import {
     columnComparatorFactory,
     fdrFixtureComparatorFactory,
@@ -32,6 +30,7 @@ import {
 import { PositionTag } from './PositionTag';
 import { TeamTag } from './TeamTag';
 import { FdrCell } from './FdrCell';
+import { InjurySymbol } from './InjurySymbol';
 
 interface Props {
     playersBio: PlayersBio;
@@ -96,17 +95,7 @@ const renderPlayerCell = (player: NameCellData) => (
         <div className="player-cell-name">{player.name}</div>
         <div className="player-cell-info">
             <PositionTag position={player.position} />
-            <div>
-                {player.injured === 1 && (
-                    <Tooltip
-                        placement="topLeft"
-                        title={player.injury + ' until ' + moment(player.injuryEnd).format('LL')}
-                        arrowPointAtCenter
-                    >
-                        <WarningTwoTone twoToneColor="red" />
-                    </Tooltip>
-                )}
-            </div>
+            <div>{player.injured === 1 && <InjurySymbol injury={player.injury} injuryEnd={player.injuryEnd} />}</div>
         </div>
     </div>
 );

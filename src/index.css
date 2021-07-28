@@ -235,6 +235,14 @@ code {
     flex-wrap: wrap;
 }
 
+.red-card {
+    color: red;
+    height: 18px;
+    width: 10px;
+    transform: rotateY(16deg);
+    transform: rotateZ(6deg);
+}
+
 .select-player-modal-title {
     display: flex;
     justify-content: space-between;

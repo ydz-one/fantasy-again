@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad } from '../actions';
 import { PlayersBio, PlayersStats, Position, Squad } from '../types';
-import { PlayerCard } from './PlayerCard';
+import { PlayerCard, PlayerCardProps } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDataModal from './PlayerDataModal';
 import { formatValue } from '../data';
@@ -20,27 +20,31 @@ interface Props {
 const renderSquad = (playersBio: PlayersBio, playersStats: PlayersStats, squad: Squad, handleClickPlayer: Function) => {
     const renderPlayerCard = (position: Position) => (idx: number) => {
         const code = squad[position][idx];
-        let name = '';
-        let teamCode = '';
-        let playerCode = '-1';
-        let value = 0;
+        const playerCardProps: PlayerCardProps = {
+            position,
+            name: '',
+            teamCode: '',
+            code: '-1',
+            valueOrPoints: '0',
+            injured: 0,
+            injury: '',
+            injuryEnd: '',
+            hasRedCard: false,
+            captainStatus: '',
+            onClick: () => handleClickPlayer(code || '-1', position),
+        };
         if (code) {
-            playerCode = code;
-            name = playersBio[code].webName;
-            teamCode = playersBio[code].teamCode;
-            value = playersStats[code].value;
+            const playerBio = playersBio[code];
+            const playerStats = playersStats[code];
+            playerCardProps.code = code;
+            playerCardProps.name = playerBio.webName;
+            playerCardProps.teamCode = playerBio.teamCode;
+            playerCardProps.valueOrPoints = formatValue(playerStats.value);
+            playerCardProps.injured = playerStats.injured;
+            playerCardProps.injury = playerStats.injury;
+            playerCardProps.injuryEnd = playerStats.injuryEnd;
         }
-        return (
-            <PlayerCard
-                key={idx}
-                position={position}
-                code={playerCode}
-                name={name}
-                teamCode={teamCode}
-                valueOrPoints={formatValue(value)}
-                onClick={() => handleClickPlayer(playerCode, position)}
-            />
-        );
+        return <PlayerCard key={idx} {...playerCardProps} />;
     };
 
     return (

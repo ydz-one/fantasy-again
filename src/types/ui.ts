@@ -1,4 +1,4 @@
-import { FdrFixture, PlayerFixtureStats } from './data';
+import { FdrFixture } from './data';
 
 export interface FdrRow {
     [key: string]: string | FdrFixture[];
