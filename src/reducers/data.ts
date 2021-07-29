@@ -72,8 +72,8 @@ const populateInitialStats = (
             transfersOut: 0,
             fixtureStats: [],
         };
-        updateInjuryData(playersStats, injuryHistory, 0);
         playersStats[key] = stats;
+        updateInjuryData(playersStats, injuryHistory, 1);
     }
     return playersStats;
 };
@@ -207,7 +207,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             value,
         };
     });
-    updateInjuryData(newPlayersStats, state.injuryHistory, action.gwNum);
+    updateInjuryData(newPlayersStats, state.injuryHistory, action.gwNum + 1);
     return newPlayersStats;
 };
 
