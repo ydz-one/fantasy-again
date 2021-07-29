@@ -19,6 +19,7 @@ code {
 
 .custom-modal {
     top: 50px;
+    right: -5vw;
 }
 
 .custom-table .ant-table-cell {
@@ -305,6 +306,12 @@ code {
 
 .value-or-points {
     font-size: 1.15em;
+}
+
+@media only screen and (max-width: 1000px) {
+    .custom-modal {
+        right: 0;
+    }
 }
 
 @media only screen and (max-width: 600px) {
