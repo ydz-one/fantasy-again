@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
-import { Layout } from 'antd';
+import { Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad } from '../actions';
 import { PlayersBio, PlayersStats, Position, Squad } from '../types';
-import { PlayerCard, PlayerCardProps } from './PlayerCard';
+import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDataModal from './PlayerDataModal';
 import { formatValue } from '../data';
@@ -116,7 +116,13 @@ const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: 
     return (
         <Content className="site-layout-content">
             <div className="site-layout-background">
-                <div className="page-title page-title-two-sections">Squad Selection</div>
+                <div className="page-title page-title-two-sections">
+                    <div>Squad Selection</div>
+                    <div className="squad-selection-metrics">
+                        <Statistic title="Selected" value={1} suffix={'/15'} />
+                        <Statistic title="Balance (£)" value={100.0} precision={1} />
+                    </div>
+                </div>
                 {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
                 <PlayerDataModal
                     selectedPlayer={playerClicked}

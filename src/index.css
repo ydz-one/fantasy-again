@@ -304,6 +304,13 @@ code {
     background: #141414;
 }
 
+.squad-selection-metrics {
+    font-weight: normal;
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+}
+
 .value-or-points {
     font-size: 1.15em;
 }
