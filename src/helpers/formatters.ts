@@ -1,4 +1,4 @@
-import { FdrFixture, FdrRow, NameCellData, PlayerStatsRow } from '../types';
+import { FdrFixture, FdrRow, PlayerStatsRow } from '../types';
 
 const TOTAL_MANAGERS = 6_000_000;
 

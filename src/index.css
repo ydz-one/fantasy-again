@@ -54,6 +54,11 @@ code {
     text-align: center;
 }
 
+.error-note {
+    color: red;
+    margin-top: 10px;
+}
+
 .fdr {
     height: 99%;
     width: 99%;

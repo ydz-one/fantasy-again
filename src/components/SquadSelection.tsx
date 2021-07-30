@@ -4,13 +4,13 @@ import { useHistory } from 'react-router-dom';
 import { Button, Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad, finalizeSquad } from '../actions';
-import { PlayersBio, PlayersStats, Position, positions, Squad } from '../types';
+import { PlayersBio, PlayersStats, Position, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDataModal from './PlayerDataModal';
-import { formatValue } from '../data';
+import { formatValue, getTeamsOverMaxPlayerLimit } from '../helpers';
 import { EmptyPlayerCard } from './EmptyPlayerCard';
-import { HistoryOutlined } from '@ant-design/icons';
+import { TeamTag } from './TeamTag';
 
 const { Content } = Layout;
 interface Props {
@@ -75,9 +75,9 @@ function assertIsPosition(obj: unknown): asserts obj is Position {
 
 const calcNumPlayers = (squad: Squad) => {
     let sum = 0;
-    for (const [key, value] of Object.entries(squad)) {
-        if (key in Position) {
-            sum += value.length;
+    for (const [position, players] of Object.entries(squad)) {
+        if (position in Position) {
+            sum += players.length;
         }
     }
     return sum;
@@ -135,6 +135,10 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
     };
 
     const numPlayersSelected = calcNumPlayers(squad);
+    const isPositiveBalance = balance >= 0;
+    const isFullSquad = numPlayersSelected === 15;
+    const teamsOverPlayerLimit = getTeamsOverMaxPlayerLimit(squad, playersBio);
+    const isSquadValid = isPositiveBalance && isFullSquad && teamsOverPlayerLimit.length === 0;
     return (
         <Content className="site-layout-content">
             <div className="site-layout-background">
@@ -144,22 +148,36 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
                         <Statistic
                             title="Selected"
                             value={numPlayersSelected}
-                            valueStyle={{ color: numPlayersSelected < 15 ? '#cf1322' : '#3f8600' }}
+                            valueStyle={{ color: isFullSquad ? '#3f8600' : '#cf1322' }}
                             suffix={'/15'}
                         />
                         <Statistic
                             title="Balance (£)"
                             value={balance / 10}
-                            valueStyle={{ color: balance < 0 ? '#cf1322' : '#3f8600' }}
+                            valueStyle={{ color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
                             precision={1}
                         />
                     </div>
                 </div>
                 {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
                 <div className="enter-squad-btn-container">
-                    <Button size="large" type="primary" onClick={handleFinalizeSquad} className="enter-squad-btn">
+                    <Button
+                        size="large"
+                        type="primary"
+                        onClick={handleFinalizeSquad}
+                        className="enter-squad-btn"
+                        disabled={!isSquadValid}
+                    >
                         Enter Squad
                     </Button>
+                    {teamsOverPlayerLimit.length > 0 && (
+                        <div className="error-note">
+                            Too many players from{' '}
+                            {teamsOverPlayerLimit.map((team) => (
+                                <TeamTag teamCode={team} />
+                            ))}
+                        </div>
+                    )}
                 </div>
                 <PlayerDataModal
                     selectedPlayer={playerClicked}

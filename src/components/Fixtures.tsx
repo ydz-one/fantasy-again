@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Layout, Table } from 'antd';
 import { StoreState } from '../reducers';
 import { DEFAULT_SEASON, FdrData, FdrFixture, FdrRow } from '../types';
-import { fdrFixtureComparatorFactory, getTeamFullNames } from '../data';
+import { getTeamFullNames } from '../data';
+import { fdrFixtureComparatorFactory } from '../helpers';
 import { FdrCell } from './FdrCell';
 
 const { Content } = Layout;

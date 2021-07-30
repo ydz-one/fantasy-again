@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
+import { PLAYER_STATS_COLUMN_LABELS, TEAM_FULL_NAME_TO_CODE } from '../constants';
+import { getTeamCodeToId, getTeamFullNames } from '../data';
 import {
     columnComparatorFactory,
     fdrFixtureComparatorFactory,
@@ -9,11 +11,7 @@ import {
     formatPoints,
     formatSelected,
     formatValue,
-    getTeamCodeToId,
-    getTeamFullNames,
-    PLAYER_STATS_COLUMN_LABELS,
-} from '../data';
-import { TEAM_FULL_NAME_TO_CODE } from '../data/teams';
+} from '../helpers';
 import { StoreState } from '../reducers';
 import {
     DEFAULT_SEASON,

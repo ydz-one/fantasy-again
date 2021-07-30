@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, ReactNode } from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal } from 'antd';
 import { StoreState } from '../reducers';

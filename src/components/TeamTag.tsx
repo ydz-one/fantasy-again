@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tag } from 'antd';
-import { TEAMS } from '../data/teams';
+import { TEAMS } from '../constants';
 
 interface Props {
     teamCode: string;
