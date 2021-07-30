@@ -5,16 +5,22 @@ export interface GameState {
     points: number;
     isSquadComplete: boolean;
     squad: Squad;
+    balance: number;
 }
 
 export type Squad = {
-    GK: string[];
-    DEF: string[];
-    MID: string[];
-    FWD: string[];
-    SUB: string[];
+    GK: SquadPlayer[];
+    DEF: SquadPlayer[];
+    MID: SquadPlayer[];
+    FWD: SquadPlayer[];
+    SUB: SquadPlayer[];
     CAP: string;
     VC: string;
+};
+
+export type SquadPlayer = {
+    code: string;
+    buyPrice: number;
 };
 
 export enum Season {
@@ -50,7 +56,7 @@ export interface AddPlayerToSquad {
     payload: {
         position: Position;
         playerToReplace: string;
-        playerToAdd: string;
+        playerToAdd: SquadPlayer;
     };
 }
 

@@ -44,7 +44,7 @@ const _SelectPlayerModal = ({ squad, position, playerToReplace, onChangePlayerTo
     // Disable rows of players already in the squad
     const disableFn = (row: PlayerStatsRow) => {
         assertIsString(row.code);
-        return squad[position].includes(row.code);
+        return squad[position].some(({ code }) => code === row.code);
     };
 
     // Reset searchbox when user closes this modal

@@ -1,4 +1,4 @@
-import { GameState, GameAction, GameActionTypes, Position } from '../types';
+import { GameState, GameAction, GameActionTypes } from '../types';
 
 const getInitialGameState = (): GameState => {
     return {
@@ -14,6 +14,7 @@ const getInitialGameState = (): GameState => {
             CAP: '-1',
             VC: '-1',
         },
+        balance: 1000,
     };
 };
 
@@ -34,12 +35,13 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
             const playersInRole = state.squad[position];
             return {
                 ...state,
+                balance: state.balance - playerToAdd.buyPrice,
                 squad: {
                     ...state.squad,
                     [position]:
                         playerToReplace === '-1'
                             ? playersInRole.concat(playerToAdd)
-                            : playersInRole.map((player) => (player === playerToReplace ? playerToAdd : player)),
+                            : playersInRole.map((player) => (player.code === playerToReplace ? playerToAdd : player)),
                 },
             };
         default:

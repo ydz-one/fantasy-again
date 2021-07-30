@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad } from '../actions';
-import { PlayersBio, PlayersStats, Position, Squad } from '../types';
+import { PlayersBio, PlayersStats, Position, positions, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDataModal from './PlayerDataModal';
@@ -15,6 +15,7 @@ interface Props {
     playersBio: PlayersBio;
     playersStats: PlayersStats;
     squad: Squad;
+    balance: number;
     addPlayerToSquad: typeof addPlayerToSquad;
 }
 
@@ -26,10 +27,11 @@ const renderSquad = (
     handleSetReplacePlayer: Function
 ) => {
     const renderPlayerCard = (position: Position) => (idx: number) => {
-        const code = squad[position][idx];
-        if (!code) {
+        const squadPlayer = squad[position][idx];
+        if (!squadPlayer) {
             return <EmptyPlayerCard position={position} onClick={() => handleSetReplacePlayer('-1', position)} />;
         }
+        const { code } = squadPlayer;
         const { webName, teamCode } = playersBio[code];
         const { value, injured, injury, injuryEnd } = playersStats[code];
         return (
@@ -68,7 +70,17 @@ function assertIsPosition(obj: unknown): asserts obj is Position {
     else throw new Error('Input must be a Position');
 }
 
-const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: Props) => {
+const calcNumPlayers = (squad: Squad) => {
+    let sum = 0;
+    for (const [key, value] of Object.entries(squad)) {
+        if (key in Position) {
+            sum += value.length;
+        }
+    }
+    return sum;
+};
+
+const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerToSquad }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
@@ -101,7 +113,7 @@ const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: 
     };
 
     const handleAddPlayerToSquad = () => {
-        addPlayerToSquad(position, playerToReplace, playerToAdd);
+        addPlayerToSquad(position, playerToReplace, { code: playerToAdd, buyPrice: playersStats[playerToAdd].value });
         handleCloseSelectPlayerModal();
     };
 
@@ -119,8 +131,8 @@ const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: 
                 <div className="page-title page-title-two-sections">
                     <div>Squad Selection</div>
                     <div className="squad-selection-metrics">
-                        <Statistic title="Selected" value={1} suffix={'/15'} />
-                        <Statistic title="Balance (£)" value={100.0} precision={1} />
+                        <Statistic title="Selected" value={calcNumPlayers(squad)} suffix={'/15'} />
+                        <Statistic title="Balance (£)" value={balance / 10} precision={1} />
                     </div>
                 </div>
                 {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
@@ -147,11 +159,12 @@ const _SquadSelection = ({ playersBio, playersStats, squad, addPlayerToSquad }: 
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { squad } = game;
+    const { squad, balance } = game;
     return {
         playersBio,
         playersStats,
         squad,
+        balance,
     };
 };
 

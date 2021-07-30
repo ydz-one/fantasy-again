@@ -1,4 +1,4 @@
-import { GameAction, GameActionTypes, Position } from '../types';
+import { GameAction, GameActionTypes, Position, SquadPlayer } from '../types';
 
 export const incrementGameweek = (): GameAction => ({
     type: GameActionTypes.IncrementGameweek,
@@ -9,7 +9,7 @@ export const addPoints = (points: number): GameAction => ({
     payload: points,
 });
 
-export const addPlayerToSquad = (position: Position, playerToReplace: string, playerToAdd: string) => ({
+export const addPlayerToSquad = (position: Position, playerToReplace: string, playerToAdd: SquadPlayer) => ({
     type: GameActionTypes.AddPlayerToSquad,
     payload: {
         position,
