@@ -46,6 +46,14 @@ code {
     pointer-events: none;
 }
 
+.enter-squad-btn {
+    width: 360px;
+}
+
+.enter-squad-btn-container {
+    text-align: center;
+}
+
 .fdr {
     height: 99%;
     width: 99%;
@@ -166,8 +174,7 @@ code {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 12px;
-    margin-bottom: 36px;
+    margin: 0 6px 36px 6px;
     height: 60px;
     width: 200px;
     font-size: 1em;
@@ -332,6 +339,14 @@ code {
         display: none !important;
     }
 
+    .enter-squad-btn {
+        width: 200px;
+    }
+
+    .enter-squad-btn-container {
+        padding-top: 10px;
+    }
+
     .fdr-section {
         margin-top: 10px;
     }
@@ -349,7 +364,7 @@ code {
     }
 
     .player-card {
-        margin-bottom: 12px;
+        margin: 0 6px 12px 6px;
     }
 
     .sider-nav {

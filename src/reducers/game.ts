@@ -44,6 +44,11 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                             : playersInRole.map((player) => (player.code === playerToReplace ? playerToAdd : player)),
                 },
             };
+        case GameActionTypes.FinalizeSquad:
+            return {
+                ...state,
+                isSquadComplete: true,
+            };
         default:
             return state;
     }

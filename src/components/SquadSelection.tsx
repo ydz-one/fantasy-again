@@ -1,14 +1,16 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
-import { Layout, Statistic } from 'antd';
+import { useHistory } from 'react-router-dom';
+import { Button, Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
-import { addPlayerToSquad } from '../actions';
+import { addPlayerToSquad, finalizeSquad } from '../actions';
 import { PlayersBio, PlayersStats, Position, positions, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDataModal from './PlayerDataModal';
 import { formatValue } from '../data';
 import { EmptyPlayerCard } from './EmptyPlayerCard';
+import { HistoryOutlined } from '@ant-design/icons';
 
 const { Content } = Layout;
 interface Props {
@@ -17,6 +19,7 @@ interface Props {
     squad: Squad;
     balance: number;
     addPlayerToSquad: typeof addPlayerToSquad;
+    finalizeSquad: typeof finalizeSquad;
 }
 
 const renderSquad = (
@@ -80,7 +83,7 @@ const calcNumPlayers = (squad: Squad) => {
     return sum;
 };
 
-const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerToSquad }: Props) => {
+const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerToSquad, finalizeSquad }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
@@ -91,6 +94,7 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
     const [playerToAdd, setPlayerToAdd] = useState('');
     // playerToReplace is the empty or non-empty player selected to be replaced; when set, it opens up the Player Stats Table
     const { position, playerToReplace } = replacementInfo;
+    const history = useHistory();
 
     const handleClickPlayer = (playerClicked: string) => {
         setPlayerClicked(playerClicked);
@@ -125,6 +129,11 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
         setPlayerClicked('');
     };
 
+    const handleFinalizeSquad = () => {
+        finalizeSquad();
+        history.push('/pickteam');
+    };
+
     const numPlayersSelected = calcNumPlayers(squad);
     return (
         <Content className="site-layout-content">
@@ -147,6 +156,11 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
                     </div>
                 </div>
                 {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
+                <div className="enter-squad-btn-container">
+                    <Button size="large" type="primary" onClick={handleFinalizeSquad} className="enter-squad-btn">
+                        Enter Squad
+                    </Button>
+                </div>
                 <PlayerDataModal
                     selectedPlayer={playerClicked}
                     onClose={() => setPlayerClicked('')}
@@ -179,4 +193,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps, { addPlayerToSquad })(_SquadSelection);
+export default connect(mapStateToProps, { addPlayerToSquad, finalizeSquad })(_SquadSelection);

@@ -12,8 +12,13 @@ import Transfers from './Transfers';
 import Statistics from './Statistics';
 import Settings from './Settings';
 import SquadSelection from './SquadSelection';
+import { StoreState } from '../reducers';
 
-const _App = () => (
+interface Props {
+    isSquadComplete: boolean;
+}
+
+const _App = ({ isSquadComplete }: Props) => (
     <Layout className="app">
         <Sider />
         <Layout className="app">
@@ -26,10 +31,17 @@ const _App = () => (
                 <Route path="/transfers" render={() => <Transfers />} />
                 <Route path="/statistics" render={() => <Statistics />} />
                 <Route path="/settings" render={() => <Settings />} />
-                <Redirect to="/fixtures" />
+                {isSquadComplete ? <Redirect to="/pickteam" /> : <Redirect to="/squadselection" />}
             </Switch>
         </Layout>
     </Layout>
 );
 
-export const App = connect()(_App);
+const mapStateToProps = ({ game }: StoreState) => {
+    const { isSquadComplete } = game;
+    return {
+        isSquadComplete,
+    };
+};
+
+export const App = connect(mapStateToProps)(_App);

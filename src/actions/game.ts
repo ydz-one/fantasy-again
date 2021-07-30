@@ -9,11 +9,19 @@ export const addPoints = (points: number): GameAction => ({
     payload: points,
 });
 
-export const addPlayerToSquad = (position: Position, playerToReplace: string, playerToAdd: SquadPlayer) => ({
+export const addPlayerToSquad = (
+    position: Position,
+    playerToReplace: string,
+    playerToAdd: SquadPlayer
+): GameAction => ({
     type: GameActionTypes.AddPlayerToSquad,
     payload: {
         position,
         playerToReplace,
         playerToAdd,
     },
+});
+
+export const finalizeSquad = (): GameAction => ({
+    type: GameActionTypes.FinalizeSquad,
 });

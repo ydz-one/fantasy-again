@@ -40,6 +40,7 @@ export enum GameActionTypes {
     IncrementGameweek = 'IncrementGameweek',
     AddPoints = 'AddPoints',
     AddPlayerToSquad = 'AddPlayerToSquad',
+    FinalizeSquad = 'FinalizeSquad',
 }
 
 export interface IncrementGameweekAction {
@@ -60,4 +61,8 @@ export interface AddPlayerToSquad {
     };
 }
 
-export type GameAction = IncrementGameweekAction | AddPointsAction | AddPlayerToSquad;
+export interface FinalizeSquad {
+    type: GameActionTypes.FinalizeSquad;
+}
+
+export type GameAction = IncrementGameweekAction | AddPointsAction | AddPlayerToSquad | FinalizeSquad;
