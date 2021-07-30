@@ -125,14 +125,25 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
         setPlayerClicked('');
     };
 
+    const numPlayersSelected = calcNumPlayers(squad);
     return (
         <Content className="site-layout-content">
             <div className="site-layout-background">
                 <div className="page-title page-title-two-sections">
                     <div>Squad Selection</div>
                     <div className="squad-selection-metrics">
-                        <Statistic title="Selected" value={calcNumPlayers(squad)} suffix={'/15'} />
-                        <Statistic title="Balance (£)" value={balance / 10} precision={1} />
+                        <Statistic
+                            title="Selected"
+                            value={numPlayersSelected}
+                            valueStyle={{ color: numPlayersSelected < 15 ? '#cf1322' : '#3f8600' }}
+                            suffix={'/15'}
+                        />
+                        <Statistic
+                            title="Balance (£)"
+                            value={balance / 10}
+                            valueStyle={{ color: balance < 0 ? '#cf1322' : '#3f8600' }}
+                            precision={1}
+                        />
                     </div>
                 </div>
                 {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
