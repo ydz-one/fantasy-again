@@ -382,6 +382,14 @@ code {
         width: 100%;
     }
 
+    .custom-modal .ant-modal-header {
+        padding: 16px;
+    }
+
+    .custom-modal .ant-modal-body {
+        padding: 0;
+    }
+
     .desktop-text {
         display: none !important;
     }
@@ -408,6 +416,10 @@ code {
 
     .player-search-input {
         width: 160px;
+    }
+
+    .player-search-input-modal {
+        margin-right: 36px;
     }
 
     .page-title-two-sections {
