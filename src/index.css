@@ -187,10 +187,14 @@ code {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 6px;
+    margin: 0 6px 36px;
     height: 60px;
     width: 200px;
     font-size: 1em;
+}
+
+.position-row-bottom .player-card {
+    margin: 0 6px;
 }
 
 .player-card .ant-card-body {
@@ -254,7 +258,6 @@ code {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 36px;
 }
 
 .position-row-top {
@@ -430,8 +433,12 @@ code {
         margin: 0 6px 12px 6px;
     }
 
-    .position-row {
-        margin-bottom: 0;
+    .position-row-bottom .player-card {
+        margin: 0 6px 12px 6px;
+    }
+
+    .position-row-bottom {
+        margin-bottom: 12px;
     }
 
     .sider-nav {
