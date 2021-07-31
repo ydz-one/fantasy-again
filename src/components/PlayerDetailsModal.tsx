@@ -14,7 +14,7 @@ interface Props {
     gameweek: number;
 }
 
-const _PlayerDataModal = ({
+const _PlayerDetailsModal = ({
     selectedPlayer,
     onClose,
     onAccept = null,
@@ -66,4 +66,4 @@ const mapStateToProps = (
     };
 };
 
-export default connect(mapStateToProps)(_PlayerDataModal);
+export default connect(mapStateToProps)(_PlayerDetailsModal);

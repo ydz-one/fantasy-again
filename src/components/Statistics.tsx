@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Layout } from 'antd';
 import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
-import PlayerDataModal from './PlayerDataModal';
+import PlayerDetailsModal from './PlayerDetailsModal';
 import PlayerStatsTable from './PlayerStatsTable';
 import { PlayerBio } from '../types';
 
@@ -46,7 +46,7 @@ const Statistics = () => {
                     onClickPlayer={setSelectedPlayer}
                     showPositionFilter={true}
                 />
-                <PlayerDataModal selectedPlayer={selectedPlayer} onClose={handleClose} />
+                <PlayerDetailsModal selectedPlayer={selectedPlayer} onClose={handleClose} />
             </div>
         </Content>
     );

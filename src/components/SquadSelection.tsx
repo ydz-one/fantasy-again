@@ -7,7 +7,7 @@ import { addPlayerToSquad, finalizeSquad } from '../actions';
 import { PlayersBio, PlayersStats, Position, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
-import PlayerDataModal from './PlayerDataModal';
+import PlayerDetailsModal from './PlayerDetailsModal';
 import { formatValue, getTeamsOverMaxPlayerLimit } from '../helpers';
 import { EmptyPlayerCard } from './EmptyPlayerCard';
 import { TeamTag } from './TeamTag';
@@ -179,7 +179,7 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
                         </div>
                     )}
                 </div>
-                <PlayerDataModal
+                <PlayerDetailsModal
                     selectedPlayer={playerClicked}
                     onClose={() => setPlayerClicked('')}
                     onAccept={() => handleReadyReplacePlayer(playerClicked)}
@@ -190,7 +190,7 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
                     onChangePlayerToAdd={(playerToAdd: string) => setPlayerToAdd(playerToAdd)}
                     onClose={handleCloseSelectPlayerModal}
                 />
-                <PlayerDataModal
+                <PlayerDetailsModal
                     selectedPlayer={playerToAdd}
                     onClose={() => setPlayerToAdd('')}
                     onAccept={handleAddPlayerToSquad}
