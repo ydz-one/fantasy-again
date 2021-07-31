@@ -144,19 +144,23 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
             <div className="site-layout-background">
                 <div className="page-title page-title-two-sections">
                     <div>Squad Selection</div>
-                    <div className="squad-selection-metrics">
-                        <Statistic
-                            title="Selected"
-                            value={numPlayersSelected}
-                            valueStyle={{ color: isFullSquad ? '#3f8600' : '#cf1322' }}
-                            suffix={'/15'}
-                        />
-                        <Statistic
-                            title="Balance (£)"
-                            value={balance / 10}
-                            valueStyle={{ color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
-                            precision={1}
-                        />
+                    <div className="center-when-mobile">
+                        <div className="squad-selection-metrics">
+                            <Statistic
+                                title="Selected"
+                                value={numPlayersSelected}
+                                valueStyle={{ color: isFullSquad ? '#3f8600' : '#cf1322' }}
+                                suffix={'/15'}
+                                className="squad-selection-metric squad-selection-metric-left"
+                            />
+                            <Statistic
+                                title="Balance (£)"
+                                value={balance / 10}
+                                valueStyle={{ color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
+                                precision={1}
+                                className="squad-selection-metric"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="top-btn-container">

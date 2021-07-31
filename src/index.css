@@ -333,7 +333,15 @@ code {
     font-weight: normal;
     display: flex;
     justify-content: space-between;
-    width: 150px;
+    width: 160px;
+}
+
+.squad-selection-metric {
+    width: 70px;
+}
+
+.squad-selection-metric-left {
+    text-align: right;
 }
 
 .top-btn {
@@ -360,6 +368,12 @@ code {
         min-width: 0 !important;
         max-width: 100px !important;
         width: 100px !important;
+    }
+
+    .center-when-mobile {
+        display: flex;
+        justify-content: center;
+        width: 100%;
     }
 
     .desktop-text {
@@ -408,5 +422,10 @@ code {
 
     .sider-season {
         padding-bottom: 10px;
+    }
+
+    .squad-selection-metrics {
+        padding-top: 10px;
+        width: 180px;
     }
 }

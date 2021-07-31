@@ -70,19 +70,21 @@ const _Fixtures = ({ fdr, gameweek }: Props) => (
         <div className="site-layout-background">
             <div className="page-title page-title-two-sections">
                 <div>Fixture Difficulty Rating (FDR)</div>
-                <div className="fdr-section">
-                    <div className="fdr-key-text">FDR Key:</div>
-                    <div>
-                        <div className="fdr-key">
-                            <div className="fdr-key-square fdr-1">1</div>
-                            <div className="fdr-key-square fdr-2">2</div>
-                            <div className="fdr-key-square fdr-3">3</div>
-                            <div className="fdr-key-square fdr-4">4</div>
-                            <div className="fdr-key-square fdr-5">5</div>
-                        </div>
-                        <div className="fdr-key-label">
-                            <div>Easy</div>
-                            <div>Hard</div>
+                <div className="center-when-mobile">
+                    <div className="fdr-section">
+                        <div className="fdr-key-text">FDR Key:</div>
+                        <div>
+                            <div className="fdr-key">
+                                <div className="fdr-key-square fdr-1">1</div>
+                                <div className="fdr-key-square fdr-2">2</div>
+                                <div className="fdr-key-square fdr-3">3</div>
+                                <div className="fdr-key-square fdr-4">4</div>
+                                <div className="fdr-key-square fdr-5">5</div>
+                            </div>
+                            <div className="fdr-key-label">
+                                <div>Easy</div>
+                                <div>Hard</div>
+                            </div>
                         </div>
                     </div>
                 </div>
