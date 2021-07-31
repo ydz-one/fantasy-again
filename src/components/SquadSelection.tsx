@@ -159,6 +159,14 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
                         />
                     </div>
                 </div>
+                <div className="top-btn-container">
+                    <Button size="large" className="top-btn">
+                        Auto Pick
+                    </Button>
+                    <Button size="large" className="top-btn">
+                        Reset
+                    </Button>
+                </div>
                 {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
                 <div className="enter-squad-btn-container">
                     <Button
