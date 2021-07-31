@@ -17,6 +17,10 @@ code {
     height: 100%;
 }
 
+.custom-divider {
+    margin: 12px 0;
+}
+
 .custom-modal {
     top: 50px;
     right: -5vw;
@@ -179,7 +183,7 @@ code {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 6px 36px 6px;
+    margin: 0 6px;
     height: 60px;
     width: 200px;
     font-size: 1em;
@@ -246,6 +250,15 @@ code {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    margin-bottom: 36px;
+}
+
+.position-row-top {
+    margin-top: 24px;
+}
+
+.position-row-bottom {
+    margin-bottom: 24px;
 }
 
 .red-card {
@@ -330,7 +343,6 @@ code {
 
 .top-btn-container {
     text-align: center;
-    padding-bottom: 36px;
 }
 
 .value-or-points {
@@ -358,17 +370,12 @@ code {
         width: 200px;
     }
 
-    .enter-squad-btn-container {
-        padding-top: 10px;
-    }
-
     .top-btn {
-        margin-bottom: 10px;
+        width: 93px;
     }
 
     .top-btn-container {
         text-align: center;
-        padding-bottom: 10px;
     }
 
     .fdr-section {
@@ -389,6 +396,10 @@ code {
 
     .player-card {
         margin: 0 6px 12px 6px;
+    }
+
+    .position-row {
+        margin-bottom: 0;
     }
 
     .sider-nav {

@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, Layout, Statistic } from 'antd';
+import { Button, Divider, Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad, finalizeSquad } from '../actions';
 import { PlayersBio, PlayersStats, Position, Squad } from '../types';
@@ -56,10 +56,10 @@ const renderSquad = (
 
     return (
         <Fragment>
-            <div className="position-row">{[0, 1].map(renderPlayerCard(Position.GK))}</div>
+            <div className="position-row position-row-top">{[0, 1].map(renderPlayerCard(Position.GK))}</div>
             <div className="position-row">{[0, 1, 2, 3, 4].map(renderPlayerCard(Position.DEF))}</div>
             <div className="position-row">{[0, 1, 2, 3, 4].map(renderPlayerCard(Position.MID))}</div>
-            <div className="position-row">{[0, 1, 2].map(renderPlayerCard(Position.FWD))}</div>
+            <div className="position-row position-row-bottom">{[0, 1, 2].map(renderPlayerCard(Position.FWD))}</div>
         </Fragment>
     );
 };
@@ -167,7 +167,9 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
                         Reset
                     </Button>
                 </div>
+                <Divider className="custom-divider" />
                 {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
+                <Divider className="custom-divider" />
                 <div className="enter-squad-btn-container">
                     <Button
                         size="large"
