@@ -25,3 +25,7 @@ export const addPlayerToSquad = (
 export const finalizeSquad = (): GameAction => ({
     type: GameActionTypes.FinalizeSquad,
 });
+
+export const resetSquad = (): GameAction => ({
+    type: GameActionTypes.ResetSquad,
+});

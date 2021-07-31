@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
-import { addPlayerToSquad, finalizeSquad } from '../actions';
+import { addPlayerToSquad, finalizeSquad, resetSquad } from '../actions';
 import { PlayersBio, PlayersStats, Position, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
@@ -20,6 +20,7 @@ interface Props {
     balance: number;
     addPlayerToSquad: typeof addPlayerToSquad;
     finalizeSquad: typeof finalizeSquad;
+    resetSquad: typeof resetSquad;
 }
 
 const renderSquad = (
@@ -83,7 +84,15 @@ const calcNumPlayers = (squad: Squad) => {
     return sum;
 };
 
-const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerToSquad, finalizeSquad }: Props) => {
+const _SquadSelection = ({
+    playersBio,
+    playersStats,
+    squad,
+    balance,
+    addPlayerToSquad,
+    finalizeSquad,
+    resetSquad,
+}: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
@@ -134,9 +143,14 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
         history.push('/pickteam');
     };
 
+    const handleReset = () => {
+        resetSquad();
+    };
+
     const numPlayersSelected = calcNumPlayers(squad);
     const isPositiveBalance = balance >= 0;
     const isFullSquad = numPlayersSelected === 15;
+    const isSquadEmpty = numPlayersSelected === 0;
     const teamsOverPlayerLimit = getTeamsOverMaxPlayerLimit(squad, playersBio);
     const isSquadValid = isPositiveBalance && isFullSquad && teamsOverPlayerLimit.length === 0;
     return (
@@ -164,10 +178,10 @@ const _SquadSelection = ({ playersBio, playersStats, squad, balance, addPlayerTo
                     </div>
                 </div>
                 <div className="top-btn-container">
-                    <Button size="large" className="top-btn">
+                    <Button size="large" className="top-btn" disabled>
                         Auto Pick
                     </Button>
-                    <Button size="large" className="top-btn">
+                    <Button size="large" className="top-btn" onClick={handleReset} disabled={isSquadEmpty}>
                         Reset
                     </Button>
                 </div>
@@ -225,4 +239,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps, { addPlayerToSquad, finalizeSquad })(_SquadSelection);
+export default connect(mapStateToProps, { addPlayerToSquad, finalizeSquad, resetSquad })(_SquadSelection);

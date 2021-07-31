@@ -49,6 +49,20 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 ...state,
                 isSquadComplete: true,
             };
+        case GameActionTypes.ResetSquad:
+            return {
+                ...state,
+                squad: {
+                    GK: [],
+                    DEF: [],
+                    MID: [],
+                    FWD: [],
+                    SUB: [],
+                    CAP: '-1',
+                    VC: '-1',
+                },
+                balance: 1000,
+            };
         default:
             return state;
     }
