@@ -57,7 +57,7 @@ export interface AddPlayerToSquad {
     type: GameActionTypes.AddPlayerToSquad;
     payload: {
         position: Position;
-        playerToReplace: string;
+        playerToReplace: SquadPlayer;
         playerToAdd: SquadPlayer;
     };
 }

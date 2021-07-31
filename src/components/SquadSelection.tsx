@@ -126,7 +126,11 @@ const _SquadSelection = ({
     };
 
     const handleAddPlayerToSquad = () => {
-        addPlayerToSquad(position, playerToReplace, { code: playerToAdd, buyPrice: playersStats[playerToAdd].value });
+        addPlayerToSquad(
+            position,
+            { code: playerToReplace, buyPrice: playerToReplace !== '-1' ? playersStats[playerToReplace].value : 0 },
+            { code: playerToAdd, buyPrice: playersStats[playerToAdd].value }
+        );
         handleCloseSelectPlayerModal();
     };
 

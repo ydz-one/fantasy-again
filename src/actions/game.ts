@@ -9,9 +9,10 @@ export const addPoints = (points: number): GameAction => ({
     payload: points,
 });
 
+// Only use for adding/replacing players on the Select Squad page, not to be used for transfers on the Transfers page
 export const addPlayerToSquad = (
     position: Position,
-    playerToReplace: string,
+    playerToReplace: SquadPlayer,
     playerToAdd: SquadPlayer
 ): GameAction => ({
     type: GameActionTypes.AddPlayerToSquad,

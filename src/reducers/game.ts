@@ -35,13 +35,15 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
             const playersInRole = state.squad[position];
             return {
                 ...state,
-                balance: state.balance - playerToAdd.buyPrice,
+                balance: state.balance - playerToAdd.buyPrice + playerToReplace.buyPrice,
                 squad: {
                     ...state.squad,
                     [position]:
-                        playerToReplace === '-1'
+                        playerToReplace.code === '-1'
                             ? playersInRole.concat(playerToAdd)
-                            : playersInRole.map((player) => (player.code === playerToReplace ? playerToAdd : player)),
+                            : playersInRole.map((player) =>
+                                  player.code === playerToReplace.code ? playerToAdd : player
+                              ),
                 },
             };
         case GameActionTypes.FinalizeSquad:
