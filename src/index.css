@@ -12,6 +12,10 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.ant-layout-sider-zero-width-trigger {
+    top: 48px;
+}
+
 .app {
     min-height: 100vh;
     height: 100%;
@@ -318,11 +322,13 @@ code {
 .site-layout-background {
     background: #fff;
     padding: 24px;
-    min-height: 360px;
+    flex: 1 1 auto;
 }
 
 .site-layout-content {
-    margin: 24px 16px 0;
+    display: flex;
+    flex-flow: column;
+    margin: 24px 16px 16px;
 }
 
 [data-theme='dark'] .site-layout-sub-header-background {
@@ -422,6 +428,14 @@ code {
 
     .sider-season {
         padding-bottom: 10px;
+    }
+
+    .site-layout-background {
+        padding: 12px 0;
+    }
+
+    .site-layout-content {
+        margin: 16px 8px 8px;
     }
 
     .squad-selection-metrics {
