@@ -179,7 +179,7 @@ const _SquadSelection = ({
                                 className="squad-selection-metric squad-selection-metric-left"
                             />
                             <Statistic
-                                title="Balance (£)"
+                                title="Bank (£)"
                                 value={balance / 10}
                                 valueStyle={{ color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
                                 precision={1}
