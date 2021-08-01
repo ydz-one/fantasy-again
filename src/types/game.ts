@@ -42,6 +42,7 @@ export enum GameActionTypes {
     AddPlayerToSquad = 'AddPlayerToSquad',
     FinalizeSquad = 'FinalizeSquad',
     ResetSquad = 'ResetSquad',
+    SetSquad = 'SetSquad',
 }
 
 export interface IncrementGameweekAction {
@@ -70,4 +71,15 @@ export interface ResetSquad {
     type: GameActionTypes.ResetSquad;
 }
 
-export type GameAction = IncrementGameweekAction | AddPointsAction | AddPlayerToSquad | FinalizeSquad | ResetSquad;
+export interface SetSquad {
+    type: GameActionTypes.SetSquad;
+    payload: Squad;
+}
+
+export type GameAction =
+    | IncrementGameweekAction
+    | AddPointsAction
+    | AddPlayerToSquad
+    | FinalizeSquad
+    | ResetSquad
+    | SetSquad;

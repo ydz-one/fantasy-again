@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
-import { addPlayerToSquad, finalizeSquad, resetSquad } from '../actions';
-import { PlayersBio, PlayersStats, Position, Squad } from '../types';
+import { addPlayerToSquad, finalizeSquad, resetSquad, setSquad } from '../actions';
+import { DEFAULT_SEASON, PlayersBio, PlayersStats, Position, Squad } from '../types';
 import { PlayerCard } from './PlayerCard';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import { formatValue, getTeamsOverMaxPlayerLimit } from '../helpers';
 import { EmptyPlayerCard } from './EmptyPlayerCard';
 import { TeamTag } from './TeamTag';
+import { getScoutPicksGW1 } from '../data';
 
 const { Content } = Layout;
 interface Props {
@@ -21,6 +22,7 @@ interface Props {
     addPlayerToSquad: typeof addPlayerToSquad;
     finalizeSquad: typeof finalizeSquad;
     resetSquad: typeof resetSquad;
+    setSquad: typeof setSquad;
 }
 
 const renderSquad = (
@@ -92,6 +94,7 @@ const _SquadSelection = ({
     addPlayerToSquad,
     finalizeSquad,
     resetSquad,
+    setSquad,
 }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
@@ -151,6 +154,10 @@ const _SquadSelection = ({
         resetSquad();
     };
 
+    const handleSetScoutPicks = () => {
+        setSquad(getScoutPicksGW1(DEFAULT_SEASON));
+    };
+
     const numPlayersSelected = calcNumPlayers(squad);
     const isPositiveBalance = balance >= 0;
     const isFullSquad = numPlayersSelected === 15;
@@ -182,8 +189,8 @@ const _SquadSelection = ({
                     </div>
                 </div>
                 <div className="top-btn-container">
-                    <Button size="large" className="top-btn" disabled>
-                        Auto Pick
+                    <Button size="large" className="top-btn" onClick={handleSetScoutPicks} disabled={!isSquadEmpty}>
+                        Preset
                     </Button>
                     <Button size="large" className="top-btn" onClick={handleReset} disabled={isSquadEmpty}>
                         Reset
@@ -243,4 +250,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps, { addPlayerToSquad, finalizeSquad, resetSquad })(_SquadSelection);
+export default connect(mapStateToProps, { addPlayerToSquad, finalizeSquad, resetSquad, setSquad })(_SquadSelection);

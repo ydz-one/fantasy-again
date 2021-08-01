@@ -1,4 +1,4 @@
-import { GameAction, GameActionTypes, Position, SquadPlayer } from '../types';
+import { GameAction, GameActionTypes, Position, Squad, SquadPlayer } from '../types';
 
 export const incrementGameweek = (): GameAction => ({
     type: GameActionTypes.IncrementGameweek,
@@ -29,4 +29,9 @@ export const finalizeSquad = (): GameAction => ({
 
 export const resetSquad = (): GameAction => ({
     type: GameActionTypes.ResetSquad,
+});
+
+export const setSquad = (squad: Squad): GameAction => ({
+    type: GameActionTypes.SetSquad,
+    payload: squad,
 });

@@ -1,4 +1,7 @@
-import { GameState, GameAction, GameActionTypes } from '../types';
+import { assertIsArrayOfSquadPlayers } from '../helpers';
+import { GameState, GameAction, GameActionTypes, Squad, Position } from '../types';
+
+const STARTING_BALANCE = 1000;
 
 const getInitialGameState = (): GameState => {
     return {
@@ -14,8 +17,22 @@ const getInitialGameState = (): GameState => {
             CAP: '-1',
             VC: '-1',
         },
-        balance: 1000,
+        balance: STARTING_BALANCE,
     };
+};
+
+const getSquadValueTotal = (squad: Squad) => {
+    let sum = 0;
+    for (const [position, players] of Object.entries(squad)) {
+        if (position in Position) {
+            assertIsArrayOfSquadPlayers(players);
+            sum += players.reduce((acc, player) => {
+                acc += player.buyPrice;
+                return acc;
+            }, 0);
+        }
+    }
+    return sum;
 };
 
 export const gameReducer = (state: GameState = getInitialGameState(), action: GameAction): GameState => {
@@ -63,7 +80,13 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                     CAP: '-1',
                     VC: '-1',
                 },
-                balance: 1000,
+                balance: STARTING_BALANCE,
+            };
+        case GameActionTypes.SetSquad:
+            return {
+                ...state,
+                squad: action.payload,
+                balance: STARTING_BALANCE - getSquadValueTotal(action.payload),
             };
         default:
             return state;

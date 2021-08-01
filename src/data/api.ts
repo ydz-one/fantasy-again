@@ -9,6 +9,7 @@ import {
     InjuryHistory,
     TransferData,
     PlayerGwMeta,
+    Squad,
 } from '../types';
 import fdr2021 from './2020_2021/fdr.json';
 import fixtures2021 from './2020_2021/fixtures.json';
@@ -24,6 +25,7 @@ import {
 } from './2020_2021/teams';
 import { getGw as getGw2021, getGwMeta as getGwMeta2021 } from './2020_2021/gw';
 import { preGwDates as preGwDates2021 } from './2020_2021/preGwDates';
+import { scoutPickGW1 as scoutPicksGW1_2021 } from './2020_2021/scoutPicksGw1';
 
 export const getFdr = (season: Season): FdrData => {
     switch (season) {
@@ -137,6 +139,15 @@ export const getPreGwDate = (season: Season, gwNum: number): string => {
     switch (season) {
         case Season.S2020_2021:
             return preGwDates2021[gwNum];
+        default:
+            throw new Error('Season not found');
+    }
+};
+
+export const getScoutPicksGW1 = (season: Season): Squad => {
+    switch (season) {
+        case Season.S2020_2021:
+            return scoutPicksGW1_2021;
         default:
             throw new Error('Season not found');
     }
