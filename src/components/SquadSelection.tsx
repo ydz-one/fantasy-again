@@ -5,13 +5,13 @@ import { Button, Divider, Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad, finalizeSquad, resetSquad, setSquad } from '../actions';
 import { DEFAULT_SEASON, PlayersBio, PlayersStats, Position, Squad } from '../types';
-import { PlayerCard } from './PlayerCard';
+import { calcNumPlayers, assertIsPosition } from '../helpers';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDetailsModal from './PlayerDetailsModal';
-import { formatValue, getTeamsOverMaxPlayerLimit } from '../helpers';
-import { EmptyPlayerCard } from './EmptyPlayerCard';
+import { getTeamsOverMaxPlayerLimit } from '../helpers';
 import { TeamTag } from './TeamTag';
 import { getScoutPicksGW1 } from '../data';
+import SquadLineup from './SquadLineup';
 
 const { Content } = Layout;
 interface Props {
@@ -24,67 +24,6 @@ interface Props {
     resetSquad: typeof resetSquad;
     setSquad: typeof setSquad;
 }
-
-const renderSquad = (
-    playersBio: PlayersBio,
-    playersStats: PlayersStats,
-    squad: Squad,
-    handleClickPlayer: Function,
-    handleSetReplacePlayer: Function
-) => {
-    const renderPlayerCard = (position: Position) => (idx: number) => {
-        const squadPlayer = squad[position][idx];
-        if (!squadPlayer) {
-            return <EmptyPlayerCard position={position} onClick={() => handleSetReplacePlayer('-1', position)} />;
-        }
-        const { code } = squadPlayer;
-        const { webName, teamCode } = playersBio[code];
-        const { value, injured, injury, injuryEnd } = playersStats[code];
-        return (
-            <PlayerCard
-                key={idx}
-                position={position}
-                name={webName}
-                teamCode={teamCode}
-                valueOrPoints={formatValue(value)}
-                injured={injured}
-                injury={injury}
-                injuryEnd={injuryEnd}
-                hasRedCard={false}
-                captainStatus=""
-                onClick={() => handleClickPlayer(code)}
-            />
-        );
-    };
-
-    return (
-        <Fragment>
-            <div className="position-row position-row-top">{[0, 1].map(renderPlayerCard(Position.GK))}</div>
-            <div className="position-row">{[0, 1, 2, 3, 4].map(renderPlayerCard(Position.DEF))}</div>
-            <div className="position-row">{[0, 1, 2, 3, 4].map(renderPlayerCard(Position.MID))}</div>
-            <div className="position-row position-row-bottom">{[0, 1, 2].map(renderPlayerCard(Position.FWD))}</div>
-        </Fragment>
-    );
-};
-
-function assertIsPosition(obj: unknown): asserts obj is Position {
-    if (
-        typeof obj === 'string' &&
-        (obj === Position.GK || obj === Position.DEF || obj === Position.MID || obj === Position.FWD)
-    )
-        return;
-    else throw new Error('Input must be a Position');
-}
-
-const calcNumPlayers = (squad: Squad) => {
-    let sum = 0;
-    for (const [position, players] of Object.entries(squad)) {
-        if (position in Position) {
-            sum += players.length;
-        }
-    }
-    return sum;
-};
 
 const _SquadSelection = ({
     playersBio,
@@ -197,7 +136,7 @@ const _SquadSelection = ({
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
-                {renderSquad(playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer)}
+                <SquadLineup handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
                 <Divider className="custom-divider" />
                 <div className="enter-squad-btn-container">
                     <Button

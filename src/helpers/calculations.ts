@@ -16,3 +16,13 @@ export const getTeamsOverMaxPlayerLimit = (squad: Squad, playersBio: PlayersBio)
     }
     return Object.keys(teamPlayerCounts).filter((team) => teamPlayerCounts[team] > MAX_PLAYERS_PER_TEAM);
 };
+
+export const calcNumPlayers = (squad: Squad) => {
+    let sum = 0;
+    for (const [position, players] of Object.entries(squad)) {
+        if (position in Position) {
+            sum += players.length;
+        }
+    }
+    return sum;
+};
