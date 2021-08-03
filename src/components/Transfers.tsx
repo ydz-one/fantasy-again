@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic } from 'antd';
+import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import SquadLineup from './SquadLineup';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SelectPlayerModal from './SelectPlayerModal';
@@ -17,6 +18,7 @@ interface Props {
     playersStats: PlayersStats;
     squad: Squad;
     balance: number;
+    isSquadComplete: boolean;
     resetSquad: typeof resetSquad;
     setSquad: typeof setSquad;
 }
@@ -152,13 +154,14 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { squad, balance } = game;
+    const { squad, balance, isSquadComplete } = game;
     return {
         playersBio,
         playersStats,
         squad,
         balance,
+        isSquadComplete,
     };
 };
 
-export default connect(mapStateToProps, { resetSquad, setSquad })(_Transfers);
+export default connect(mapStateToProps, { resetSquad, setSquad })(checkSquadCompleteHOC(_Transfers));

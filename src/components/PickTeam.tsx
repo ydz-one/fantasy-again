@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
+import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
+import { StoreState } from '../reducers';
 
 const { Content } = Layout;
 
@@ -10,4 +12,11 @@ const _PickTeam = () => (
     </Content>
 );
 
-export default connect()(_PickTeam);
+const mapStateToProps = ({ game }: StoreState) => {
+    const { isSquadComplete } = game;
+    return {
+        isSquadComplete,
+    };
+};
+
+export default connect(mapStateToProps)(checkSquadCompleteHOC(_PickTeam));

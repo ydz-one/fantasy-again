@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Layout, Card } from 'antd';
+import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
+import { StoreState } from '../reducers';
 
 const { Content } = Layout;
 
@@ -15,4 +17,11 @@ const _Points = () => (
     </Content>
 );
 
-export default connect()(_Points);
+const mapStateToProps = ({ game }: StoreState) => {
+    const { isSquadComplete } = game;
+    return {
+        isSquadComplete,
+    };
+};
+
+export default connect(mapStateToProps)(checkSquadCompleteHOC(_Points));
