@@ -58,10 +58,6 @@ code {
     width: 400px;
 }
 
-.enter-squad-btn-container {
-    text-align: center;
-}
-
 .error-note {
     color: red;
     margin-top: 10px;
@@ -338,27 +334,43 @@ code {
     background: #141414;
 }
 
-.squad-selection-metrics {
+.squad-selection-metrics,
+.transfers-metrics {
     font-weight: normal;
     display: flex;
     justify-content: space-between;
+    text-align: center;
     width: 160px;
 }
 
-.squad-selection-metric {
+.transfers-metrics {
+    width: 180px;
+}
+
+.top-metric {
     width: 70px;
 }
 
-.squad-selection-metric-left {
+.top-metric-small {
+    width: 40px;
+}
+
+.top-metric-left {
     text-align: right;
 }
 
-.top-btn {
+.top-metric-right {
+    text-align: left;
+}
+
+.top-btn,
+.bottom-btn {
     margin: 0 6px 0 6px;
     width: 200px;
 }
 
-.top-btn-container {
+.top-btn-container,
+.bottom-btn-container {
     text-align: center;
 }
 
@@ -401,11 +413,13 @@ code {
         width: 200px;
     }
 
-    .top-btn {
+    .top-btn,
+    .bottom-btn {
         width: 93px;
     }
 
-    .top-btn-container {
+    .top-btn-container,
+    .bottom-btn-container {
         text-align: center;
     }
 
@@ -460,5 +474,10 @@ code {
     .squad-selection-metrics {
         padding-top: 10px;
         width: 180px;
+    }
+
+    .transfers-metrics {
+        padding-top: 10px;
+        width: 210px;
     }
 }

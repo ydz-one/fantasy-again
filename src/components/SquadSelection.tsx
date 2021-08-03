@@ -115,14 +115,14 @@ const _SquadSelection = ({
                                 value={numPlayersSelected}
                                 valueStyle={{ color: isFullSquad ? '#3f8600' : '#cf1322' }}
                                 suffix={'/15'}
-                                className="squad-selection-metric squad-selection-metric-left"
+                                className="top-metric top-metric-left"
                             />
                             <Statistic
                                 title="Bank (£)"
                                 value={balance / 10}
                                 valueStyle={{ color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
                                 precision={1}
-                                className="squad-selection-metric"
+                                className="top-metric top-metric-right"
                             />
                         </div>
                     </div>
@@ -138,7 +138,7 @@ const _SquadSelection = ({
                 <Divider className="custom-divider" />
                 <SquadLineup handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
                 <Divider className="custom-divider" />
-                <div className="enter-squad-btn-container">
+                <div className="bottom-btn-container">
                     <Button
                         size="large"
                         type="primary"
