@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
@@ -25,10 +25,15 @@ const _App = ({ isSquadComplete }: Props) => (
             <Header />
             <Switch>
                 <Route path="/fixtures" render={() => <Fixtures />} />
-                <Route path="/squadselection" render={() => <SquadSelection />} />
-                <Route path="/points" render={() => <Points />} />
-                <Route path="/pickteam" render={() => <PickTeam />} />
-                <Route path="/transfers" render={() => <Transfers />} />
+                {isSquadComplete ? (
+                    <Fragment>
+                        <Route path="/points" render={() => <Points />} />
+                        <Route path="/pickteam" render={() => <PickTeam />} />
+                        <Route path="/transfers" render={() => <Transfers />} />
+                    </Fragment>
+                ) : (
+                    <Route path="/squadselection" render={() => <SquadSelection />} />
+                )}
                 <Route path="/statistics" render={() => <Statistics />} />
                 <Route path="/settings" render={() => <Settings />} />
                 {isSquadComplete ? <Redirect to="/pickteam" /> : <Redirect to="/squadselection" />}
