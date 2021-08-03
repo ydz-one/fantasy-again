@@ -25,7 +25,8 @@ export const scoutPickGW1: Squad = {
         { code: '78830', buyPrice: 105 },
         { code: '165153', buyPrice: 95 },
     ],
-    SUB: [],
-    CAP: '',
-    VC: '',
+    subs: [],
+    subGk: '-1',
+    captain: '-1',
+    viceCaptain: '-1',
 };

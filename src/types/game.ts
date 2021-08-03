@@ -8,14 +8,16 @@ export interface GameState {
     balance: number;
 }
 
+// The first four keys are kept in all caps to match the position names from the data
 export type Squad = {
     GK: SquadPlayer[];
     DEF: SquadPlayer[];
     MID: SquadPlayer[];
     FWD: SquadPlayer[];
-    SUB: SquadPlayer[];
-    CAP: string;
-    VC: string;
+    subs: SquadPlayer[];
+    subGk: string;
+    captain: string;
+    viceCaptain: string;
 };
 
 export type SquadPlayer = {
