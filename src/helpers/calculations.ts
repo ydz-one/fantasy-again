@@ -26,3 +26,17 @@ export const calcNumPlayers = (squad: Squad) => {
     }
     return sum;
 };
+
+export const getSquadValueTotal = (squad: Squad) => {
+    let sum = 0;
+    for (const [position, players] of Object.entries(squad)) {
+        if (position in Position) {
+            assertIsArrayOfSquadPlayers(players);
+            sum += players.reduce((acc, player) => {
+                acc += player.buyPrice;
+                return acc;
+            }, 0);
+        }
+    }
+    return sum;
+};

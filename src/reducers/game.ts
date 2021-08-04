@@ -1,5 +1,5 @@
-import { assertIsArrayOfSquadPlayers } from '../helpers';
-import { GameState, GameAction, GameActionTypes, Squad, Position } from '../types';
+import { getSquadValueTotal } from '../helpers';
+import { GameState, GameAction, GameActionTypes, Squad, SquadPlayer } from '../types';
 
 const STARTING_BALANCE = 1000;
 
@@ -22,18 +22,42 @@ const getInitialGameState = (): GameState => {
     };
 };
 
-const getSquadValueTotal = (squad: Squad) => {
-    let sum = 0;
-    for (const [position, players] of Object.entries(squad)) {
-        if (position in Position) {
-            assertIsArrayOfSquadPlayers(players);
-            sum += players.reduce((acc, player) => {
-                acc += player.buyPrice;
-                return acc;
-            }, 0);
-        }
-    }
-    return sum;
+const getMinValuePlayer = (players: SquadPlayer[]) => {
+    return players.reduce((minValPlayer, player) => {
+        return minValPlayer.buyPrice < player.buyPrice ? minValPlayer : player;
+    }, players[0]);
+};
+
+const getTopTwoMaxValuePlayers = (squad: Squad) => {
+    const { GK, DEF, MID, FWD } = squad;
+    const players = GK.concat(DEF).concat(MID).concat(FWD);
+    return players.reduce(
+        (maxValPlayers, player) => {
+            if (player.buyPrice > maxValPlayers[0].buyPrice) {
+                maxValPlayers[1] = maxValPlayers[0];
+                maxValPlayers[0] = player;
+            } else if (player.buyPrice > maxValPlayers[1].buyPrice) {
+                maxValPlayers[1] = player;
+            }
+            return maxValPlayers;
+        },
+        [
+            { code: '-1', buyPrice: 0 },
+            { code: '-1', buyPrice: 0 },
+        ]
+    );
+};
+
+const autoAssignSubs = (squad: Squad) => {
+    const { GK, DEF, MID, FWD } = squad;
+    const [captain, viceCaptain] = getTopTwoMaxValuePlayers(squad);
+    return {
+        ...squad,
+        subGk: getMinValuePlayer(GK).code,
+        subs: [getMinValuePlayer(MID).code, getMinValuePlayer(FWD).code, getMinValuePlayer(DEF).code],
+        captain: captain.code,
+        viceCaptain: viceCaptain.code,
+    };
 };
 
 export const gameReducer = (state: GameState = getInitialGameState(), action: GameAction): GameState => {
@@ -67,6 +91,7 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
         case GameActionTypes.FinalizeSquad:
             return {
                 ...state,
+                squad: autoAssignSubs(state.squad),
                 isSquadComplete: true,
             };
         case GameActionTypes.ResetSquad:
