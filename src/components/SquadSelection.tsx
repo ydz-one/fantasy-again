@@ -137,7 +137,11 @@ const _SquadSelection = ({
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
-                <SquadLineup handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
+                <SquadLineup
+                    handleClickPlayer={handleClickPlayer}
+                    handleSetReplacePlayer={handleSetReplacePlayer}
+                    showSubs
+                />
                 <Divider className="custom-divider" />
                 <div className="bottom-btn-container">
                     <Button

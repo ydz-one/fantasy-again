@@ -108,7 +108,11 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
-                <SquadLineup handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
+                <SquadLineup
+                    handleClickPlayer={handleClickPlayer}
+                    handleSetReplacePlayer={handleSetReplacePlayer}
+                    showSubs
+                />
                 <Divider className="custom-divider" />
                 <div className="bottom-btn-container">
                     <Button size="large" onClick={handleFinalizeSquad} className="bottom-btn">

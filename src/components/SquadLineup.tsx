@@ -1,4 +1,4 @@
-import React, { Fragment, MouseEventHandler } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { formatValue } from '../helpers';
 import { StoreState } from '../reducers';
@@ -12,9 +12,17 @@ interface Props {
     squad: Squad;
     handleClickPlayer: Function;
     handleSetReplacePlayer: Function;
+    showSubs: boolean;
 }
 
-const _SquadLineup = ({ playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer }: Props) => {
+const _SquadLineup = ({
+    playersBio,
+    playersStats,
+    squad,
+    handleClickPlayer,
+    handleSetReplacePlayer,
+    showSubs,
+}: Props) => {
     const renderPlayerCard = (position: Position) => (idx: number) => {
         const squadPlayer = squad[position][idx];
         if (!squadPlayer) {
@@ -40,29 +48,45 @@ const _SquadLineup = ({ playersBio, playersStats, squad, handleClickPlayer, hand
         );
     };
 
+    const shouldShowPlayer = (position: Position) => (idx: number) => {
+        const squadPlayer = squad[position][idx];
+        return !squadPlayer || showSubs || (!squad.subs.includes(squadPlayer.code) && squadPlayer.code !== squad.subGk);
+    };
+
     return (
         <Fragment>
-            <div className="position-row position-row-top">{[0, 1].map(renderPlayerCard(Position.GK))}</div>
-            <div className="position-row">{[0, 1, 2, 3, 4].map(renderPlayerCard(Position.DEF))}</div>
-            <div className="position-row">{[0, 1, 2, 3, 4].map(renderPlayerCard(Position.MID))}</div>
-            <div className="position-row position-row-bottom">{[0, 1, 2].map(renderPlayerCard(Position.FWD))}</div>
+            <div className="position-row position-row-top">
+                {[0, 1].filter(shouldShowPlayer(Position.GK)).map(renderPlayerCard(Position.GK))}
+            </div>
+            <div className="position-row">
+                {[0, 1, 2, 3, 4].filter(shouldShowPlayer(Position.DEF)).map(renderPlayerCard(Position.DEF))}
+            </div>
+            <div className="position-row">
+                {[0, 1, 2, 3, 4].filter(shouldShowPlayer(Position.MID)).map(renderPlayerCard(Position.MID))}
+            </div>
+            <div className="position-row position-row-bottom">
+                {[0, 1, 2].filter(shouldShowPlayer(Position.FWD)).map(renderPlayerCard(Position.FWD))}
+            </div>
         </Fragment>
     );
 };
 
 const mapStateToProps = (
     { data, game }: StoreState,
-    ownProps: { handleClickPlayer: Function; handleSetReplacePlayer: Function }
+    ownProps: { handleClickPlayer: Function; handleSetReplacePlayer: Function; showSubs?: boolean }
 ) => {
     const { playersBio, playersStats } = data;
     const { squad } = game;
     const { handleClickPlayer, handleSetReplacePlayer } = ownProps;
+    let showSubs = ownProps.showSubs || false;
+
     return {
         playersBio,
         playersStats,
         squad,
         handleClickPlayer,
         handleSetReplacePlayer,
+        showSubs,
     };
 };
 

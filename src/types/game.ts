@@ -14,7 +14,7 @@ export type Squad = {
     DEF: SquadPlayer[];
     MID: SquadPlayer[];
     FWD: SquadPlayer[];
-    subs: SquadPlayer[];
+    subs: string[];
     subGk: string;
     captain: string;
     viceCaptain: string;
