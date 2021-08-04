@@ -12,6 +12,10 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.ant-tag {
+    margin-right: 6px;
+}
+
 .ant-statistic-title {
     margin-bottom: 0;
 }
