@@ -61,7 +61,11 @@ const _PickTeam = () => {
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
-                <SquadLineup handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
+                <SquadLineup
+                    handleClickPlayer={handleClickPlayer}
+                    handleSetReplacePlayer={handleSetReplacePlayer}
+                    showCap
+                />
                 <Divider className="custom-divider" />
                 <PlayerBench handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
                 <PlayerDetailsModal

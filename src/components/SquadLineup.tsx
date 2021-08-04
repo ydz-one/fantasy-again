@@ -13,6 +13,7 @@ interface Props {
     handleClickPlayer: Function;
     handleSetReplacePlayer: Function;
     showSubs: boolean;
+    showCap: boolean;
 }
 
 const _SquadLineup = ({
@@ -22,6 +23,7 @@ const _SquadLineup = ({
     handleClickPlayer,
     handleSetReplacePlayer,
     showSubs,
+    showCap,
 }: Props) => {
     const renderPlayerCard = (position: Position) => (idx: number) => {
         const squadPlayer = squad[position][idx];
@@ -42,7 +44,7 @@ const _SquadLineup = ({
                 injury={injury}
                 injuryEnd={injuryEnd}
                 hasRedCard={false}
-                captainStatus={squad.captain === code ? 'C' : squad.viceCaptain === code ? 'VC' : ''}
+                captainStatus={!showCap ? '' : squad.captain === code ? 'C' : squad.viceCaptain === code ? 'VC' : ''}
                 subStatus=""
                 onClick={() => handleClickPlayer(code)}
             />
@@ -74,12 +76,11 @@ const _SquadLineup = ({
 
 const mapStateToProps = (
     { data, game }: StoreState,
-    ownProps: { handleClickPlayer: Function; handleSetReplacePlayer: Function; showSubs?: boolean }
+    ownProps: { handleClickPlayer: Function; handleSetReplacePlayer: Function; showSubs?: boolean; showCap?: boolean }
 ) => {
     const { playersBio, playersStats } = data;
     const { squad } = game;
-    const { handleClickPlayer, handleSetReplacePlayer } = ownProps;
-    let showSubs = ownProps.showSubs || false;
+    const { handleClickPlayer, handleSetReplacePlayer, showSubs = false, showCap = false } = ownProps;
 
     return {
         playersBio,
@@ -88,6 +89,7 @@ const mapStateToProps = (
         handleClickPlayer,
         handleSetReplacePlayer,
         showSubs,
+        showCap,
     };
 };
 
