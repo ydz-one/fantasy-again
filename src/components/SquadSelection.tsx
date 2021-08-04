@@ -12,6 +12,7 @@ import { getTeamsOverMaxPlayerLimit } from '../helpers';
 import { TeamTag } from './TeamTag';
 import { getScoutPicksGW1 } from '../data';
 import SquadLineup from './SquadLineup';
+import { statisticsFontSize } from '../constants/ui';
 
 const { Content } = Layout;
 interface Props {
@@ -113,16 +114,16 @@ const _SquadSelection = ({
                             <Statistic
                                 title="Selected"
                                 value={numPlayersSelected}
-                                valueStyle={{ color: isFullSquad ? '#3f8600' : '#cf1322' }}
+                                valueStyle={{ ...statisticsFontSize, color: isFullSquad ? '#3f8600' : '#cf1322' }}
                                 suffix={'/15'}
-                                className="top-metric top-metric-left"
+                                className="top-metric"
                             />
                             <Statistic
                                 title="Bank (£)"
                                 value={balance / 10}
-                                valueStyle={{ color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
+                                valueStyle={{ ...statisticsFontSize, color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
                                 precision={1}
-                                className="top-metric top-metric-right"
+                                className="top-metric"
                             />
                         </div>
                     </div>

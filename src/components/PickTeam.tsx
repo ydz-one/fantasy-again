@@ -8,6 +8,7 @@ import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
 import { preGwDates } from '../data/2020_2021/preGwDates';
 import moment from 'moment';
+import { statisticsFontSize } from '../constants/ui';
 
 const { Content } = Layout;
 
@@ -45,7 +46,8 @@ const _PickTeam = () => {
                         <Statistic
                             title="GW1 Deadline"
                             value={moment(preGwDates[0]).add(1, 'days').format('ll')}
-                            // valueStyle={{ fontSize: '1.4em' }}
+                            valueStyle={statisticsFontSize}
+                            className="top-metric"
                         />
                     </div>
                 </div>

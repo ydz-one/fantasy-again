@@ -10,6 +10,7 @@ import { resetSquad, setSquad } from '../actions';
 import { TeamTag } from './TeamTag';
 import { getTeamsOverMaxPlayerLimit } from '../helpers';
 import { StoreState } from '../reducers';
+import { statisticsFontSize } from '../constants/ui';
 
 const { Content } = Layout;
 
@@ -79,21 +80,21 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
                             <Statistic
                                 title="FT"
                                 value={freeTransfers}
-                                valueStyle={{ color: freeTransfers > 0 ? '#3f8600' : '#cf1322' }}
-                                className="top-metric-small top-metric-left"
+                                valueStyle={{ ...statisticsFontSize, color: freeTransfers > 0 ? '#3f8600' : '#cf1322' }}
+                                className="top-metric"
                             />
                             <Statistic
                                 title="Cost"
                                 value={cost}
-                                valueStyle={{ color: cost === 0 ? '#3f8600' : '#cf1322' }}
-                                className="top-metric-small"
+                                valueStyle={{ ...statisticsFontSize, color: cost === 0 ? '#3f8600' : '#cf1322' }}
+                                className="top-metric"
                             />
                             <Statistic
                                 title="Bank (£)"
                                 value={balance / 10}
-                                valueStyle={{ color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
+                                valueStyle={{ ...statisticsFontSize, color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
                                 precision={1}
-                                className="top-metric top-metric-right"
+                                className="top-metric"
                             />
                         </div>
                     </div>

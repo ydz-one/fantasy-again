@@ -12,6 +12,10 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.ant-statistic-title {
+    margin-bottom: 0;
+}
+
 .ant-layout-sider-zero-width-trigger {
     top: 48px;
 }
@@ -159,6 +163,14 @@ code {
 
 .header-item-value {
     font-size: large;
+}
+
+.header-metric {
+    padding: 5px 15px;
+}
+
+.header-metric-right {
+    margin-right: 10px;
 }
 
 .mobile-text {
@@ -338,32 +350,20 @@ code {
 .transfers-metrics {
     font-weight: normal;
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     text-align: center;
-    width: 160px;
-}
-
-.transfers-metrics {
-    width: 180px;
 }
 
 .top-metric {
-    width: 70px;
+    padding: 0 15px;
 }
 
-.top-metric-small {
-    width: 40px;
-}
-
-.top-metric-left {
-    text-align: right;
-}
-
-.top-metric-right {
-    text-align: left;
+.top-metric-section {
+    font-weight: normal;
 }
 
 .top-btn,
+.top-btn-large,
 .bottom-btn {
     margin: 0 6px 0 6px;
     width: 200px;
@@ -423,6 +423,10 @@ code {
         text-align: center;
     }
 
+    .top-btn-large-left {
+        margin-bottom: 10px;
+    }
+
     .fdr-section {
         margin-top: 10px;
     }
@@ -471,13 +475,12 @@ code {
         margin: 16px 8px 8px;
     }
 
-    .squad-selection-metrics {
+    .squad-selection-metrics,
+    .transfers-metrics {
         padding-top: 10px;
-        width: 180px;
     }
 
     .transfers-metrics {
         padding-top: 10px;
-        width: 210px;
     }
 }

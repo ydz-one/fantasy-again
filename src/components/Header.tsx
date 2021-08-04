@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Layout } from 'antd';
+import { Layout, Statistic } from 'antd';
 import moment from 'moment';
 import { StoreState } from '../reducers';
 import { getPreGwDate } from '../data';
 import { DEFAULT_SEASON } from '../types';
+import { statisticsFontSize } from '../constants/ui';
 
 const { Header } = Layout;
 
@@ -15,18 +16,20 @@ interface Props {
 
 const _Header = ({ gameweek, points }: Props) => (
     <Header className="site-layout-sub-header-background">
-        <div className="header-item">
-            <div className="header-item-key">Points:</div>
-            <div className="header-item-value">{points}</div>
-        </div>
-        <div className="header-item">
-            <div className="header-item-key">Upcoming:</div>
-            <div className="header-item-value">GW{gameweek + 1}</div>
-        </div>
-        <div className="header-item">
-            <div className="header-item-key">Today:</div>
-            <div className="header-item-value">{moment(getPreGwDate(DEFAULT_SEASON, gameweek)).format('ll')}</div>
-        </div>
+        <Statistic title={'Points'} value={points} className="header-metric" valueStyle={statisticsFontSize} />
+        <Statistic
+            title={'Squad Value (£)'}
+            value={100.0}
+            precision={1}
+            className="header-metric"
+            valueStyle={statisticsFontSize}
+        />
+        <Statistic
+            title={"Today's Date"}
+            value={moment(getPreGwDate(DEFAULT_SEASON, gameweek)).format('ll')}
+            className="header-metric  header-metric-right"
+            valueStyle={statisticsFontSize}
+        />
     </Header>
 );
 
