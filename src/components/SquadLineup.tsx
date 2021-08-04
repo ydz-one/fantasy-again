@@ -42,7 +42,7 @@ const _SquadLineup = ({
                 injury={injury}
                 injuryEnd={injuryEnd}
                 hasRedCard={false}
-                captainStatus=""
+                captainStatus={squad.captain === code ? 'C' : squad.viceCaptain === code ? 'VC' : ''}
                 subStatus=""
                 onClick={() => handleClickPlayer(code)}
             />
