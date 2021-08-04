@@ -9,6 +9,7 @@ import SquadLineup from './SquadLineup';
 import { preGwDates } from '../data/2020_2021/preGwDates';
 import moment from 'moment';
 import { statisticsFontSize } from '../constants/ui';
+import PlayerBench from './PlayerBench';
 
 const { Content } = Layout;
 
@@ -61,6 +62,8 @@ const _PickTeam = () => {
                 </div>
                 <Divider className="custom-divider" />
                 <SquadLineup handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
+                <Divider className="custom-divider" />
+                <PlayerBench handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
                 <PlayerDetailsModal
                     selectedPlayer={playerClicked}
                     onClose={() => setPlayerClicked('')}

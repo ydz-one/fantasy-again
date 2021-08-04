@@ -43,6 +43,7 @@ const _SquadLineup = ({
                 injuryEnd={injuryEnd}
                 hasRedCard={false}
                 captainStatus=""
+                subStatus=""
                 onClick={() => handleClickPlayer(code)}
             />
         );

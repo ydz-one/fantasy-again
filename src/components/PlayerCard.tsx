@@ -3,6 +3,7 @@ import { Badge, Card, Tag } from 'antd';
 import { PositionTag } from './PositionTag';
 import { TeamTag } from './TeamTag';
 import { InjurySymbol } from './InjurySymbol';
+import { SubTag } from './SubTag';
 
 export interface PlayerCardProps {
     position: string;
@@ -14,6 +15,7 @@ export interface PlayerCardProps {
     injuryEnd: string;
     hasRedCard: boolean;
     captainStatus: string;
+    subStatus: string;
     onClick: MouseEventHandler;
 }
 
@@ -27,6 +29,7 @@ export const PlayerCard = ({
     injuryEnd,
     hasRedCard,
     captainStatus,
+    subStatus,
     onClick,
 }: PlayerCardProps) => (
     <Card hoverable className="player-card" onClick={onClick}>
@@ -34,6 +37,7 @@ export const PlayerCard = ({
             <div>
                 <div>{name}</div>
                 <div>
+                    {subStatus.length > 0 && <SubTag title={subStatus} />}
                     <PositionTag position={position} />
                     <TeamTag teamCode={teamCode} />
                     {hasRedCard && (

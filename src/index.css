@@ -201,7 +201,8 @@ code {
     font-size: 1em;
 }
 
-.position-row-bottom .player-card {
+.position-row-bottom .player-card,
+.player-bench-row .player-card {
     margin: 0 6px;
 }
 
@@ -378,6 +379,12 @@ code {
     font-size: 1.15em;
 }
 
+@media only screen and (max-width: 1130px) {
+    .player-bench-row .player-card {
+        margin: 0 6px 36px;
+    }
+}
+
 @media only screen and (max-width: 1000px) {
     .custom-modal {
         right: 0;
@@ -448,11 +455,12 @@ code {
     }
 
     .player-card {
-        margin: 0 6px 12px 6px;
+        margin: 0 6px 12px;
     }
 
-    .position-row-bottom .player-card {
-        margin: 0 6px 12px 6px;
+    .position-row-bottom .player-card,
+    .player-bench-row .player-card {
+        margin: 0 6px 12px;
     }
 
     .position-row-bottom {
