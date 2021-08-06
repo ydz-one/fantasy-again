@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
-import { Position } from '../types';
+import { Position, ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
 import { preGwDates } from '../data/2020_2021/preGwDates';
@@ -65,9 +65,14 @@ const _PickTeam = () => {
                     handleClickPlayer={handleClickPlayer}
                     handleSetReplacePlayer={handleSetReplacePlayer}
                     showCap
+                    valueType={ValueType.FIXTURE}
                 />
                 <Divider className="custom-divider" />
-                <PlayerBench handleClickPlayer={handleClickPlayer} handleSetReplacePlayer={handleSetReplacePlayer} />
+                <PlayerBench
+                    handleClickPlayer={handleClickPlayer}
+                    handleSetReplacePlayer={handleSetReplacePlayer}
+                    valueType={ValueType.FIXTURE}
+                />
                 <PlayerDetailsModal
                     selectedPlayer={playerClicked}
                     onClose={() => setPlayerClicked('')}

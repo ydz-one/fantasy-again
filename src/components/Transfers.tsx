@@ -5,7 +5,7 @@ import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import SquadLineup from './SquadLineup';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SelectPlayerModal from './SelectPlayerModal';
-import { PlayersBio, PlayersStats, Position, Squad } from '../types';
+import { PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import { resetSquad, setSquad } from '../actions';
 import { TeamTag } from './TeamTag';
 import { getTeamsOverMaxPlayerLimit } from '../helpers';
@@ -112,6 +112,7 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
                     handleClickPlayer={handleClickPlayer}
                     handleSetReplacePlayer={handleSetReplacePlayer}
                     showSubs
+                    valueType={ValueType.PRICE}
                 />
                 <Divider className="custom-divider" />
                 <div className="bottom-btn-container">

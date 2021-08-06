@@ -1,27 +1,34 @@
+import { valueType } from 'antd/lib/statistic/utils';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { formatValue } from '../helpers';
+import { formatPoints, formatValue, getNextFixtures } from '../helpers';
 import { StoreState } from '../reducers';
-import { PlayersBio, PlayersStats, Position, Squad } from '../types';
+import { FdrData, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import { EmptyPlayerCard } from './EmptyPlayerCard';
 import { PlayerCard } from './PlayerCard';
 
 interface Props {
+    fdr: FdrData;
     playersBio: PlayersBio;
     playersStats: PlayersStats;
     squad: Squad;
+    gameweek: number;
     handleClickPlayer: Function;
     handleSetReplacePlayer: Function;
+    valueType: valueType;
     showSubs: boolean;
     showCap: boolean;
 }
 
 const _SquadLineup = ({
+    fdr,
     playersBio,
     playersStats,
     squad,
+    gameweek,
     handleClickPlayer,
     handleSetReplacePlayer,
+    valueType,
     showSubs,
     showCap,
 }: Props) => {
@@ -32,14 +39,20 @@ const _SquadLineup = ({
         }
         const { code } = squadPlayer;
         const { webName, teamCode } = playersBio[code];
-        const { value, injured, injury, injuryEnd } = playersStats[code];
+        const { value, injured, injury, injuryEnd, latestGwPoints } = playersStats[code];
+        const valueToShow =
+            valueType === ValueType.FIXTURE
+                ? getNextFixtures(fdr, gameweek, teamCode)
+                : valueType === ValueType.POINTS
+                ? formatPoints(latestGwPoints)
+                : formatValue(value);
         return (
             <PlayerCard
                 key={idx}
                 position={position}
                 name={webName}
                 teamCode={teamCode}
-                valueOrPoints={formatValue(value)}
+                value={valueToShow}
                 injured={injured}
                 injury={injury}
                 injuryEnd={injuryEnd}
@@ -76,18 +89,27 @@ const _SquadLineup = ({
 
 const mapStateToProps = (
     { data, game }: StoreState,
-    ownProps: { handleClickPlayer: Function; handleSetReplacePlayer: Function; showSubs?: boolean; showCap?: boolean }
+    ownProps: {
+        handleClickPlayer: Function;
+        handleSetReplacePlayer: Function;
+        valueType: ValueType;
+        showSubs?: boolean;
+        showCap?: boolean;
+    }
 ) => {
-    const { playersBio, playersStats } = data;
-    const { squad } = game;
-    const { handleClickPlayer, handleSetReplacePlayer, showSubs = false, showCap = false } = ownProps;
+    const { fdr, playersBio, playersStats } = data;
+    const { squad, gameweek } = game;
+    const { handleClickPlayer, handleSetReplacePlayer, valueType, showSubs = false, showCap = false } = ownProps;
 
     return {
+        fdr,
         playersBio,
         playersStats,
         squad,
+        gameweek,
         handleClickPlayer,
         handleSetReplacePlayer,
+        valueType,
         showSubs,
         showCap,
     };

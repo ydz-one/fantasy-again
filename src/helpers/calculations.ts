@@ -1,4 +1,5 @@
-import { PlayersBio, Position, Squad } from '../types';
+import { getTeamCodeToId } from '../data';
+import { DEFAULT_SEASON, FdrData, PlayersBio, Position, Squad } from '../types';
 import { assertIsArrayOfSquadPlayers } from './assertFunctions';
 
 const MAX_PLAYERS_PER_TEAM = 3;
@@ -39,4 +40,9 @@ export const getSquadValueTotal = (squad: Squad) => {
         }
     }
     return sum;
+};
+
+export const getNextFixtures = (fdr: FdrData, gameweek: number, teamCode: string) => {
+    const teamId = getTeamCodeToId(DEFAULT_SEASON)[teamCode];
+    return fdr[teamId][gameweek];
 };

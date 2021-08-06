@@ -181,6 +181,10 @@ code {
     display: none !important;
 }
 
+.next-fixtures {
+    font-size: 1em;
+}
+
 .opacity-50 {
     opacity: 50%;
 }

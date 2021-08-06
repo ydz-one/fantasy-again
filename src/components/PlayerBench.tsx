@@ -1,32 +1,50 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { formatValue } from '../helpers';
+import { formatPoints, formatValue, getNextFixtures } from '../helpers';
 import { StoreState } from '../reducers';
-import { PlayersBio, PlayersStats, Squad } from '../types';
+import { FdrData, PlayersBio, PlayersStats, Squad, ValueType } from '../types';
 import { PlayerCard } from './PlayerCard';
 
 interface Props {
     playersBio: PlayersBio;
     playersStats: PlayersStats;
+    fdr: FdrData;
     squad: Squad;
+    gameweek: number;
     handleClickPlayer: Function;
     handleSetReplacePlayer: Function;
+    valueType: ValueType;
 }
 
-const _PlayerBench = ({ playersBio, playersStats, squad, handleClickPlayer, handleSetReplacePlayer }: Props) => {
+const _PlayerBench = ({
+    playersBio,
+    playersStats,
+    fdr,
+    squad,
+    gameweek,
+    handleClickPlayer,
+    handleSetReplacePlayer,
+    valueType,
+}: Props) => {
     const titles = ['SGK', 'S1', 'S2', 'S3'];
     return (
         <div className="position-row player-bench-row">
             {[squad.subGk, ...squad.subs].map((playerCode, idx) => {
                 const { webName, teamCode, position } = playersBio[playerCode];
-                const { value, injured, injury, injuryEnd } = playersStats[playerCode];
+                const { value, injured, injury, injuryEnd, latestGwPoints } = playersStats[playerCode];
+                const valueToShow =
+                    valueType === ValueType.FIXTURE
+                        ? getNextFixtures(fdr, gameweek, teamCode)
+                        : valueType === ValueType.POINTS
+                        ? formatPoints(latestGwPoints)
+                        : formatValue(value);
                 return (
                     <div key={idx}>
                         <PlayerCard
                             position={position}
                             name={webName}
                             teamCode={teamCode}
-                            valueOrPoints={formatValue(value)}
+                            value={valueToShow}
                             injured={injured}
                             injury={injury}
                             injuryEnd={injuryEnd}
@@ -44,18 +62,21 @@ const _PlayerBench = ({ playersBio, playersStats, squad, handleClickPlayer, hand
 
 const mapStateToProps = (
     { data, game }: StoreState,
-    ownProps: { handleClickPlayer: Function; handleSetReplacePlayer: Function }
+    ownProps: { handleClickPlayer: Function; handleSetReplacePlayer: Function; valueType: ValueType }
 ) => {
-    const { playersBio, playersStats } = data;
-    const { squad } = game;
-    const { handleClickPlayer, handleSetReplacePlayer } = ownProps;
+    const { playersBio, playersStats, fdr } = data;
+    const { squad, gameweek } = game;
+    const { handleClickPlayer, handleSetReplacePlayer, valueType } = ownProps;
 
     return {
         playersBio,
         playersStats,
+        fdr,
         squad,
+        gameweek,
         handleClickPlayer,
         handleSetReplacePlayer,
+        valueType,
     };
 };
 

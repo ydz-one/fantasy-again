@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad, finalizeSquad, resetSquad, setSquad } from '../actions';
-import { DEFAULT_SEASON, PlayersBio, PlayersStats, Position, Squad } from '../types';
+import { DEFAULT_SEASON, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import { calcNumPlayers, assertIsPosition } from '../helpers';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDetailsModal from './PlayerDetailsModal';
@@ -141,6 +141,7 @@ const _SquadSelection = ({
                     handleClickPlayer={handleClickPlayer}
                     handleSetReplacePlayer={handleSetReplacePlayer}
                     showSubs
+                    valueType={ValueType.PRICE}
                 />
                 <Divider className="custom-divider" />
                 <div className="bottom-btn-container">

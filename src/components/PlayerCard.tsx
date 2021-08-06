@@ -1,15 +1,17 @@
-import React, { MouseEventHandler } from 'react';
+import React, { Fragment, MouseEventHandler } from 'react';
 import { Badge, Card, Tag } from 'antd';
 import { PositionTag } from './PositionTag';
 import { TeamTag } from './TeamTag';
 import { InjurySymbol } from './InjurySymbol';
 import { SubTag } from './SubTag';
+import { DEFAULT_SEASON, FdrFixture } from '../types';
+import { getTeamNames } from '../data';
 
 export interface PlayerCardProps {
     position: string;
     name: string;
     teamCode: string;
-    valueOrPoints: string;
+    value: string | FdrFixture[];
     injured: number;
     injury: string;
     injuryEnd: string;
@@ -19,11 +21,33 @@ export interface PlayerCardProps {
     onClick: MouseEventHandler;
 }
 
+const renderNextFixtures = (fixtures: FdrFixture[]) => {
+    const TEAM_NAMES = getTeamNames(DEFAULT_SEASON);
+    if (fixtures.length === 0) {
+        return '';
+    }
+    if (fixtures.length === 1) {
+        const fixture = fixtures[0];
+        return TEAM_NAMES[fixture.opponent] + (fixture.isHome ? ' (H)' : ' (A)');
+    }
+    return (
+        <Fragment>
+            {fixtures.map((fixture) => {
+                return (
+                    <div key={fixture.opponent}>
+                        {TEAM_NAMES[fixture.opponent] + (fixture.isHome ? ' (H)' : ' (A)')}
+                    </div>
+                );
+            })}
+        </Fragment>
+    );
+};
+
 export const PlayerCard = ({
     position,
     name,
     teamCode,
-    valueOrPoints,
+    value,
     injured,
     injury,
     injuryEnd,
@@ -53,7 +77,11 @@ export const PlayerCard = ({
                 className="cap-armband"
                 style={{ backgroundColor: 'black', top: -16, right: -8 }}
             >
-                <div className="value-or-points">{valueOrPoints}</div>
+                {typeof value === 'string' ? (
+                    <div className="value-or-points">{value}</div>
+                ) : (
+                    <div className="next-fixtures">{renderNextFixtures(value)}</div>
+                )}
             </Badge>
         </div>
     </Card>
