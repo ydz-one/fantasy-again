@@ -1,4 +1,4 @@
-import { getSquadValueTotal } from '../helpers';
+import { calcSquadBuyPriceTotal } from '../helpers';
 import { GameState, GameAction, GameActionTypes, Squad, SquadPlayer } from '../types';
 
 const STARTING_BALANCE = 1000;
@@ -113,7 +113,7 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
             return {
                 ...state,
                 squad: action.payload,
-                balance: STARTING_BALANCE - getSquadValueTotal(action.payload),
+                balance: STARTING_BALANCE - calcSquadBuyPriceTotal(action.payload),
             };
         default:
             return state;

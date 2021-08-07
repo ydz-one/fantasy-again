@@ -28,7 +28,7 @@ export const calcNumPlayers = (squad: Squad) => {
     return sum;
 };
 
-export const getSquadValueTotal = (squad: Squad) => {
+export const calcSquadBuyPriceTotal = (squad: Squad) => {
     let sum = 0;
     for (const [position, players] of Object.entries(squad)) {
         if (position in Position) {
