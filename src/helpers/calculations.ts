@@ -28,24 +28,36 @@ export const calcNumPlayers = (squad: Squad) => {
     return sum;
 };
 
-const calcSquadSum = (getValueFunc: (squadPlayer: SquadPlayer) => number) => (squad: Squad) => {
-    let sum = 0;
-    for (const [position, players] of Object.entries(squad)) {
-        if (position in Position) {
-            assertIsArrayOfSquadPlayers(players);
-            sum += players.reduce((acc, player) => {
-                acc += getValueFunc(player);
-                return acc;
-            }, 0);
+const calcSquadSum =
+    (getValueFn: (squadPlayer: SquadPlayer) => number, filterFn?: (SquadPlayer: SquadPlayer) => boolean) =>
+    (squad: Squad) => {
+        let sum = 0;
+        for (const [position, players] of Object.entries(squad)) {
+            if (position in Position) {
+                assertIsArrayOfSquadPlayers(players);
+                sum += players.reduce((acc, player) => {
+                    if (filterFn && !filterFn(player)) {
+                        return acc;
+                    }
+                    acc += getValueFn(player);
+                    return acc;
+                }, 0);
+            }
         }
-    }
-    return sum;
-};
+        return sum;
+    };
 
 export const calcSquadBuyPriceTotal = calcSquadSum((player) => player.buyPrice);
 
 export const calcSquadValueTotal = (squad: Squad, playersStats: PlayersStats) => {
     return calcSquadSum((player) => playersStats[player.code].value)(squad);
+};
+
+export const calcLatestGwPointsTotal = (squad: Squad, playersStats: PlayersStats) => {
+    return calcSquadSum(
+        (player) => playersStats[player.code].latestGwPoints,
+        (player) => player.code !== squad.subGk && !squad.subs.includes(player.code)
+    )(squad);
 };
 
 export const getNextFixtures = (fdr: FdrData, gameweek: number, teamCode: string) => {

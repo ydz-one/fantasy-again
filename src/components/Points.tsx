@@ -3,15 +3,24 @@ import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
-import { Position, ValueType } from '../types';
+import { PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
 import PlayerBench from './PlayerBench';
 import { statisticsFontSize } from '../constants/ui';
+import { calcLatestGwPointsTotal, formatPoints } from '../helpers';
 
 const { Content } = Layout;
 
-const _Points = () => {
+interface Props {
+    playersBio: PlayersBio;
+    playersStats: PlayersStats;
+    squad: Squad;
+    balance: number;
+    isSquadComplete: boolean;
+}
+
+const _Points = ({ playersBio, playersStats, squad, balance }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
@@ -44,8 +53,7 @@ const _Points = () => {
                     <div className="top-metric-section center-when-mobile">
                         <Statistic
                             title="GW1"
-                            value={56}
-                            suffix="pts"
+                            value={formatPoints(calcLatestGwPointsTotal(squad, playersStats))}
                             valueStyle={statisticsFontSize}
                             className="top-metric"
                         />
