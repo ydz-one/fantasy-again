@@ -1,7 +1,7 @@
 import { valueType } from 'antd/lib/statistic/utils';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { formatPoints, formatValue, getNextFixtures } from '../helpers';
+import { didPlayerPlay, formatPoints, formatValue, getNextFixtures } from '../helpers';
 import { StoreState } from '../reducers';
 import { FdrData, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import { EmptyPlayerCard } from './EmptyPlayerCard';
@@ -32,6 +32,16 @@ const _SquadLineup = ({
     showSubs,
     showCap,
 }: Props) => {
+    const getPointsMultiplier = (code: string, isCaptain: boolean, isViceCaptain: boolean) => {
+        if (isCaptain) {
+            return 2;
+        }
+        if (isViceCaptain && !didPlayerPlay(squad.captain, playersStats)) {
+            return 2;
+        }
+        return 1;
+    };
+
     const renderPlayerCard = (position: Position) => (idx: number) => {
         const squadPlayer = squad[position][idx];
         if (!squadPlayer) {
@@ -40,11 +50,14 @@ const _SquadLineup = ({
         const { code } = squadPlayer;
         const { webName, teamCode } = playersBio[code];
         const { value, injured, injury, injuryEnd, latestGwPoints } = playersStats[code];
+        const isCaptain = squad.captain === code;
+        const isViceCaptain = squad.viceCaptain === code;
+        const pointsMultiplyer = getPointsMultiplier(code, isCaptain, isViceCaptain);
         const valueToShow =
             valueType === ValueType.FIXTURE
                 ? getNextFixtures(fdr, gameweek, teamCode)
                 : valueType === ValueType.POINTS
-                ? formatPoints(latestGwPoints)
+                ? formatPoints(latestGwPoints * pointsMultiplyer)
                 : formatValue(value);
         return (
             <PlayerCard
@@ -57,7 +70,7 @@ const _SquadLineup = ({
                 injury={injury}
                 injuryEnd={injuryEnd}
                 hasRedCard={false}
-                captainStatus={!showCap ? '' : squad.captain === code ? 'C' : squad.viceCaptain === code ? 'VC' : ''}
+                captainStatus={!showCap ? '' : isCaptain ? 'C' : isViceCaptain ? 'VC' : ''}
                 subStatus=""
                 onClick={() => handleClickPlayer(code)}
             />

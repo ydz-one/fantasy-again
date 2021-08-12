@@ -29,7 +29,11 @@ export const calcNumPlayers = (squad: Squad) => {
 };
 
 const calcSquadSum =
-    (getValueFn: (squadPlayer: SquadPlayer) => number, filterFn?: (SquadPlayer: SquadPlayer) => boolean) =>
+    (
+        getValueFn: (squadPlayer: SquadPlayer) => number,
+        filterFn?: (SquadPlayer: SquadPlayer) => boolean,
+        modifierFn?: (squad: Squad) => number
+    ) =>
     (squad: Squad) => {
         let sum = 0;
         for (const [position, players] of Object.entries(squad)) {
@@ -44,6 +48,9 @@ const calcSquadSum =
                 }, 0);
             }
         }
+        if (modifierFn) {
+            sum += modifierFn(squad);
+        }
         return sum;
     };
 
@@ -53,10 +60,28 @@ export const calcSquadValueTotal = (squad: Squad, playersStats: PlayersStats) =>
     return calcSquadSum((player) => playersStats[player.code].value)(squad);
 };
 
+export const didPlayerPlay = (playerCode: string, playersStats: PlayersStats) => {
+    const { latestGw, fixtureStats } = playersStats[playerCode];
+    return (
+        fixtureStats.reduce((totalMinutesPlayed, fixture) => {
+            if (fixture.round === latestGw) {
+                totalMinutesPlayed += fixture.minutes;
+            }
+            return totalMinutesPlayed;
+        }, 0) > 0
+    );
+};
+
 export const calcLatestGwPointsTotal = (squad: Squad, playersStats: PlayersStats) => {
     return calcSquadSum(
         (player) => playersStats[player.code].latestGwPoints,
-        (player) => player.code !== squad.subGk && !squad.subs.includes(player.code)
+        (player) => player.code !== squad.subGk && !squad.subs.includes(player.code),
+        (squad) => {
+            if (didPlayerPlay(squad.captain, playersStats)) {
+                return playersStats[squad.captain].latestGwPoints;
+            }
+            return playersStats[squad.viceCaptain].latestGwPoints;
+        }
     )(squad);
 };
 
