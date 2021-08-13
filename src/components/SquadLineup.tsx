@@ -32,7 +32,7 @@ const _SquadLineup = ({
     showSubs,
     showCap,
 }: Props) => {
-    const getPointsMultiplier = (code: string, isCaptain: boolean, isViceCaptain: boolean) => {
+    const getPointsMultiplier = (isCaptain: boolean, isViceCaptain: boolean) => {
         if (isCaptain) {
             return 2;
         }
@@ -52,7 +52,7 @@ const _SquadLineup = ({
         const { value, injured, injury, injuryEnd, latestGwPoints } = playersStats[code];
         const isCaptain = squad.captain === code;
         const isViceCaptain = squad.viceCaptain === code;
-        const pointsMultiplyer = getPointsMultiplier(code, isCaptain, isViceCaptain);
+        const pointsMultiplyer = getPointsMultiplier(isCaptain, isViceCaptain);
         const valueToShow =
             valueType === ValueType.FIXTURE
                 ? getNextFixtures(fdr, gameweek, teamCode)
