@@ -89,3 +89,31 @@ export const getNextFixtures = (fdr: FdrData, gameweek: number, teamCode: string
     const teamId = getTeamCodeToId(DEFAULT_SEASON)[teamCode];
     return fdr[teamId][gameweek];
 };
+
+const autoSub = (squad: Squad) => {
+    // TODO: Implement
+    return squad;
+};
+
+export const getSquadPoints = (squad: Squad, playersStats: PlayersStats, playersBio: PlayersBio) => {
+    const squadPlayerToSquadPlayerPoints = (player: SquadPlayer) => {
+        const { code } = player;
+        return {
+            code,
+            points: playersStats[code].latestGwPoints,
+            team: playersBio[code].teamCode,
+        };
+    };
+    const updatedSquad = autoSub(squad);
+    const { GK, DEF, MID, FWD, subs, subGk, captain, viceCaptain } = updatedSquad;
+    return {
+        GK: GK.map(squadPlayerToSquadPlayerPoints),
+        DEF: DEF.map(squadPlayerToSquadPlayerPoints),
+        MID: MID.map(squadPlayerToSquadPlayerPoints),
+        FWD: FWD.map(squadPlayerToSquadPlayerPoints),
+        subs,
+        subGk,
+        captain,
+        viceCaptain,
+    };
+};

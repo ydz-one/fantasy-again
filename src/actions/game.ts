@@ -1,7 +1,12 @@
-import { GameAction, GameActionTypes, Position, Squad, SquadPlayer } from '../types';
+import { GameAction, GameActionTypes, Position, Squad, SquadPlayer, SquadPoints } from '../types';
 
 export const incrementGameweek = (): GameAction => ({
     type: GameActionTypes.IncrementGameweek,
+});
+
+export const addSquadPointsToHistory = (squadPoints: SquadPoints): GameAction => ({
+    type: GameActionTypes.AddSquadPointsToHistory,
+    payload: squadPoints,
 });
 
 export const addPoints = (points: number): GameAction => ({

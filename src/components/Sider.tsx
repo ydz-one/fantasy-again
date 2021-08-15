@@ -5,22 +5,38 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
 import { Button } from 'antd';
-import { incrementGameweek, loadNewGwData } from '../actions';
-import { DEFAULT_SEASON } from '../types';
+import { incrementGameweek, loadNewGwData, addSquadPointsToHistory } from '../actions';
+import { DEFAULT_SEASON, PlayersBio, PlayersStats, Squad } from '../types';
 import { StoreState } from '../reducers';
+import { getSquadPoints } from '../helpers';
 
 interface Props extends RouteComponentProps<{}> {
     gameweek: number;
     isSquadComplete: boolean;
+    playersStats: PlayersStats;
+    playersBio: PlayersBio;
+    squad: Squad;
     incrementGameweek: typeof incrementGameweek;
     loadNewGwData: typeof loadNewGwData;
+    addSquadPointsToHistory: typeof addSquadPointsToHistory;
 }
 
 const { Sider } = Layout;
 
-const _Sider = ({ gameweek, isSquadComplete, location, incrementGameweek, loadNewGwData }: Props) => {
+const _Sider = ({
+    gameweek,
+    isSquadComplete,
+    playersStats,
+    playersBio,
+    squad,
+    location,
+    incrementGameweek,
+    loadNewGwData,
+    addSquadPointsToHistory,
+}: Props) => {
     const handleIncrementGameweek = () => {
         loadNewGwData(gameweek + 1);
+        addSquadPointsToHistory(getSquadPoints(squad, playersStats, playersBio));
         incrementGameweek();
     };
 
@@ -86,12 +102,18 @@ const _Sider = ({ gameweek, isSquadComplete, location, incrementGameweek, loadNe
     );
 };
 
-const mapStateToProps = ({ game }: StoreState) => {
-    const { gameweek, isSquadComplete } = game;
+const mapStateToProps = ({ data, game }: StoreState) => {
+    const { playersStats, playersBio } = data;
+    const { gameweek, isSquadComplete, squad } = game;
     return {
         gameweek,
         isSquadComplete,
+        playersStats,
+        playersBio,
+        squad,
     };
 };
 
-export default connect(mapStateToProps, { incrementGameweek, loadNewGwData })(withRouter(_Sider));
+export default connect(mapStateToProps, { incrementGameweek, loadNewGwData, addSquadPointsToHistory })(
+    withRouter(_Sider)
+);

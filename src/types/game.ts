@@ -5,8 +5,20 @@ export interface GameState {
     points: number;
     isSquadComplete: boolean;
     squad: Squad;
+    squadPointsHistory: SquadPoints[];
     balance: number;
 }
+
+export type SquadPlayer = {
+    code: string;
+    buyPrice: number;
+};
+
+export type SquadPlayerPoints = {
+    code: string;
+    points: number;
+    team: string;
+};
 
 // The first four keys are kept in all caps to match the position names from the data
 export type Squad = {
@@ -20,9 +32,15 @@ export type Squad = {
     viceCaptain: string;
 };
 
-export type SquadPlayer = {
-    code: string;
-    buyPrice: number;
+export type SquadPoints = {
+    GK: SquadPlayerPoints[];
+    DEF: SquadPlayerPoints[];
+    MID: SquadPlayerPoints[];
+    FWD: SquadPlayerPoints[];
+    subs: string[];
+    subGk: string;
+    captain: string;
+    viceCaptain: string;
 };
 
 export enum Season {
@@ -40,6 +58,7 @@ export const DEFAULT_SEASON = Season.S2020_2021;
 
 export enum GameActionTypes {
     IncrementGameweek = 'IncrementGameweek',
+    AddSquadPointsToHistory = 'AddSquadPointsToHistory',
     AddPoints = 'AddPoints',
     AddPlayerToSquad = 'AddPlayerToSquad',
     FinalizeSquad = 'FinalizeSquad',
@@ -49,6 +68,11 @@ export enum GameActionTypes {
 
 export interface IncrementGameweekAction {
     type: GameActionTypes.IncrementGameweek;
+}
+
+export interface AddSquadPointsToHistoryAction {
+    type: GameActionTypes.AddSquadPointsToHistory;
+    payload: SquadPoints;
 }
 
 export interface AddPointsAction {
@@ -80,6 +104,7 @@ export interface SetSquad {
 
 export type GameAction =
     | IncrementGameweekAction
+    | AddSquadPointsToHistoryAction
     | AddPointsAction
     | AddPlayerToSquad
     | FinalizeSquad
