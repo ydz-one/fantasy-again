@@ -243,3 +243,5 @@ export const getGwMeta = (gwNum: number): PlayerGwMeta[] => {
             throw new Error('Gameweek not found');
     }
 };
+
+export const TOTAL_GW_COUNT = 38;

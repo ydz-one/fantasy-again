@@ -104,7 +104,7 @@ const mapStateToProps = (
     { data, game }: StoreState,
     ownProps: {
         handleClickPlayer: Function;
-        handleSetReplacePlayer: Function;
+        handleSetReplacePlayer?: Function;
         valueType: ValueType;
         showSubs?: boolean;
         showCap?: boolean;
@@ -112,7 +112,13 @@ const mapStateToProps = (
 ) => {
     const { fdr, playersBio, playersStats } = data;
     const { squad, gameweek } = game;
-    const { handleClickPlayer, handleSetReplacePlayer, valueType, showSubs = false, showCap = false } = ownProps;
+    const {
+        handleClickPlayer,
+        handleSetReplacePlayer = () => null,
+        valueType,
+        showSubs = false,
+        showCap = false,
+    } = ownProps;
 
     return {
         fdr,

@@ -19,6 +19,7 @@ const getInitialGameState = (): GameState => {
             viceCaptain: '-1',
         },
         squadPointsHistory: [],
+        gwPointsHistory: [],
         balance: STARTING_BALANCE,
     };
 };
@@ -71,7 +72,8 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
         case GameActionTypes.AddSquadPointsToHistory:
             return {
                 ...state,
-                squadPointsHistory: state.squadPointsHistory.concat(action.payload),
+                squadPointsHistory: state.squadPointsHistory.concat(action.payload.squadPoints),
+                gwPointsHistory: state.gwPointsHistory.concat(action.payload.gwPoints),
             };
         case GameActionTypes.AddPoints:
             return {

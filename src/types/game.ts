@@ -6,6 +6,7 @@ export interface GameState {
     isSquadComplete: boolean;
     squad: Squad;
     squadPointsHistory: SquadPoints[];
+    gwPointsHistory: number[];
     balance: number;
 }
 
@@ -72,7 +73,10 @@ export interface IncrementGameweekAction {
 
 export interface AddSquadPointsToHistoryAction {
     type: GameActionTypes.AddSquadPointsToHistory;
-    payload: SquadPoints;
+    payload: {
+        squadPoints: SquadPoints;
+        gwPoints: number;
+    };
 }
 
 export interface AddPointsAction {

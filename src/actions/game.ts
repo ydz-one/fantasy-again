@@ -4,9 +4,12 @@ export const incrementGameweek = (): GameAction => ({
     type: GameActionTypes.IncrementGameweek,
 });
 
-export const addSquadPointsToHistory = (squadPoints: SquadPoints): GameAction => ({
+export const addSquadPointsToHistory = (squadPoints: SquadPoints, gwPoints: number): GameAction => ({
     type: GameActionTypes.AddSquadPointsToHistory,
-    payload: squadPoints,
+    payload: {
+        squadPoints,
+        gwPoints,
+    },
 });
 
 export const addPoints = (points: number): GameAction => ({

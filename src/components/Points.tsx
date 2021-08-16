@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
-import { PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
+import { PlayersBio, PlayersStats, Squad, ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
 import PlayerBench from './PlayerBench';
 import { statisticsFontSize } from '../constants/ui';
-import { calcLatestGwPointsTotal, formatPoints } from '../helpers';
+import { formatPoints } from '../helpers';
 
 const { Content } = Layout;
 
@@ -17,33 +17,30 @@ interface Props {
     playersStats: PlayersStats;
     squad: Squad;
     balance: number;
+    gameweek: number;
     isSquadComplete: boolean;
+    gwPointsHistory: number[];
 }
 
-const _Points = ({ playersBio, playersStats, squad, balance }: Props) => {
-    const [replacementInfo, setReplacementInfo] = useState({
-        position: Position.GK,
-        playerToReplace: '',
-    });
-    // playerClicked is the non-empty player card clicked in the Squad Selection screen; when set, it opens up a player data modal with a button to set that player to be replaced
+const _Points = ({ playersBio, playersStats, squad, balance, gameweek, gwPointsHistory }: Props) => {
     const [playerClicked, setPlayerClicked] = useState('');
-    // playerToAdd is the player selected from the Player Stats Table; when set, it opens up a player data modal with a button to confirm transfer in
-    const [playerToAdd, setPlayerToAdd] = useState('');
-    // playerToReplace is the empty or non-empty player selected to be replaced; when set, it opens up the Player Stats Table
-    const { position, playerToReplace } = replacementInfo;
+    const [gwToShow, setGwToShow] = useState(gameweek || 1);
+
+    useEffect(() => {
+        setGwToShow(gameweek);
+    }, [gameweek]);
 
     const handleClickPlayer = (playerClicked: string) => {
         setPlayerClicked(playerClicked);
     };
 
-    const handleSetReplacePlayer = (playerToReplace: string, position: Position) => {
-        setReplacementInfo({
-            position,
-            playerToReplace,
-        });
+    const handleClickNext = () => {
+        setGwToShow((gwToShow) => gwToShow + 1);
     };
 
-    const handleReadyReplacePlayer = (playerClicked: string) => {};
+    const handleClickPrevious = () => {
+        setGwToShow((gwToShow) => gwToShow - 1);
+    };
 
     return (
         <Content className="site-layout-content">
@@ -52,39 +49,36 @@ const _Points = ({ playersBio, playersStats, squad, balance }: Props) => {
                     <div>Points</div>
                     <div className="top-metric-section center-when-mobile">
                         <Statistic
-                            title="GW1"
-                            value={formatPoints(calcLatestGwPointsTotal(squad, playersStats))}
+                            title={'GW' + (gwToShow || 1)}
+                            value={formatPoints(gwPointsHistory[gwToShow - 1] || 0)}
                             valueStyle={statisticsFontSize}
                             className="top-metric"
                         />
                     </div>
                 </div>
                 <div className="top-btn-container">
-                    <Button size="large" className="top-btn">
+                    <Button
+                        size="large"
+                        className="top-btn"
+                        onClick={handleClickPrevious}
+                        disabled={gwToShow === 1 || gameweek === 0}
+                    >
                         Previous
                     </Button>
-                    <Button size="large" className="top-btn">
+                    <Button
+                        size="large"
+                        className="top-btn"
+                        onClick={handleClickNext}
+                        disabled={gwToShow === gameweek || gameweek === 0}
+                    >
                         Next
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
-                <SquadLineup
-                    handleClickPlayer={handleClickPlayer}
-                    handleSetReplacePlayer={handleSetReplacePlayer}
-                    valueType={ValueType.POINTS}
-                    showCap
-                />
+                <SquadLineup handleClickPlayer={handleClickPlayer} valueType={ValueType.POINTS} showCap />
                 <Divider className="custom-divider" />
-                <PlayerBench
-                    handleClickPlayer={handleClickPlayer}
-                    handleSetReplacePlayer={handleSetReplacePlayer}
-                    valueType={ValueType.POINTS}
-                />
-                <PlayerDetailsModal
-                    selectedPlayer={playerClicked}
-                    onClose={() => setPlayerClicked('')}
-                    onAccept={() => handleReadyReplacePlayer(playerClicked)}
-                />
+                <PlayerBench handleClickPlayer={handleClickPlayer} valueType={ValueType.POINTS} />
+                <PlayerDetailsModal selectedPlayer={playerClicked} onClose={() => setPlayerClicked('')} />
             </div>
         </Content>
     );
@@ -92,13 +86,15 @@ const _Points = ({ playersBio, playersStats, squad, balance }: Props) => {
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { squad, balance, isSquadComplete } = game;
+    const { squad, balance, isSquadComplete, gameweek, gwPointsHistory } = game;
     return {
         playersBio,
         playersStats,
         squad,
         balance,
         isSquadComplete,
+        gameweek,
+        gwPointsHistory,
     };
 };
 

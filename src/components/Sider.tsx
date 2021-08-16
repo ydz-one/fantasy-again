@@ -1,14 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
 import { Button } from 'antd';
-import { incrementGameweek, loadNewGwData, addSquadPointsToHistory } from '../actions';
+import { goToNextGameweek } from '../actions';
 import { DEFAULT_SEASON, PlayersBio, PlayersStats, Squad } from '../types';
 import { StoreState } from '../reducers';
-import { getSquadPoints } from '../helpers';
 
 interface Props extends RouteComponentProps<{}> {
     gameweek: number;
@@ -16,28 +15,14 @@ interface Props extends RouteComponentProps<{}> {
     playersStats: PlayersStats;
     playersBio: PlayersBio;
     squad: Squad;
-    incrementGameweek: typeof incrementGameweek;
-    loadNewGwData: typeof loadNewGwData;
-    addSquadPointsToHistory: typeof addSquadPointsToHistory;
+    goToNextGameweek: Function;
 }
 
 const { Sider } = Layout;
 
-const _Sider = ({
-    gameweek,
-    isSquadComplete,
-    playersStats,
-    playersBio,
-    squad,
-    location,
-    incrementGameweek,
-    loadNewGwData,
-    addSquadPointsToHistory,
-}: Props) => {
+const _Sider = ({ gameweek, isSquadComplete, playersStats, playersBio, squad, location, goToNextGameweek }: Props) => {
     const handleIncrementGameweek = () => {
-        loadNewGwData(gameweek + 1);
-        addSquadPointsToHistory(getSquadPoints(squad, playersStats, playersBio));
-        incrementGameweek();
+        goToNextGameweek(gameweek, squad, playersBio);
     };
 
     return (
@@ -114,6 +99,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps, { incrementGameweek, loadNewGwData, addSquadPointsToHistory })(
-    withRouter(_Sider)
-);
+export default connect(mapStateToProps, { goToNextGameweek })(withRouter(_Sider));

@@ -68,11 +68,7 @@ const _PickTeam = () => {
                     valueType={ValueType.FIXTURE}
                 />
                 <Divider className="custom-divider" />
-                <PlayerBench
-                    handleClickPlayer={handleClickPlayer}
-                    handleSetReplacePlayer={handleSetReplacePlayer}
-                    valueType={ValueType.FIXTURE}
-                />
+                <PlayerBench handleClickPlayer={handleClickPlayer} valueType={ValueType.FIXTURE} />
                 <PlayerDetailsModal
                     selectedPlayer={playerClicked}
                     onClose={() => setPlayerClicked('')}

@@ -12,20 +12,10 @@ interface Props {
     squad: Squad;
     gameweek: number;
     handleClickPlayer: Function;
-    handleSetReplacePlayer: Function;
     valueType: ValueType;
 }
 
-const _PlayerBench = ({
-    playersBio,
-    playersStats,
-    fdr,
-    squad,
-    gameweek,
-    handleClickPlayer,
-    handleSetReplacePlayer,
-    valueType,
-}: Props) => {
+const _PlayerBench = ({ playersBio, playersStats, fdr, squad, gameweek, handleClickPlayer, valueType }: Props) => {
     const titles = ['SGK', 'S1', 'S2', 'S3'];
     return (
         <div className="position-row player-bench-row">
@@ -62,11 +52,11 @@ const _PlayerBench = ({
 
 const mapStateToProps = (
     { data, game }: StoreState,
-    ownProps: { handleClickPlayer: Function; handleSetReplacePlayer: Function; valueType: ValueType }
+    ownProps: { handleClickPlayer: Function; valueType: ValueType }
 ) => {
     const { playersBio, playersStats, fdr } = data;
     const { squad, gameweek } = game;
-    const { handleClickPlayer, handleSetReplacePlayer, valueType } = ownProps;
+    const { handleClickPlayer, valueType } = ownProps;
 
     return {
         playersBio,
@@ -75,7 +65,6 @@ const mapStateToProps = (
         squad,
         gameweek,
         handleClickPlayer,
-        handleSetReplacePlayer,
         valueType,
     };
 };

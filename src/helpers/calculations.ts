@@ -72,7 +72,7 @@ export const didPlayerPlay = (playerCode: string, playersStats: PlayersStats) =>
     );
 };
 
-export const calcLatestGwPointsTotal = (squad: Squad, playersStats: PlayersStats) => {
+export const calcGwPointsTotal = (squad: Squad, playersStats: PlayersStats) => {
     return calcSquadSum(
         (player) => playersStats[player.code].latestGwPoints,
         (player) => player.code !== squad.subGk && !squad.subs.includes(player.code),
@@ -90,7 +90,7 @@ export const getNextFixtures = (fdr: FdrData, gameweek: number, teamCode: string
     return fdr[teamId][gameweek];
 };
 
-const autoSub = (squad: Squad) => {
+export const autoSub = (squad: Squad) => {
     // TODO: Implement
     return squad;
 };
@@ -104,8 +104,7 @@ export const getSquadPoints = (squad: Squad, playersStats: PlayersStats, players
             team: playersBio[code].teamCode,
         };
     };
-    const updatedSquad = autoSub(squad);
-    const { GK, DEF, MID, FWD, subs, subGk, captain, viceCaptain } = updatedSquad;
+    const { GK, DEF, MID, FWD, subs, subGk, captain, viceCaptain } = squad;
     return {
         GK: GK.map(squadPlayerToSquadPlayerPoints),
         DEF: DEF.map(squadPlayerToSquadPlayerPoints),
