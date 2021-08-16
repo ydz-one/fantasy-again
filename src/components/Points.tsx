@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
-import { PlayersBio, PlayersStats, Squad, ValueType } from '../types';
+import { ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
 import PlayerBench from './PlayerBench';
@@ -13,16 +13,12 @@ import { formatPoints } from '../helpers';
 const { Content } = Layout;
 
 interface Props {
-    playersBio: PlayersBio;
-    playersStats: PlayersStats;
-    squad: Squad;
-    balance: number;
     gameweek: number;
     isSquadComplete: boolean;
     gwPointsHistory: number[];
 }
 
-const _Points = ({ playersBio, playersStats, squad, balance, gameweek, gwPointsHistory }: Props) => {
+const _Points = ({ gameweek, gwPointsHistory }: Props) => {
     const [playerClicked, setPlayerClicked] = useState('');
     const [gwToShow, setGwToShow] = useState(gameweek || 1);
 
@@ -84,14 +80,9 @@ const _Points = ({ playersBio, playersStats, squad, balance, gameweek, gwPointsH
     );
 };
 
-const mapStateToProps = ({ data, game }: StoreState) => {
-    const { playersBio, playersStats } = data;
-    const { squad, balance, isSquadComplete, gameweek, gwPointsHistory } = game;
+const mapStateToProps = ({ game }: StoreState) => {
+    const { isSquadComplete, gameweek, gwPointsHistory } = game;
     return {
-        playersBio,
-        playersStats,
-        squad,
-        balance,
         isSquadComplete,
         gameweek,
         gwPointsHistory,
