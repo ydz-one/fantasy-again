@@ -1,7 +1,7 @@
 import { valueType } from 'antd/lib/statistic/utils';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { didPlayerPlay, formatPoints, formatValue, getNextFixtures } from '../helpers';
+import { didPlayerPlay, formatPoints, formatValue, getNextFixtures, didPlayerGetRedCard } from '../helpers';
 import { StoreState } from '../reducers';
 import { FdrData, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import { EmptyPlayerCard } from './EmptyPlayerCard';
@@ -49,7 +49,8 @@ const _SquadLineup = ({
         }
         const { code } = squadPlayer;
         const { webName, teamCode } = playersBio[code];
-        const { value, injured, injury, injuryEnd, latestGwPoints } = playersStats[code];
+        const { value, injured, injury, injuryEnd, latestGwPoints, fixtureStats } = playersStats[code];
+        const hasRedCard = didPlayerGetRedCard(fixtureStats, gameweek.toString());
         const isCaptain = squad.captain === code;
         const isViceCaptain = squad.viceCaptain === code;
         const pointsMultiplyer = getPointsMultiplier(isCaptain, isViceCaptain);
@@ -69,7 +70,7 @@ const _SquadLineup = ({
                 injured={injured}
                 injury={injury}
                 injuryEnd={injuryEnd}
-                hasRedCard={false}
+                hasRedCard={hasRedCard}
                 captainStatus={!showCap ? '' : isCaptain ? 'C' : isViceCaptain ? 'VC' : ''}
                 subStatus=""
                 onClick={() => handleClickPlayer(code)}

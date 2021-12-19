@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { formatPoints, formatValue, getNextFixtures } from '../helpers';
+import { formatPoints, formatValue, getNextFixtures, didPlayerGetRedCard } from '../helpers';
 import { StoreState } from '../reducers';
 import { FdrData, PlayersBio, PlayersStats, Squad, ValueType } from '../types';
 import { PlayerCard } from './PlayerCard';
@@ -16,12 +16,13 @@ interface Props {
 }
 
 const _PlayerBench = ({ playersBio, playersStats, fdr, squad, gameweek, handleClickPlayer, valueType }: Props) => {
-    const titles = ['SGK', 'S1', 'S2', 'S3'];
+    const titles = ['S', 'S1', 'S2', 'S3'];
     return (
         <div className="position-row player-bench-row">
             {[squad.subGk, ...squad.subs].map((playerCode, idx) => {
                 const { webName, teamCode, position } = playersBio[playerCode];
-                const { value, injured, injury, injuryEnd, latestGwPoints } = playersStats[playerCode];
+                const { value, injured, injury, injuryEnd, latestGwPoints, fixtureStats } = playersStats[playerCode];
+                const hasRedCard = didPlayerGetRedCard(fixtureStats, gameweek.toString());
                 const valueToShow =
                     valueType === ValueType.FIXTURE
                         ? getNextFixtures(fdr, gameweek, teamCode)
@@ -38,7 +39,7 @@ const _PlayerBench = ({ playersBio, playersStats, fdr, squad, gameweek, handleCl
                             injured={injured}
                             injury={injury}
                             injuryEnd={injuryEnd}
-                            hasRedCard={false}
+                            hasRedCard={hasRedCard}
                             captainStatus=""
                             subStatus={titles[idx]}
                             onClick={() => handleClickPlayer(playerCode)}

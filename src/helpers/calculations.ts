@@ -1,5 +1,14 @@
 import { getTeamCodeToId } from '../data';
-import { DEFAULT_SEASON, FdrData, PlayersBio, PlayersStats, Position, Squad, SquadPlayer } from '../types';
+import {
+    DEFAULT_SEASON,
+    FdrData,
+    PlayerFixtureStats,
+    PlayersBio,
+    PlayersStats,
+    Position,
+    Squad,
+    SquadPlayer,
+} from '../types';
 import { assertIsArrayOfSquadPlayers } from './assertFunctions';
 
 const MAX_PLAYERS_PER_TEAM = 3;
@@ -70,6 +79,16 @@ export const didPlayerPlay = (playerCode: string, playersStats: PlayersStats) =>
             return totalMinutesPlayed;
         }, 0) > 0
     );
+};
+
+export const didPlayerGetRedCard = (fixtureStats: PlayerFixtureStats[], gameweek: string) => {
+    const redCardCount = fixtureStats.reduce((acc, stats: PlayerFixtureStats) => {
+        if (stats.round === gameweek) {
+            acc += stats.redCards;
+        }
+        return acc;
+    }, 0);
+    return redCardCount > 0;
 };
 
 export const calcGwPointsTotal = (squad: Squad, playersStats: PlayersStats) => {
