@@ -10,6 +10,7 @@ import {
     SquadPlayer,
 } from '../types';
 import { assertIsArrayOfSquadPlayers } from './assertFunctions';
+import { formatPoints } from './formatters';
 
 const MAX_PLAYERS_PER_TEAM = 3;
 
@@ -114,24 +115,54 @@ export const autoSub = (squad: Squad) => {
     return squad;
 };
 
-export const getSquadPoints = (squad: Squad, playersStats: PlayersStats, playersBio: PlayersBio) => {
-    const squadPlayerToSquadPlayerPoints = (player: SquadPlayer) => {
-        const { code } = player;
+export const getPointsMultiplier = (isCaptain: boolean, isViceCaptain: boolean, didPlayerPlay: boolean) => {
+    if (isCaptain) {
+        return 2;
+    }
+    if (isViceCaptain && !didPlayerPlay) {
+        return 2;
+    }
+    return 1;
+};
+
+export const getSquadPoints = (squad: Squad, playersStats: PlayersStats, playersBio: PlayersBio, gameweek: number) => {
+    const getPlayerGwPoints = (code: string) => {
+        const { webName, teamCode, position } = playersBio[code];
+        const { injured, injury, injuryEnd, latestGwPoints, fixtureStats } = playersStats[code];
+        const hasRedCard = didPlayerGetRedCard(fixtureStats, gameweek.toString());
+        const isCaptain = squad.captain === code;
+        const isViceCaptain = squad.viceCaptain === code;
+        const pointsMultiplyer = getPointsMultiplier(isCaptain, isViceCaptain, didPlayerPlay(code, playersStats));
+        const value = formatPoints(latestGwPoints * pointsMultiplyer);
+        const captainStatus = isCaptain ? 'C' : isViceCaptain ? 'VC' : '';
+        const subStatus = '';
         return {
+            position,
+            name: webName,
             code,
-            points: playersStats[code].latestGwPoints,
-            team: playersBio[code].teamCode,
+            teamCode,
+            value,
+            injured,
+            injury,
+            injuryEnd,
+            hasRedCard,
+            captainStatus,
+            subStatus,
         };
     };
-    const { GK, DEF, MID, FWD, subs, subGk, captain, viceCaptain } = squad;
+    const squadPlayerToSquadPlayerPoints = (player: SquadPlayer) => {
+        return getPlayerGwPoints(player.code);
+    };
+    const shouldShowPlayer = (squadPlayer: SquadPlayer) => {
+        return !squad.subs.includes(squadPlayer.code) && squadPlayer.code !== squad.subGk;
+    };
+    const { GK, DEF, MID, FWD, subs, subGk } = squad;
     return {
-        GK: GK.map(squadPlayerToSquadPlayerPoints),
-        DEF: DEF.map(squadPlayerToSquadPlayerPoints),
-        MID: MID.map(squadPlayerToSquadPlayerPoints),
-        FWD: FWD.map(squadPlayerToSquadPlayerPoints),
-        subs,
-        subGk,
-        captain,
-        viceCaptain,
+        GK: GK.filter(shouldShowPlayer).map(squadPlayerToSquadPlayerPoints),
+        DEF: DEF.filter(shouldShowPlayer).map(squadPlayerToSquadPlayerPoints),
+        MID: MID.filter(shouldShowPlayer).map(squadPlayerToSquadPlayerPoints),
+        FWD: FWD.filter(shouldShowPlayer).map(squadPlayerToSquadPlayerPoints),
+        subs: subs.map(getPlayerGwPoints),
+        subGk: getPlayerGwPoints(subGk),
     };
 };

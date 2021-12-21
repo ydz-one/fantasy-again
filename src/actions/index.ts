@@ -18,7 +18,7 @@ export const goToNextGameweek =
         const { playersStats: updatedPlayersStats } = getState().data;
         dispatch(
             addSquadPointsToHistory(
-                getSquadPoints(autoSubbedSquad, updatedPlayersStats, playersBio),
+                getSquadPoints(autoSubbedSquad, updatedPlayersStats, playersBio, gameweek),
                 calcGwPointsTotal(autoSubbedSquad, updatedPlayersStats)
             )
         );

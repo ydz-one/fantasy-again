@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
-import { ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
+import SquadPointsLineup from './SquadPointsLineup';
 import PlayerBench from './PlayerBench';
+import PlayerPointsBench from './PlayerPointsBench';
 import { statisticsFontSize } from '../constants/ui';
 import { formatPoints } from '../helpers';
+import { ValueType } from '../types';
 
 const { Content } = Layout;
 
@@ -20,7 +22,7 @@ interface Props {
 
 const _Points = ({ gameweek, gwPointsHistory }: Props) => {
     const [playerClicked, setPlayerClicked] = useState('');
-    const [gwToShow, setGwToShow] = useState(gameweek || 1);
+    const [gwToShow, setGwToShow] = useState(gameweek);
 
     useEffect(() => {
         setGwToShow(gameweek);
@@ -71,9 +73,17 @@ const _Points = ({ gameweek, gwPointsHistory }: Props) => {
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
-                <SquadLineup handleClickPlayer={handleClickPlayer} valueType={ValueType.POINTS} showCap />
+                {gwToShow === 0 || gwToShow === gameweek ? (
+                    <SquadLineup handleClickPlayer={handleClickPlayer} valueType={ValueType.POINTS} showCap />
+                ) : (
+                    <SquadPointsLineup gameweek={gwToShow} handleClickPlayer={handleClickPlayer} />
+                )}
                 <Divider className="custom-divider" />
-                <PlayerBench handleClickPlayer={handleClickPlayer} valueType={ValueType.POINTS} />
+                {gwToShow === 0 || gwToShow === gameweek ? (
+                    <PlayerBench handleClickPlayer={handleClickPlayer} valueType={ValueType.POINTS} />
+                ) : (
+                    <PlayerPointsBench gameweek={gwToShow} handleClickPlayer={handleClickPlayer} />
+                )}
                 <PlayerDetailsModal selectedPlayer={playerClicked} onClose={() => setPlayerClicked('')} />
             </div>
         </Content>

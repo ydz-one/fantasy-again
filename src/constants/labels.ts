@@ -13,3 +13,5 @@ export const PLAYER_STATS_COLUMN_LABELS: { [key: string]: string } = {
     transfersOut: 'GW Transfers Out',
     bonus: 'Bonus Points',
 };
+
+export const SUB_PLAYER_TITLES = ['S', 'S1', 'S2', 'S3'];

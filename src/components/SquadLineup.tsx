@@ -45,7 +45,9 @@ const _SquadLineup = ({
     const renderPlayerCard = (position: Position) => (idx: number) => {
         const squadPlayer = squad[position][idx];
         if (!squadPlayer) {
-            return <EmptyPlayerCard position={position} onClick={() => handleSetReplacePlayer('-1', position)} />;
+            return (
+                <EmptyPlayerCard key={idx} position={position} onClick={() => handleSetReplacePlayer('-1', position)} />
+            );
         }
         const { code } = squadPlayer;
         const { webName, teamCode } = playersBio[code];

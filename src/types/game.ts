@@ -16,9 +16,17 @@ export type SquadPlayer = {
 };
 
 export type SquadPlayerPoints = {
+    position: string;
+    name: string;
     code: string;
-    points: number;
-    team: string;
+    teamCode: string;
+    value: string;
+    injured: number;
+    injury: string;
+    injuryEnd: string;
+    hasRedCard: boolean;
+    captainStatus: string;
+    subStatus: string;
 };
 
 // The first four keys are kept in all caps to match the position names from the data
@@ -38,10 +46,8 @@ export type SquadPoints = {
     DEF: SquadPlayerPoints[];
     MID: SquadPlayerPoints[];
     FWD: SquadPlayerPoints[];
-    subs: string[];
-    subGk: string;
-    captain: string;
-    viceCaptain: string;
+    subs: SquadPlayerPoints[];
+    subGk: SquadPlayerPoints;
 };
 
 export enum Season {

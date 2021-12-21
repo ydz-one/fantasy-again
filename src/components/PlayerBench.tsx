@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { SUB_PLAYER_TITLES } from '../constants';
 import { formatPoints, formatValue, getNextFixtures, didPlayerGetRedCard } from '../helpers';
 import { StoreState } from '../reducers';
 import { FdrData, PlayersBio, PlayersStats, Squad, ValueType } from '../types';
@@ -16,7 +17,6 @@ interface Props {
 }
 
 const _PlayerBench = ({ playersBio, playersStats, fdr, squad, gameweek, handleClickPlayer, valueType }: Props) => {
-    const titles = ['S', 'S1', 'S2', 'S3'];
     return (
         <div className="position-row player-bench-row">
             {[squad.subGk, ...squad.subs].map((playerCode, idx) => {
@@ -41,7 +41,7 @@ const _PlayerBench = ({ playersBio, playersStats, fdr, squad, gameweek, handleCl
                             injuryEnd={injuryEnd}
                             hasRedCard={hasRedCard}
                             captainStatus=""
-                            subStatus={titles[idx]}
+                            subStatus={SUB_PLAYER_TITLES[idx]}
                             onClick={() => handleClickPlayer(playerCode)}
                         />
                     </div>
