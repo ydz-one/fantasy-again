@@ -28,7 +28,7 @@ const renderNextFixtures = (fixtures: FdrFixture[]) => {
     }
     if (fixtures.length === 1) {
         const fixture = fixtures[0];
-        return TEAM_NAMES[fixture.opponent] + (fixture.isHome ? ' (H)' : ' (A)');
+        return TEAM_NAMES[fixture.opponent] + (fixture.isHome ? '(H)' : '(A)');
     }
     return (
         <Fragment>
