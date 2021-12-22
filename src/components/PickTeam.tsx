@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
-import { Position, ValueType } from '../types';
+import { PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
 import { preGwDates } from '../data/2020_2021/preGwDates';
@@ -13,7 +13,16 @@ import PlayerBench from './PlayerBench';
 
 const { Content } = Layout;
 
-const _PickTeam = () => {
+interface Props {
+    playersBio: PlayersBio;
+    playersStats: PlayersStats;
+    gameweek: number;
+    squad: Squad;
+    balance: number;
+    isSquadComplete: boolean;
+}
+
+const _PickTeam = ({ gameweek }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
@@ -45,8 +54,8 @@ const _PickTeam = () => {
                     <div>Pick Team</div>
                     <div className="top-metric-section center-when-mobile">
                         <Statistic
-                            title="GW1 Deadline"
-                            value={moment(preGwDates[0]).add(1, 'days').format('ll')}
+                            title={`GW${gameweek + 1} Deadline`}
+                            value={moment(preGwDates[gameweek]).add(1, 'days').format('ll')}
                             valueStyle={statisticsFontSize}
                             className="top-metric"
                         />
@@ -81,10 +90,11 @@ const _PickTeam = () => {
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { squad, balance, isSquadComplete } = game;
+    const { gameweek, squad, balance, isSquadComplete } = game;
     return {
         playersBio,
         playersStats,
+        gameweek,
         squad,
         balance,
         isSquadComplete,
