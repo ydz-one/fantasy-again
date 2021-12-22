@@ -41,8 +41,8 @@ interface Props {
     showPositionFilter: boolean;
 }
 
-const TEAM_COLUMN_WIDTH = 76;
-const PLAYER_COLUMN_WIDTH = 100;
+const TEAM_COLUMN_WIDTH = 80;
+const PLAYER_COLUMN_WIDTH = 120;
 const DEFAULT_COLUMN_WIDTH = 80;
 const WIDER_STATS_COLUMNS_WIDTH = 96;
 const FDR_COLUMN_WIDTH = 90;

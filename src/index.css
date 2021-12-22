@@ -45,12 +45,20 @@ code {
 }
 
 .custom-table .ant-table-cell-fix-left {
-    padding: 6px 0 6px 16px;
+    padding: 6px 0 6px 12px;
     text-align: left;
 }
 
 .custom-table .ant-table-column-sorters {
     padding: 2px 16px;
+}
+
+.custom-table .ant-table-filter-column .ant-table-column-sorters {
+    padding: 0;
+}
+
+.custom-table .ant-table-filter-trigger {
+    margin: 0;
 }
 
 .dark-font {
