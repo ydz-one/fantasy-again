@@ -74,11 +74,7 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 ...state,
                 squadPointsHistory: state.squadPointsHistory.concat(action.payload.squadPoints),
                 gwPointsHistory: state.gwPointsHistory.concat(action.payload.gwPoints),
-            };
-        case GameActionTypes.AddPoints:
-            return {
-                ...state,
-                points: state.points + action.payload,
+                points: state.points + action.payload.gwPoints,
             };
         case GameActionTypes.AddPlayerToSquad:
             const { position, playerToReplace, playerToAdd } = action.payload;

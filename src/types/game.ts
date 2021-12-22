@@ -66,7 +66,6 @@ export const DEFAULT_SEASON = Season.S2020_2021;
 export enum GameActionTypes {
     IncrementGameweek = 'IncrementGameweek',
     AddSquadPointsToHistory = 'AddSquadPointsToHistory',
-    AddPoints = 'AddPoints',
     AddPlayerToSquad = 'AddPlayerToSquad',
     FinalizeSquad = 'FinalizeSquad',
     ResetSquad = 'ResetSquad',
@@ -83,11 +82,6 @@ export interface AddSquadPointsToHistoryAction {
         squadPoints: SquadPoints;
         gwPoints: number;
     };
-}
-
-export interface AddPointsAction {
-    type: GameActionTypes.AddPoints;
-    payload: number;
 }
 
 export interface AddPlayerToSquad {
@@ -115,7 +109,6 @@ export interface SetSquad {
 export type GameAction =
     | IncrementGameweekAction
     | AddSquadPointsToHistoryAction
-    | AddPointsAction
     | AddPlayerToSquad
     | FinalizeSquad
     | ResetSquad
