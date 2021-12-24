@@ -1,3 +1,5 @@
+import { PlayerFixtureStats } from '../types';
+
 export const PLAYER_STATS_COLUMN_LABELS: { [key: string]: string } = {
     player: 'Player',
     form: 'Form',
@@ -15,3 +17,37 @@ export const PLAYER_STATS_COLUMN_LABELS: { [key: string]: string } = {
 };
 
 export const SUB_PLAYER_TITLES = ['S', 'S1', 'S2', 'S3'];
+
+export const PLAYER_FIXTURE_STATS_FIELDS: (keyof PlayerFixtureStats)[] = [
+    'minutes',
+    'goalsScored',
+    'assists',
+    'cleanSheets',
+    'goalsConceded',
+    'saves',
+    'ownGoals',
+    'penaltiesSaved',
+    'penaltiesMissed',
+    'yellowCards',
+    'redCards',
+    'bonus',
+];
+
+export const PLAYER_FIXTURE_STATS_FIELD_LABELS: { [key in keyof PlayerFixtureStats]: string } = {
+    minutes: 'Minutes',
+    goalsScored: 'Goals scored',
+    assists: 'Assists',
+    cleanSheets: 'Clean sheets',
+    goalsConceded: 'Goals conceded',
+    saves: 'Save',
+    ownGoals: 'Own goals',
+    penaltiesSaved: 'Penalties saved',
+    penaltiesMissed: 'Penalities missed',
+    yellowCards: 'Yellow cards',
+    redCards: 'Red cards',
+    bonus: 'Bonus',
+    fixture: 'Fixture',
+    kickoffTime: 'Kickoff',
+    round: 'Round',
+    totalPoints: 'Total points',
+};

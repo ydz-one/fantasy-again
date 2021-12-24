@@ -84,7 +84,9 @@ const _Points = ({ gameweek, gwPointsHistory }: Props) => {
                 ) : (
                     <PlayerPointsBench gameweek={gwToShow} handleClickPlayer={handleClickPlayer} />
                 )}
-                <PlayerDetailsModal selectedPlayer={playerClicked} onClose={() => setPlayerClicked('')} />
+                {playerClicked.length > 0 && (
+                    <PlayerDetailsModal selectedPlayer={playerClicked} onClose={() => setPlayerClicked('')} />
+                )}
             </div>
         </Content>
     );

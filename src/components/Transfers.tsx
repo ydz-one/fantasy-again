@@ -137,22 +137,26 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
                         </div>
                     )}
                 </div>
-                <PlayerDetailsModal
-                    selectedPlayer={playerClicked}
-                    onClose={() => setPlayerClicked('')}
-                    onAccept={() => handleReadyReplacePlayer(playerClicked)}
-                />
+                {playerClicked.length > 0 && (
+                    <PlayerDetailsModal
+                        selectedPlayer={playerClicked}
+                        onClose={() => setPlayerClicked('')}
+                        onAccept={() => handleReadyReplacePlayer(playerClicked)}
+                    />
+                )}
                 <SelectPlayerModal
                     position={position}
                     playerToReplace={playerToReplace}
                     onChangePlayerToAdd={(playerToAdd: string) => setPlayerToAdd(playerToAdd)}
                     onClose={handleCloseSelectPlayerModal}
                 />
-                <PlayerDetailsModal
-                    selectedPlayer={playerToAdd}
-                    onClose={() => setPlayerToAdd('')}
-                    onAccept={handleAddPlayerToSquad}
-                />
+                {playerToAdd.length > 0 && (
+                    <PlayerDetailsModal
+                        selectedPlayer={playerToAdd}
+                        onClose={() => setPlayerToAdd('')}
+                        onAccept={handleAddPlayerToSquad}
+                    />
+                )}
             </div>
         </Content>
     );

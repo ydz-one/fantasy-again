@@ -78,11 +78,13 @@ const _PickTeam = ({ gameweek }: Props) => {
                 />
                 <Divider className="custom-divider" />
                 <PlayerBench handleClickPlayer={handleClickPlayer} valueType={ValueType.FIXTURE} />
-                <PlayerDetailsModal
-                    selectedPlayer={playerClicked}
-                    onClose={() => setPlayerClicked('')}
-                    onAccept={() => handleReadyReplacePlayer(playerClicked)}
-                />
+                {playerClicked.length > 0 && (
+                    <PlayerDetailsModal
+                        selectedPlayer={playerClicked}
+                        onClose={() => setPlayerClicked('')}
+                        onAccept={() => handleReadyReplacePlayer(playerClicked)}
+                    />
+                )}
             </div>
         </Content>
     );

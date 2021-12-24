@@ -4,6 +4,11 @@ import { TEAMS } from '../constants';
 
 interface Props {
     teamCode: string;
+    noMargin?: boolean;
 }
 
-export const TeamTag = ({ teamCode }: Props) => <Tag color={TEAMS[teamCode].color}>{TEAMS[teamCode].name}</Tag>;
+export const TeamTag = ({ teamCode, noMargin = false }: Props) => (
+    <Tag className={noMargin ? 'team-tag no-margin' : 'team-tag'} color={TEAMS[teamCode].color}>
+        {TEAMS[teamCode].name}
+    </Tag>
+);

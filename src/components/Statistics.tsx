@@ -46,7 +46,9 @@ const Statistics = () => {
                     onClickPlayer={setSelectedPlayer}
                     showPositionFilter={true}
                 />
-                <PlayerDetailsModal selectedPlayer={selectedPlayer} onClose={handleClose} />
+                {selectedPlayer.length > 0 && (
+                    <PlayerDetailsModal selectedPlayer={selectedPlayer} onClose={handleClose} />
+                )}
             </div>
         </Content>
     );

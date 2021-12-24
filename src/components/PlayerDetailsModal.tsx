@@ -1,8 +1,12 @@
 import React, { MouseEventHandler, ReactNode } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Tabs } from 'antd';
 import { StoreState } from '../reducers';
 import { FdrData, PlayersBio, PlayersStats } from '../types';
+import PlayerFixtureHistory from './PlayerFixtureHistory';
+import FutureFixtures from './FutureFixtures';
+
+const { TabPane } = Tabs;
 
 interface Props {
     selectedPlayer: string;
@@ -39,11 +43,20 @@ const _PlayerDetailsModal = ({
             </Button>,
         ];
     }
+    const { teamCode } = playersBio[selectedPlayer];
     return (
-        <Modal title="Basic Modal" visible={selectedPlayer.length > 0} {...modalProps}>
+        <Modal title="Player Details" visible {...modalProps}>
             <p>{selectedPlayer && playersBio[selectedPlayer].webName}</p>
             <p>Some contents...</p>
             <p>Some contents...</p>
+            <Tabs className="player-fixture-data" centered={true} defaultActiveKey="history" tabBarGutter={0}>
+                <TabPane tab={<span>History</span>} key="history">
+                    <PlayerFixtureHistory selectedPlayer={selectedPlayer} />
+                </TabPane>
+                <TabPane tab={<span>Fixtures</span>} key="fixture">
+                    <FutureFixtures teamCode={teamCode} />
+                </TabPane>
+            </Tabs>
         </Modal>
     );
 };

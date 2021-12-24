@@ -25,6 +25,10 @@ export interface LoadNewGwDataAction {
 
 export type DataAction = LoadNewGwDataAction;
 
+// 3D array with the following dimensions:
+// i: the index position of teams in TEAM_FULL_NAMES and TEAM_NAMES from teams.ts
+// j: the gameweek number - 1
+// k: fixtures in gameweek (j + 1), there could be multiple fixtures per gameweek
 export type FdrData = FdrFixture[][][];
 
 export type FdrFixture = {

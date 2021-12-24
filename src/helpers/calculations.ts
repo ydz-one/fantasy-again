@@ -1,3 +1,4 @@
+import { POINTS_SYSTEM } from '../constants';
 import { getTeamCodeToId } from '../data';
 import {
     DEFAULT_SEASON,
@@ -103,6 +104,20 @@ export const calcGwPointsTotal = (squad: Squad, playersStats: PlayersStats) => {
             return playersStats[squad.viceCaptain].latestGwPoints;
         }
     )(squad);
+};
+
+export const calcPoints = (field: keyof PlayerFixtureStats, value: number, position: Position) => {
+    if (field === 'minutes') {
+        return value >= 60 ? 2 : value > 0 ? 1 : 0;
+    }
+    const pointsPerValue = POINTS_SYSTEM[position][field];
+    if (pointsPerValue == null) {
+        return 0;
+    }
+    if (pointsPerValue < 0) {
+        return Math.ceil(pointsPerValue * value);
+    }
+    return Math.floor(pointsPerValue * value);
 };
 
 export const getNextFixtures = (fdr: FdrData, gameweek: number, teamCode: string) => {

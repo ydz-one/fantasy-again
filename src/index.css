@@ -70,6 +70,10 @@ code {
     pointer-events: none;
 }
 
+.empty-state-text {
+    color: #8c8c8c;
+}
+
 .enter-squad-btn {
     width: 400px;
 }
@@ -158,6 +162,39 @@ code {
     font-weight: normal;
 }
 
+.fixture-score {
+    margin: 0 10px;
+}
+
+.fixture-stats-header-item {
+    width: 40px;
+}
+
+.fixture-stats-container {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+}
+
+.fixture-stats-container p {
+    margin-bottom: 6px;
+}
+
+.fixture-points-breakdown {
+    width: 70%;
+}
+
+.fixture-value-pts {
+    width: 15%;
+    text-align: right;
+}
+
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .page-title-two-sections {
     display: flex;
     justify-content: space-between;
@@ -183,6 +220,10 @@ code {
 
 .header-metric-right {
     margin-right: 10px;
+}
+
+.no-margin {
+    margin: 0;
 }
 
 .mobile-text {
@@ -293,6 +334,23 @@ code {
     margin-bottom: 24px;
 }
 
+.player-fixture-data .ant-tabs-nav-list {
+    width: 100%;
+}
+
+.player-fixture-data .ant-tabs-tab {
+    width: 50%;
+}
+
+.player-fixture-data .ant-tabs-tab-btn {
+    text-align: center;
+    width: 100%;
+}
+
+.player-fixture-data .ant-tabs .ant-tabs-nav .ant-tabs-nav-operations {
+    display: none;
+}
+
 .red-card {
     color: red;
     height: 18px;
@@ -369,6 +427,19 @@ code {
     display: flex;
     justify-content: right;
     text-align: center;
+}
+
+.team-tag {
+    width: 40px;
+    text-align: center;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.text-align-right {
+    text-align: right;
 }
 
 .top-metric {

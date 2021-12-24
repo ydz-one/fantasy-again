@@ -13,3 +13,8 @@ export function assertIsPosition(obj: unknown): asserts obj is Position {
         return;
     else throw new Error('Input must be a Position');
 }
+
+export function assertIsNumber(obj: unknown): asserts obj is number {
+    if (typeof obj === 'number') return;
+    else throw new Error('Input must be a number');
+}
