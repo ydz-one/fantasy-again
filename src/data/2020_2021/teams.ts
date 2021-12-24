@@ -44,7 +44,28 @@ export const TEAM_NAMES = [
     'WOL',
 ];
 
-export const TEAM_ID_TO_CODE = [3, 7, 36, 90, 8, 31, 11, 54, 2, 13, 14, 43, 1, 4, 9, 20, 6, 35, 21, 39];
+export const TEAM_ID_TO_CODE = [
+    '3',
+    '7',
+    '36',
+    '90',
+    '8',
+    '31',
+    '11',
+    '54',
+    '2',
+    '13',
+    '14',
+    '43',
+    '1',
+    '4',
+    '49',
+    '20',
+    '6',
+    '35',
+    '21',
+    '39',
+];
 
 export const TEAM_CODE_TO_ID: { [key: string]: number } = {
     '1': 12,
