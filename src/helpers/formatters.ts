@@ -27,7 +27,7 @@ export const formatOneDecimalPlace = (num: number) => Number(num).toFixed(1);
 export const formatIctValues = (num: number) => (num < 0 ? '-' : formatOneDecimalPlace(num));
 
 export const formatValue = (value: number, hideSymbol?: boolean) =>
-    (hideSymbol ? '' : '£') + formatOneDecimalPlace(value / 10);
+    (hideSymbol === true ? '' : '£') + formatOneDecimalPlace(value / 10) + 'm';
 
 export const formatSelected = (selected: number) =>
     Number(selected / TOTAL_MANAGERS).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 });
