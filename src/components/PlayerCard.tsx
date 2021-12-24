@@ -55,34 +55,36 @@ export const PlayerCard = ({
     captainStatus,
     subStatus,
     onClick,
-}: PlayerCardProps) => (
-    <Card hoverable className="player-card" onClick={onClick}>
-        <div className="player-card-content">
-            <div>
-                <div>{name}</div>
+}: PlayerCardProps) => {
+    const isSub = subStatus.length > 0;
+    return (
+        <Card hoverable className="player-card" onClick={onClick}>
+            <div className="player-card-content">
                 <div>
-                    {subStatus.length > 0 && <SubTag title={subStatus} />}
-                    <PositionTag position={position} />
-                    <TeamTag teamCode={teamCode} />
-                    {hasRedCard && (
-                        <Tag color={'#ff0000'} className="red-card">
-                            .
-                        </Tag>
-                    )}
-                    {injured === 1 && <InjurySymbol injury={injury} injuryEnd={injuryEnd} />}
+                    <div>{name}</div>
+                    <div>
+                        <PositionTag position={position} />
+                        <TeamTag teamCode={teamCode} />
+                        {hasRedCard && (
+                            <Tag color={'#ff0000'} className="red-card">
+                                .
+                            </Tag>
+                        )}
+                        {injured === 1 && <InjurySymbol injury={injury} injuryEnd={injuryEnd} />}
+                    </div>
                 </div>
+                {/* A substitute cannot be a captain or vice captain, so subStatus and captainStatus can share the same Badge */}
+                <Badge
+                    count={isSub ? subStatus : captainStatus}
+                    style={{ backgroundColor: isSub ? 'gray' : 'black', top: -16, right: -8 }}
+                >
+                    {typeof value === 'string' ? (
+                        <div className="value-or-points">{value}</div>
+                    ) : (
+                        <div className="next-fixtures">{renderNextFixtures(value)}</div>
+                    )}
+                </Badge>
             </div>
-            <Badge
-                count={captainStatus}
-                className="cap-armband"
-                style={{ backgroundColor: 'black', top: -16, right: -8 }}
-            >
-                {typeof value === 'string' ? (
-                    <div className="value-or-points">{value}</div>
-                ) : (
-                    <div className="next-fixtures">{renderNextFixtures(value)}</div>
-                )}
-            </Badge>
-        </div>
-    </Card>
-);
+        </Card>
+    );
+};
