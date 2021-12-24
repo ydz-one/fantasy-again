@@ -1,10 +1,10 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import { goToNextGameweek } from '../actions';
 import { DEFAULT_SEASON, PlayersBio, PlayersStats, Squad } from '../types';
 import { StoreState } from '../reducers';
@@ -20,9 +20,21 @@ interface Props extends RouteComponentProps<{}> {
 
 const { Sider } = Layout;
 
+const warnSquadIncomplete = () => {
+    Modal.warning({
+        title: 'Squad Selection Incomplete',
+        content:
+            'You must complete your squad on the Squad Selection page and click "Enter Squad" before proceeding to the next gameweek.',
+    });
+};
+
 const _Sider = ({ gameweek, isSquadComplete, playersStats, playersBio, squad, location, goToNextGameweek }: Props) => {
     const handleIncrementGameweek = () => {
-        goToNextGameweek(gameweek, squad, playersBio);
+        if (isSquadComplete) {
+            goToNextGameweek(gameweek, squad, playersBio);
+        } else {
+            warnSquadIncomplete();
+        }
     };
 
     return (
