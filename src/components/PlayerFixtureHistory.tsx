@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Collapse } from 'antd';
+import { Collapse, List } from 'antd';
 import { Fixtures, PlayerFixtureStats, Position } from '../types';
 import { StoreState } from '../reducers';
 import { FixtureResult } from './FixtureResult';
@@ -75,7 +75,8 @@ const _PlayerFixtureHistory = ({ position, fixtures, fixtureStats, teamCode }: P
                 .reverse()}
         </Collapse>
     ) : (
-        <p className="empty-state-text text-align-center">No fixture history to show</p>
+        // display empty List element to use its default empty state message
+        <List></List>
     );
 
 const mapStateToProps = ({ data }: StoreState, ownProps: { selectedPlayer: string }) => {

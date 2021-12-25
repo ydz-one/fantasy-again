@@ -162,6 +162,13 @@ code {
     font-weight: normal;
 }
 
+.fdr-player-details-modal {
+    height: 100%;
+    width: 30px;
+    text-align: center;
+    margin-right: 10px;
+}
+
 .fixture-score {
     margin: 0 10px;
 }
@@ -189,10 +196,34 @@ code {
     text-align: right;
 }
 
+.flex-center-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-flex-start {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .flex-space-between {
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.future-fixtures-list .ant-list-item {
+    padding: 0;
+}
+
+.future-fixture {
+    padding: 10px 0;
+}
+
+.future-fixture-date {
+    display: inline-block;
+    width: 50px;
 }
 
 .page-title-two-sections {
@@ -332,6 +363,14 @@ code {
 
 .position-row-bottom {
     margin-bottom: 24px;
+}
+
+.player-details-modal-gameweek {
+    width: 40px;
+}
+
+.player-fixture-data .ant-tabs-nav {
+    margin: 0;
 }
 
 .player-fixture-data .ant-tabs-nav-list {

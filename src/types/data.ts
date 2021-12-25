@@ -36,6 +36,7 @@ export type FdrFixture = {
     isHome: boolean;
     difficulty: number;
     kickoffTime: string;
+    round: number;
 };
 
 export type PlayerGw = {
