@@ -21,8 +21,8 @@ const _Header = ({ gameweek, points, squad, playersStats }: Props) => (
     <Header className="site-layout-sub-header-background">
         <Statistic title={'Points'} value={points} className="header-metric" valueStyle={statisticsFontSize} />
         <Statistic
-            title={'Squad Value (£)'}
-            value={formatValue(calcSquadValueTotal(squad, playersStats), true)}
+            title={'Squad Value'}
+            value={formatValue(calcSquadValueTotal(squad, playersStats))}
             precision={1}
             className="header-metric"
             valueStyle={statisticsFontSize}
