@@ -37,6 +37,21 @@ const updateInjuryData = (playersStats: PlayersStats, injuryHistory: InjuryHisto
     }
 };
 
+const updateNoFixturePlayersData = (newPlayersStats: PlayersStats, noFixturePlayers: Set<string>, gwNum: number) => {
+    noFixturePlayers.forEach((playerCode) => {
+        // Currently there's no transfersIn and transfersOut data for gameweeks where a player's team did not have any fixtures,
+        // so they are set to 0 for now
+        newPlayersStats[playerCode] = {
+            ...newPlayersStats[playerCode],
+            form: calculateForm(moment(getPreGwDate(DEFAULT_SEASON, gwNum)), newPlayersStats[playerCode].fixtureStats),
+            transfersIn: 0,
+            transfersOut: 0,
+            latestGwPoints: 0,
+            latestGw: gwNum.toString(),
+        };
+    });
+};
+
 const populateInitialStats = (
     initialPlayersStats: InitialPlayersStats,
     injuryHistory: InjuryHistory,
@@ -130,12 +145,14 @@ const calculateForm = (preGwDate: Moment, playerFixtures: PlayerFixtureStats[]):
 const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats => {
     const { gwNum, payload, shouldResetPoints } = action;
     const newPlayersStats: PlayersStats = {};
+    const noFixturePlayers = new Set<string>();
     for (const [playerCode, playerStats] of Object.entries(state.playersStats)) {
         newPlayersStats[playerCode] = {
             ...playerStats,
             bonus: shouldResetPoints ? 0 : playerStats.bonus,
             seasonPoints: shouldResetPoints ? 0 : playerStats.seasonPoints,
         };
+        noFixturePlayers.add(playerCode);
     }
     payload.gw.forEach((playerGwData) => {
         const {
@@ -196,6 +213,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             injuryEnd: '',
             fixtureStats,
         };
+        noFixturePlayers.delete(code);
     });
     payload.gwMeta.forEach((playerGwMetaData) => {
         const { code, selected, transfersIn, transfersOut, value } = playerGwMetaData;
@@ -207,6 +225,7 @@ const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats 
             value,
         };
     });
+    updateNoFixturePlayersData(newPlayersStats, noFixturePlayers, gwNum);
     updateInjuryData(newPlayersStats, state.injuryHistory, action.gwNum + 1);
     return newPlayersStats;
 };
