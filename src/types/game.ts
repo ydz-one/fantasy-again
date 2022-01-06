@@ -70,6 +70,8 @@ export enum GameActionTypes {
     FinalizeSquad = 'FinalizeSquad',
     ResetSquad = 'ResetSquad',
     SetSquad = 'SetSquad',
+    MakeCaptain = 'MakeCaptain',
+    MakeViceCaptain = 'MakeViceCaptain',
 }
 
 export interface IncrementGameweekAction {
@@ -106,10 +108,26 @@ export interface SetSquad {
     payload: Squad;
 }
 
+export interface MakeCaptain {
+    type: GameActionTypes.MakeCaptain;
+    payload: {
+        playerCode: string;
+    };
+}
+
+export interface MakeViceCaptain {
+    type: GameActionTypes.MakeViceCaptain;
+    payload: {
+        playerCode: string;
+    };
+}
+
 export type GameAction =
     | IncrementGameweekAction
     | AddSquadPointsToHistoryAction
     | AddPlayerToSquad
     | FinalizeSquad
     | ResetSquad
-    | SetSquad;
+    | SetSquad
+    | MakeCaptain
+    | MakeViceCaptain;

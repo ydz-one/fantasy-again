@@ -38,3 +38,17 @@ export const setSquad = (squad: Squad): GameAction => ({
     type: GameActionTypes.SetSquad,
     payload: squad,
 });
+
+export const makeCaptain = (playerCode: string): GameAction => ({
+    type: GameActionTypes.MakeCaptain,
+    payload: {
+        playerCode,
+    },
+});
+
+export const makeViceCaptain = (playerCode: string): GameAction => ({
+    type: GameActionTypes.MakeViceCaptain,
+    payload: {
+        playerCode,
+    },
+});

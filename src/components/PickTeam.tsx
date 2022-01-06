@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic, Checkbox, Row, Col } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
+import { makeCaptain, makeViceCaptain } from '../actions';
 import { PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
@@ -20,9 +21,11 @@ interface Props {
     squad: Squad;
     balance: number;
     isSquadComplete: boolean;
+    makeCaptain: typeof makeCaptain;
+    makeViceCaptain: typeof makeViceCaptain;
 }
 
-const _PickTeam = ({ gameweek, squad }: Props) => {
+const _PickTeam = ({ gameweek, squad, makeCaptain, makeViceCaptain }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
@@ -91,10 +94,22 @@ const _PickTeam = ({ gameweek, squad }: Props) => {
                         </Button>
                         <Row>
                             <Col span={12}>
-                                <Checkbox disabled={isSubstitute(playerClicked)}>Captain</Checkbox>
+                                <Checkbox
+                                    disabled={isSubstitute(playerClicked)}
+                                    checked={squad.captain === playerClicked}
+                                    onChange={() => makeCaptain(playerClicked)}
+                                >
+                                    Captain
+                                </Checkbox>
                             </Col>
                             <Col span={12}>
-                                <Checkbox disabled={isSubstitute(playerClicked)}>Vice Captain</Checkbox>
+                                <Checkbox
+                                    disabled={isSubstitute(playerClicked)}
+                                    checked={squad.viceCaptain === playerClicked}
+                                    onChange={() => makeViceCaptain(playerClicked)}
+                                >
+                                    Vice Captain
+                                </Checkbox>
                             </Col>
                         </Row>
                     </PlayerDetailsModal>
@@ -117,4 +132,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps)(checkSquadCompleteHOC(_PickTeam));
+export default connect(mapStateToProps, { makeCaptain, makeViceCaptain })(checkSquadCompleteHOC(_PickTeam));

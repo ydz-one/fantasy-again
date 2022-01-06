@@ -119,6 +119,46 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 squad: action.payload,
                 balance: STARTING_BALANCE - calcSquadBuyPriceTotal(action.payload),
             };
+        case GameActionTypes.MakeCaptain:
+            const playerToBeCap = action.payload.playerCode;
+            // If the player to be made captain is the existing vice captain, then he switches armbands with the current captain
+            if (state.squad.viceCaptain === playerToBeCap) {
+                return {
+                    ...state,
+                    squad: {
+                        ...state.squad,
+                        captain: state.squad.viceCaptain,
+                        viceCaptain: state.squad.captain,
+                    },
+                };
+            }
+            return {
+                ...state,
+                squad: {
+                    ...state.squad,
+                    captain: playerToBeCap,
+                },
+            };
+        case GameActionTypes.MakeViceCaptain:
+            const playerToBeViceCap = action.payload.playerCode;
+            // If the player to be made vice captain is the existing captain, then he switches armbands with the current vice captain
+            if (state.squad.captain === playerToBeViceCap) {
+                return {
+                    ...state,
+                    squad: {
+                        ...state.squad,
+                        captain: state.squad.viceCaptain,
+                        viceCaptain: state.squad.captain,
+                    },
+                };
+            }
+            return {
+                ...state,
+                squad: {
+                    ...state.squad,
+                    viceCaptain: playerToBeViceCap,
+                },
+            };
         default:
             return state;
     }
