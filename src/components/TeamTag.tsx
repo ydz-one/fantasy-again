@@ -5,10 +5,22 @@ import { TEAMS } from '../constants';
 interface Props {
     teamCode: string;
     noMargin?: boolean;
+    useFullName?: boolean;
 }
 
-export const TeamTag = ({ teamCode, noMargin = false }: Props) => (
-    <Tag className={noMargin ? 'team-tag no-margin' : 'team-tag'} color={TEAMS[teamCode].color}>
-        {TEAMS[teamCode].name}
+const getClassName = (noMargin: boolean, useFullName: boolean) => {
+    let className = 'team-tag';
+    if (noMargin) {
+        className += ' no-margin';
+    }
+    if (useFullName) {
+        className += ' team-tag-fullname';
+    }
+    return className;
+};
+
+export const TeamTag = ({ teamCode, noMargin = false, useFullName = false }: Props) => (
+    <Tag className={getClassName(noMargin, useFullName)} color={TEAMS[teamCode].color}>
+        {useFullName ? TEAMS[teamCode].fullName : TEAMS[teamCode].name}
     </Tag>
 );

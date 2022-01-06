@@ -4,10 +4,11 @@ import { positionData } from '../types';
 
 interface Props {
     position: string;
+    useFullName?: boolean;
 }
 
-export const PositionTag = ({ position }: Props) => (
+export const PositionTag = ({ position, useFullName = false }: Props) => (
     <Tag color={positionData[position].color} className={positionData[position].isDarkFont ? 'dark-font' : ''}>
-        {position}
+        {useFullName ? positionData[position].name : position}
     </Tag>
 );

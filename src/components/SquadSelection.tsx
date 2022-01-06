@@ -164,11 +164,16 @@ const _SquadSelection = ({
                     )}
                 </div>
                 {playerClicked.length > 0 && (
-                    <PlayerDetailsModal
-                        selectedPlayer={playerClicked}
-                        onClose={() => setPlayerClicked('')}
-                        onAccept={() => handleReadyReplacePlayer(playerClicked)}
-                    />
+                    <PlayerDetailsModal selectedPlayer={playerClicked} onClose={() => setPlayerClicked('')}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="player-details-modal-btn"
+                            onClick={() => handleReadyReplacePlayer(playerClicked)}
+                        >
+                            Replace
+                        </Button>
+                    </PlayerDetailsModal>
                 )}
                 <SelectPlayerModal
                     position={position}
@@ -177,11 +182,16 @@ const _SquadSelection = ({
                     onClose={handleCloseSelectPlayerModal}
                 />
                 {playerToAdd.length > 0 && (
-                    <PlayerDetailsModal
-                        selectedPlayer={playerToAdd}
-                        onClose={() => setPlayerToAdd('')}
-                        onAccept={handleAddPlayerToSquad}
-                    />
+                    <PlayerDetailsModal selectedPlayer={playerToAdd} onClose={() => setPlayerToAdd('')}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="player-details-modal-btn"
+                            onClick={handleAddPlayerToSquad}
+                        >
+                            Select
+                        </Button>
+                    </PlayerDetailsModal>
                 )}
             </div>
         </Content>

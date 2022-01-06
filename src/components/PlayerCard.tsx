@@ -34,9 +34,7 @@ const renderNextFixtures = (fixtures: FdrFixture[]) => {
         <Fragment>
             {fixtures.map((fixture) => {
                 return (
-                    <div key={fixture.opponent}>
-                        {TEAM_NAMES[fixture.opponent] + (fixture.isHome ? ' (H)' : ' (A)')}
-                    </div>
+                    <div key={fixture.opponent}>{TEAM_NAMES[fixture.opponent] + (fixture.isHome ? '(H)' : '(A)')}</div>
                 );
             })}
         </Fragment>

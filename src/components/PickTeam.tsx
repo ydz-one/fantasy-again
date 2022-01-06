@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Divider, Layout, Statistic } from 'antd';
+import { Button, Divider, Layout, Statistic, Checkbox, Row, Col } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
 import { PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
@@ -22,7 +22,7 @@ interface Props {
     isSquadComplete: boolean;
 }
 
-const _PickTeam = ({ gameweek }: Props) => {
+const _PickTeam = ({ gameweek, squad }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
@@ -33,6 +33,8 @@ const _PickTeam = ({ gameweek }: Props) => {
     const [playerToAdd, setPlayerToAdd] = useState('');
     // playerToReplace is the empty or non-empty player selected to be replaced; when set, it opens up the Player Stats Table
     const { position, playerToReplace } = replacementInfo;
+
+    const isSubstitute = (playerClicked: string) => squad.subGk === playerClicked || squad.subs.includes(playerClicked);
 
     const handleClickPlayer = (playerClicked: string) => {
         setPlayerClicked(playerClicked);
@@ -83,7 +85,19 @@ const _PickTeam = ({ gameweek }: Props) => {
                         selectedPlayer={playerClicked}
                         onClose={() => setPlayerClicked('')}
                         onAccept={() => handleReadyReplacePlayer(playerClicked)}
-                    />
+                    >
+                        <Button type="primary" size="large" className="player-details-modal-btn">
+                            Substitute
+                        </Button>
+                        <Row>
+                            <Col span={12}>
+                                <Checkbox disabled={isSubstitute(playerClicked)}>Captain</Checkbox>
+                            </Col>
+                            <Col span={12}>
+                                <Checkbox disabled={isSubstitute(playerClicked)}>Vice Captain</Checkbox>
+                            </Col>
+                        </Row>
+                    </PlayerDetailsModal>
                 )}
             </div>
         </Content>

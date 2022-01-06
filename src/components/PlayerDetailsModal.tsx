@@ -1,20 +1,24 @@
 import React, { MouseEventHandler, ReactNode } from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, Tabs } from 'antd';
+import { Modal, Tabs, Statistic, Row, Col, Typography } from 'antd';
 import { StoreState } from '../reducers';
-import { FdrData, PlayersBio, PlayersStats } from '../types';
+import { PlayersBio, PlayersStats } from '../types';
 import PlayerFixtureHistory from './PlayerFixtureHistory';
 import FutureFixtures from './FutureFixtures';
+import { formatOneDecimalPlace, formatPoints, formatSelected, formatValue } from '../helpers';
+import { TeamTag } from './TeamTag';
+import { PositionTag } from './PositionTag';
 
 const { TabPane } = Tabs;
+const { Title } = Typography;
 
 interface Props {
     selectedPlayer: string;
     onClose: MouseEventHandler;
     onAccept?: MouseEventHandler | null;
+    children?: ReactNode;
     playersBio: PlayersBio;
     playersStats: PlayersStats;
-    fdr: FdrData;
     gameweek: number;
 }
 
@@ -22,33 +26,50 @@ const _PlayerDetailsModal = ({
     selectedPlayer,
     onClose,
     onAccept = null,
+    children = null,
     playersBio,
     playersStats,
-    fdr,
     gameweek,
 }: Props) => {
-    const modalProps: { onOk: MouseEventHandler; onCancel: MouseEventHandler; footer: ReactNode[] | null } = {
-        onOk: onClose,
-        onCancel: onClose,
-        footer: null,
-    };
-    if (onAccept) {
-        modalProps.onOk = onAccept;
-        modalProps.footer = [
-            <Button key="cancel" onClick={onClose}>
-                Cancel
-            </Button>,
-            <Button key="select" type="primary" onClick={onAccept}>
-                Select
-            </Button>,
-        ];
-    }
-    const { teamCode } = playersBio[selectedPlayer];
+    const { firstName, secondName, teamCode, position } = playersBio[selectedPlayer];
+    const { form, value, selected, seasonPoints, latestGwPoints, transfersIn, transfersOut, bonus } =
+        playersStats[selectedPlayer];
     return (
-        <Modal title="Player Details" visible {...modalProps}>
-            <p>{selectedPlayer && playersBio[selectedPlayer].webName}</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+        <Modal title="Player Details" footer={null} onCancel={onClose} visible>
+            <p>
+                <Title level={3}> {`${firstName} ${secondName}`}</Title>
+                <div>
+                    <PositionTag position={position} useFullName />
+                    <TeamTag teamCode={teamCode} useFullName />
+                </div>
+            </p>
+            <Row>
+                <Col span={6}>
+                    <Statistic title="Form" value={formatOneDecimalPlace(form)} />
+                </Col>
+                <Col span={6}>
+                    <Statistic title="Current Price" value={formatValue(value)} />
+                </Col>
+                <Col span={6}>
+                    <Statistic title="Selected" value={formatSelected(selected)} />
+                </Col>
+                <Col span={6}>
+                    <Statistic title={`GW ${gameweek}`} value={formatPoints(latestGwPoints)} />
+                </Col>
+                <Col span={6}>
+                    <Statistic title="Total Points" value={formatPoints(seasonPoints)} />
+                </Col>
+                <Col span={6}>
+                    <Statistic title="GW Trans In" value={transfersIn} />
+                </Col>
+                <Col span={6}>
+                    <Statistic title="GW Trans Out" value={transfersOut} />
+                </Col>
+                <Col span={6}>
+                    <Statistic title="Bonus Points" value={formatPoints(bonus)} />
+                </Col>
+            </Row>
+            {children}
             <Tabs className="player-fixture-data" centered={true} defaultActiveKey="history" tabBarGutter={0}>
                 <TabPane tab={<span>History</span>} key="history">
                     <PlayerFixtureHistory selectedPlayer={selectedPlayer} />
@@ -63,18 +84,18 @@ const _PlayerDetailsModal = ({
 
 const mapStateToProps = (
     { data, game }: StoreState,
-    ownProps: { selectedPlayer: string; onClose: MouseEventHandler; onAccept?: MouseEventHandler }
+    ownProps: { selectedPlayer: string; onClose: MouseEventHandler; onAccept?: MouseEventHandler; children?: ReactNode }
 ) => {
-    const { fdr, playersBio, playersStats } = data;
+    const { playersBio, playersStats } = data;
     const { gameweek } = game;
-    const { selectedPlayer, onClose, onAccept } = ownProps;
+    const { selectedPlayer, onClose, onAccept, children } = ownProps;
     return {
         selectedPlayer,
         onClose,
         onAccept,
+        children,
         playersBio,
         playersStats,
-        fdr,
         gameweek,
     };
 };

@@ -369,6 +369,11 @@ code {
     width: 40px;
 }
 
+.player-details-modal-btn {
+    margin: 16px 0;
+    width: 100%;
+}
+
 .player-fixture-data .ant-tabs-nav {
     margin: 0;
 }
@@ -471,6 +476,10 @@ code {
 .team-tag {
     width: 40px;
     text-align: center;
+}
+
+.team-tag-fullname {
+    width: auto;
 }
 
 .text-align-center {
