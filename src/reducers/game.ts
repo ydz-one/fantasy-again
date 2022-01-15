@@ -159,6 +159,42 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                     viceCaptain: playerToBeViceCap,
                 },
             };
+        case GameActionTypes.SubPlayer:
+            const { squad } = state;
+            const { player1, player2 } = action.payload;
+            const squadChanges: Partial<Squad> = {};
+            // captain/vice captain armband swap, if applicable
+            if (squad.captain === player1) {
+                squadChanges.captain = player2;
+            } else if (squad.captain === player2) {
+                squadChanges.captain = player1;
+            } else if (squad.viceCaptain === player1) {
+                squadChanges.viceCaptain = player2;
+            } else if (squad.viceCaptain === player2) {
+                squadChanges.viceCaptain = player1;
+            }
+            // substitution
+            if (squad.subGk === player1) {
+                squadChanges.subGk = player2;
+            } else if (squad.subGk === player2) {
+                squadChanges.subGk = player1;
+            } else if (squad.subs.includes(player1) && squad.subs.includes(player2)) {
+                squadChanges.subs = squad.subs.slice();
+                const player1Idx = squadChanges.subs.indexOf(player1);
+                const player2Idx = squadChanges.subs.indexOf(player2);
+                squadChanges.subs.splice(player1Idx, 1, player2);
+                squadChanges.subs.splice(player2Idx, 1, player1);
+            } else if (squad.subs.includes(player1)) {
+                squadChanges.subs = squad.subs.slice();
+                squadChanges.subs.splice(squadChanges.subs.indexOf(player1), 1, player2);
+            } else if (squad.subs.includes(player2)) {
+                squadChanges.subs = squad.subs.slice();
+                squadChanges.subs.splice(squadChanges.subs.indexOf(player2), 1, player1);
+            }
+            return {
+                ...state,
+                squad: Object.assign(state.squad, squadChanges),
+            };
         default:
             return state;
     }

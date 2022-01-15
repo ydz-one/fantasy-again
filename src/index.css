@@ -305,6 +305,18 @@ code {
     width: 180px;
 }
 
+.player-card-sub-on {
+    background-color: #99e325;
+}
+
+.player-card-sub-off {
+    background-color: #fea265;
+}
+
+.player-card-sub-other {
+    background-color: #ab43f1;
+}
+
 .player-cell-info {
     display: flex;
 }

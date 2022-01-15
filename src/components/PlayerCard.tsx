@@ -19,6 +19,8 @@ export interface PlayerCardProps {
     captainStatus: string;
     subStatus: string;
     onClick: MouseEventHandler;
+    isClickable?: boolean;
+    customClasses?: string;
 }
 
 const renderNextFixtures = (fixtures: FdrFixture[]) => {
@@ -53,10 +55,16 @@ export const PlayerCard = ({
     captainStatus,
     subStatus,
     onClick,
+    isClickable = true,
+    customClasses = '',
 }: PlayerCardProps) => {
     const isSub = subStatus.length > 0;
     return (
-        <Card hoverable className="player-card" onClick={onClick}>
+        <Card
+            hoverable={isClickable}
+            className={'player-card' + customClasses}
+            onClick={isClickable ? onClick : () => null}
+        >
             <div className="player-card-content">
                 <div>
                     <div>{name}</div>

@@ -10,10 +10,16 @@ import {
     Squad,
     SquadPlayer,
 } from '../types';
-import { assertIsArrayOfSquadPlayers } from './assertFunctions';
+import { assertIsArrayOfSquadPlayers, assertIsPosition } from './assertFunctions';
 import { formatPoints } from './formatters';
 
 const MAX_PLAYERS_PER_TEAM = 3;
+const MIN_FIELED_PLAYERS = {
+    GK: 1,
+    DEF: 3,
+    MID: 2,
+    FWD: 1,
+};
 
 export const getTeamsOverMaxPlayerLimit = (squad: Squad, playersBio: PlayersBio) => {
     const teamPlayerCounts: { [key: string]: number } = {};
@@ -180,4 +186,53 @@ export const getSquadPoints = (squad: Squad, playersStats: PlayersStats, players
         subs: subs.map(getPlayerGwPoints),
         subGk: getPlayerGwPoints(subGk),
     };
+};
+
+export const isSubstitute = (squad: Squad, playerCode: string): boolean =>
+    squad.subGk === playerCode || squad.subs.includes(playerCode);
+
+export const getNumberOfFieldedPlayers = (squad: Squad, position: Position): number => {
+    return squad[position].reduce((count, player) => {
+        if (!isSubstitute(squad, player.code)) {
+            count++;
+        }
+        return count;
+    }, 0);
+};
+
+export const checkIfMinPlayersInPosition = (squad: Squad, position: Position): boolean =>
+    getNumberOfFieldedPlayers(squad, position) <= MIN_FIELED_PLAYERS[position];
+
+export const getSubstitutionTargets = (squad: Squad, position: string, playerToSubstitute: string): string[] => {
+    assertIsPosition(position);
+    if (position === Position.GK) {
+        return squad.GK.map((player) => player.code).filter((playerCode) => playerCode !== playerToSubstitute);
+    }
+    // If a player is a sub, they can substitute with any fielded player, as long as subbing the fielded player will not bring the number of fielded players in that position to be below the minumum
+    if (isSubstitute(squad, playerToSubstitute)) {
+        return [Position.DEF, Position.MID, Position.FWD].reduce((targets: string[], currPosition) => {
+            if (currPosition === position) {
+                return targets.concat(
+                    squad[currPosition]
+                        .map((player) => player.code)
+                        .filter((playerCode) => playerCode !== playerToSubstitute)
+                );
+            }
+            if (checkIfMinPlayersInPosition(squad, currPosition)) {
+                return targets.concat(
+                    squad[currPosition]
+                        .map((player) => player.code)
+                        .filter((playerCode) => squad.subs.includes(playerCode))
+                );
+            }
+            return targets.concat(squad[currPosition].map((player) => player.code));
+        }, []);
+    }
+    // If a player is fielded, they can substitute with any sub, unless his position is at the minimum number of fielded players, in which case he can only substitute subs in the same position as him
+    if (checkIfMinPlayersInPosition(squad, position)) {
+        return squad[position]
+            .filter((player) => player.code !== playerToSubstitute && isSubstitute(squad, player.code))
+            .map((player) => player.code);
+    }
+    return squad.subs;
 };

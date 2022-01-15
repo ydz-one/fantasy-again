@@ -72,6 +72,7 @@ export enum GameActionTypes {
     SetSquad = 'SetSquad',
     MakeCaptain = 'MakeCaptain',
     MakeViceCaptain = 'MakeViceCaptain',
+    SubPlayer = 'SubPlayer',
 }
 
 export interface IncrementGameweekAction {
@@ -122,6 +123,14 @@ export interface MakeViceCaptain {
     };
 }
 
+export interface SubPlayer {
+    type: GameActionTypes.SubPlayer;
+    payload: {
+        player1: string;
+        player2: string;
+    };
+}
+
 export type GameAction =
     | IncrementGameweekAction
     | AddSquadPointsToHistoryAction
@@ -130,4 +139,5 @@ export type GameAction =
     | ResetSquad
     | SetSquad
     | MakeCaptain
-    | MakeViceCaptain;
+    | MakeViceCaptain
+    | SubPlayer;

@@ -14,9 +14,21 @@ interface Props {
     gameweek: number;
     handleClickPlayer: Function;
     valueType: ValueType;
+    checkPlayerClickable: (playerCode: string) => boolean;
+    getPlayerCustomClasses: (playerCode: string) => string;
 }
 
-const _PlayerBench = ({ playersBio, playersStats, fdr, squad, gameweek, handleClickPlayer, valueType }: Props) => {
+const _PlayerBench = ({
+    playersBio,
+    playersStats,
+    fdr,
+    squad,
+    gameweek,
+    handleClickPlayer,
+    valueType,
+    checkPlayerClickable,
+    getPlayerCustomClasses,
+}: Props) => {
     return (
         <div className="position-row player-bench-row">
             {[squad.subGk, ...squad.subs].map((playerCode, idx) => {
@@ -43,6 +55,8 @@ const _PlayerBench = ({ playersBio, playersStats, fdr, squad, gameweek, handleCl
                             captainStatus=""
                             subStatus={SUB_PLAYER_TITLES[idx]}
                             onClick={() => handleClickPlayer(playerCode)}
+                            isClickable={checkPlayerClickable(playerCode)}
+                            customClasses={getPlayerCustomClasses(playerCode)}
                         />
                     </div>
                 );
@@ -53,11 +67,21 @@ const _PlayerBench = ({ playersBio, playersStats, fdr, squad, gameweek, handleCl
 
 const mapStateToProps = (
     { data, game }: StoreState,
-    ownProps: { handleClickPlayer: Function; valueType: ValueType }
+    ownProps: {
+        handleClickPlayer: Function;
+        valueType: ValueType;
+        checkPlayerClickable?: (playerCode: string) => boolean;
+        getPlayerCustomClasses?: (playerCode: string) => string;
+    }
 ) => {
     const { playersBio, playersStats, fdr } = data;
     const { squad, gameweek } = game;
-    const { handleClickPlayer, valueType } = ownProps;
+    const {
+        handleClickPlayer,
+        valueType,
+        checkPlayerClickable = () => true,
+        getPlayerCustomClasses = () => '',
+    } = ownProps;
 
     return {
         playersBio,
@@ -67,6 +91,8 @@ const mapStateToProps = (
         gameweek,
         handleClickPlayer,
         valueType,
+        checkPlayerClickable,
+        getPlayerCustomClasses,
     };
 };
 

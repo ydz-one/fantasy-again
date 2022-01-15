@@ -52,3 +52,11 @@ export const makeViceCaptain = (playerCode: string): GameAction => ({
         playerCode,
     },
 });
+
+export const subPlayer = (player1: string, player2: string): GameAction => ({
+    type: GameActionTypes.SubPlayer,
+    payload: {
+        player1,
+        player2,
+    },
+});

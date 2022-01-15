@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic, Checkbox, Row, Col } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
-import { makeCaptain, makeViceCaptain } from '../actions';
-import { PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
+import { makeCaptain, makeViceCaptain, subPlayer } from '../actions';
+import { PlayersBio, PlayersStats, Squad, ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
 import { preGwDates } from '../data/2020_2021/preGwDates';
 import moment from 'moment';
 import { statisticsFontSize } from '../constants/ui';
 import PlayerBench from './PlayerBench';
+import { getSubstitutionTargets, isSubstitute } from '../helpers';
 
 const { Content } = Layout;
 
@@ -23,34 +24,60 @@ interface Props {
     isSquadComplete: boolean;
     makeCaptain: typeof makeCaptain;
     makeViceCaptain: typeof makeViceCaptain;
+    subPlayer: typeof subPlayer;
 }
 
-const _PickTeam = ({ gameweek, squad, makeCaptain, makeViceCaptain }: Props) => {
-    const [replacementInfo, setReplacementInfo] = useState({
-        position: Position.GK,
-        playerToReplace: '',
-    });
-    // playerClicked is the non-empty player card clicked in the Squad Selection screen; when set, it opens up a player data modal with a button to set that player to be replaced
+interface SubstitutionInfo {
+    playerToSubstitute: string;
+    substitutionTargets: string[];
+}
+
+const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, subPlayer }: Props) => {
+    // playerClicked is the player card clicked whose Player Details modal should be displayed
     const [playerClicked, setPlayerClicked] = useState('');
-    // playerToAdd is the player selected from the Player Stats Table; when set, it opens up a player data modal with a button to confirm transfer in
-    const [playerToAdd, setPlayerToAdd] = useState('');
-    // playerToReplace is the empty or non-empty player selected to be replaced; when set, it opens up the Player Stats Table
-    const { position, playerToReplace } = replacementInfo;
+    const [substitionInfo, setSubstitutionInfo] = useState<SubstitutionInfo>({
+        playerToSubstitute: '',
+        substitutionTargets: [],
+    });
 
-    const isSubstitute = (playerClicked: string) => squad.subGk === playerClicked || squad.subs.includes(playerClicked);
-
-    const handleClickPlayer = (playerClicked: string) => {
-        setPlayerClicked(playerClicked);
+    const handleClickPlayer = (player: string) => {
+        if (substitionInfo.playerToSubstitute.length > 0) {
+            subPlayer(substitionInfo.playerToSubstitute, player);
+            setSubstitutionInfo({
+                playerToSubstitute: '',
+                substitutionTargets: [],
+            });
+        } else {
+            setPlayerClicked(player);
+        }
     };
 
-    const handleSetReplacePlayer = (playerToReplace: string, position: Position) => {
-        setReplacementInfo({
-            position,
-            playerToReplace,
+    const handleSelectPlayerToSubstitute = (playerClicked: string, position: string) => {
+        setSubstitutionInfo({
+            playerToSubstitute: playerClicked,
+            substitutionTargets: getSubstitutionTargets(squad, position, playerClicked),
         });
+        setPlayerClicked('');
     };
 
-    const handleReadyReplacePlayer = (playerClicked: string) => {};
+    const checkPlayerClickable = (playerCode: string) => {
+        const { substitutionTargets } = substitionInfo;
+        return substitutionTargets.length === 0 || substitutionTargets.includes(playerCode);
+    };
+
+    const getPlayerCustomClasses = (playerCode: string) => {
+        if (substitionInfo.playerToSubstitute === playerCode) {
+            return isSubstitute(squad, playerCode) ? ' player-card-sub-on' : ' player-card-sub-off';
+        }
+        if (substitionInfo.substitutionTargets.includes(playerCode)) {
+            return isSubstitute(squad, playerCode)
+                ? isSubstitute(squad, substitionInfo.playerToSubstitute)
+                    ? ' player-card-sub-other'
+                    : ' player-card-sub-on'
+                : ' player-card-sub-off';
+        }
+        return '';
+    };
 
     return (
         <Content className="site-layout-content">
@@ -77,25 +104,34 @@ const _PickTeam = ({ gameweek, squad, makeCaptain, makeViceCaptain }: Props) => 
                 <Divider className="custom-divider" />
                 <SquadLineup
                     handleClickPlayer={handleClickPlayer}
-                    handleSetReplacePlayer={handleSetReplacePlayer}
                     showCap
                     valueType={ValueType.FIXTURE}
+                    checkPlayerClickable={checkPlayerClickable}
+                    getPlayerCustomClasses={getPlayerCustomClasses}
                 />
                 <Divider className="custom-divider" />
-                <PlayerBench handleClickPlayer={handleClickPlayer} valueType={ValueType.FIXTURE} />
+                <PlayerBench
+                    handleClickPlayer={handleClickPlayer}
+                    valueType={ValueType.FIXTURE}
+                    checkPlayerClickable={checkPlayerClickable}
+                    getPlayerCustomClasses={getPlayerCustomClasses}
+                />
                 {playerClicked.length > 0 && (
-                    <PlayerDetailsModal
-                        selectedPlayer={playerClicked}
-                        onClose={() => setPlayerClicked('')}
-                        onAccept={() => handleReadyReplacePlayer(playerClicked)}
-                    >
-                        <Button type="primary" size="large" className="player-details-modal-btn">
+                    <PlayerDetailsModal selectedPlayer={playerClicked} onClose={() => setPlayerClicked('')}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="player-details-modal-btn"
+                            onClick={() =>
+                                handleSelectPlayerToSubstitute(playerClicked, playersBio[playerClicked].position)
+                            }
+                        >
                             Substitute
                         </Button>
                         <Row>
                             <Col span={12}>
                                 <Checkbox
-                                    disabled={isSubstitute(playerClicked)}
+                                    disabled={isSubstitute(squad, playerClicked)}
                                     checked={squad.captain === playerClicked}
                                     onChange={() => makeCaptain(playerClicked)}
                                 >
@@ -104,7 +140,7 @@ const _PickTeam = ({ gameweek, squad, makeCaptain, makeViceCaptain }: Props) => 
                             </Col>
                             <Col span={12}>
                                 <Checkbox
-                                    disabled={isSubstitute(playerClicked)}
+                                    disabled={isSubstitute(squad, playerClicked)}
                                     checked={squad.viceCaptain === playerClicked}
                                     onChange={() => makeViceCaptain(playerClicked)}
                                 >
@@ -132,4 +168,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps, { makeCaptain, makeViceCaptain })(checkSquadCompleteHOC(_PickTeam));
+export default connect(mapStateToProps, { makeCaptain, makeViceCaptain, subPlayer })(checkSquadCompleteHOC(_PickTeam));

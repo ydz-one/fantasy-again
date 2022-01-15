@@ -18,6 +18,8 @@ interface Props {
     valueType: valueType;
     showSubs: boolean;
     showCap: boolean;
+    checkPlayerClickable: (playerCode: string) => boolean;
+    getPlayerCustomClasses: (playerCode: string) => string;
 }
 
 const _SquadLineup = ({
@@ -31,6 +33,8 @@ const _SquadLineup = ({
     valueType,
     showSubs,
     showCap,
+    checkPlayerClickable,
+    getPlayerCustomClasses,
 }: Props) => {
     const getPointsMultiplier = (isCaptain: boolean, isViceCaptain: boolean) => {
         if (isCaptain) {
@@ -76,6 +80,8 @@ const _SquadLineup = ({
                 captainStatus={!showCap ? '' : isCaptain ? 'C' : isViceCaptain ? 'VC' : ''}
                 subStatus=""
                 onClick={() => handleClickPlayer(code)}
+                isClickable={checkPlayerClickable(code)}
+                customClasses={getPlayerCustomClasses(code)}
             />
         );
     };
@@ -111,6 +117,8 @@ const mapStateToProps = (
         valueType: ValueType;
         showSubs?: boolean;
         showCap?: boolean;
+        checkPlayerClickable?: (playerCode: string) => boolean;
+        getPlayerCustomClasses?: (playerCode: string) => string;
     }
 ) => {
     const { fdr, playersBio, playersStats } = data;
@@ -121,6 +129,8 @@ const mapStateToProps = (
         valueType,
         showSubs = false,
         showCap = false,
+        checkPlayerClickable = () => true,
+        getPlayerCustomClasses = () => '',
     } = ownProps;
 
     return {
@@ -134,6 +144,8 @@ const mapStateToProps = (
         valueType,
         showSubs,
         showCap,
+        checkPlayerClickable,
+        getPlayerCustomClasses,
     };
 };
 
