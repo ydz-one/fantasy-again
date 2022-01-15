@@ -139,7 +139,7 @@ const calculateForm = (preGwDate: Moment, playerFixtures: PlayerFixtureStats[]):
         sum += playerFixtures[i].totalPoints;
         n++;
     }
-    return sum / n;
+    return n > 0 ? sum / n : 0;
 };
 
 const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats => {
