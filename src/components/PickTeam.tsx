@@ -64,6 +64,16 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
         setPlayerClicked('');
     };
 
+    const handleMakeCaptain = () => {
+        makeCaptain(playerClicked);
+        setPlayerClicked('');
+    };
+
+    const handleMakeViceCaptain = () => {
+        makeViceCaptain(playerClicked);
+        setPlayerClicked('');
+    };
+
     const checkPlayerClickable = (playerCode: string) => {
         const { playerToSubstitute, substitutionTargets } = substitionInfo;
         return (
@@ -141,7 +151,7 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
                                 <Checkbox
                                     disabled={isSubstitute(squad, playerClicked)}
                                     checked={squad.captain === playerClicked}
-                                    onChange={() => makeCaptain(playerClicked)}
+                                    onChange={handleMakeCaptain}
                                 >
                                     Captain
                                 </Checkbox>
@@ -150,7 +160,7 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
                                 <Checkbox
                                     disabled={isSubstitute(squad, playerClicked)}
                                     checked={squad.viceCaptain === playerClicked}
-                                    onChange={() => makeViceCaptain(playerClicked)}
+                                    onChange={handleMakeViceCaptain}
                                 >
                                     Vice Captain
                                 </Checkbox>
