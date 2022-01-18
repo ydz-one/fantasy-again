@@ -154,14 +154,17 @@ const _SquadSelection = ({
                     >
                         Enter Squad
                     </Button>
-                    {teamsOverPlayerLimit.length > 0 && (
-                        <div className="error-note">
-                            Too many players from{' '}
-                            {teamsOverPlayerLimit.map((team) => (
-                                <TeamTag teamCode={team} />
-                            ))}
-                        </div>
-                    )}
+                    <div className="error-note">
+                        {!isPositiveBalance && <span>Not enough money in the bank. </span>}
+                        {teamsOverPlayerLimit.length > 0 && (
+                            <span>
+                                Too many players from{' '}
+                                {teamsOverPlayerLimit.map((team) => (
+                                    <TeamTag teamCode={team} />
+                                ))}
+                            </span>
+                        )}
+                    </div>
                 </div>
                 {playerClicked.length > 0 && (
                     <PlayerDetailsModal selectedPlayer={playerClicked} onClose={() => setPlayerClicked('')}>
