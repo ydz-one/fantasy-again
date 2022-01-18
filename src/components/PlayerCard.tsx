@@ -82,7 +82,7 @@ export const PlayerCard = ({
                 {/* A substitute cannot be a captain or vice captain, so subStatus and captainStatus can share the same Badge */}
                 <Badge
                     count={isSub ? subStatus : captainStatus}
-                    style={{ backgroundColor: isSub ? 'gray' : 'black', top: -16, right: -8 }}
+                    style={{ backgroundColor: isSub ? 'gray' : 'black', top: -16, right: -8, zIndex: 1 }}
                 >
                     {typeof value === 'string' ? (
                         <div className="value-or-points">{value}</div>
