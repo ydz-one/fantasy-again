@@ -41,8 +41,12 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
     });
 
     const handleClickPlayer = (player: string) => {
-        if (substitionInfo.playerToSubstitute.length > 0) {
-            subPlayer(substitionInfo.playerToSubstitute, player);
+        const { playerToSubstitute } = substitionInfo;
+        if (playerToSubstitute.length > 0) {
+            // No need to go thru with the substitution action if the same player is clicked on
+            if (playerToSubstitute !== player) {
+                subPlayer(playerToSubstitute, player);
+            }
             setSubstitutionInfo({
                 playerToSubstitute: '',
                 substitutionTargets: [],
@@ -61,8 +65,12 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
     };
 
     const checkPlayerClickable = (playerCode: string) => {
-        const { substitutionTargets } = substitionInfo;
-        return substitutionTargets.length === 0 || substitutionTargets.includes(playerCode);
+        const { playerToSubstitute, substitutionTargets } = substitionInfo;
+        return (
+            substitutionTargets.length === 0 ||
+            playerToSubstitute === playerCode ||
+            substitutionTargets.includes(playerCode)
+        );
     };
 
     const getPlayerCustomClasses = (playerCode: string) => {
