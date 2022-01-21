@@ -289,6 +289,12 @@ code {
     font-size: 1em;
 }
 
+.player-card-small {
+    width: auto;
+    justify-content: left;
+    margin: 0 0 16px;
+}
+
 .position-row-bottom .player-card,
 .player-bench-row .player-card {
     margin: 0 6px;
@@ -303,6 +309,10 @@ code {
     align-items: center;
     justify-content: space-between;
     width: 180px;
+}
+
+.player-card-content-small {
+    width: 100%;
 }
 
 .player-card-sub-on {
@@ -396,6 +406,14 @@ code {
 
 .btn-pair-right {
     margin-left: 8px;
+}
+
+.card-pair-left {
+    margin-right: 16px;
+}
+
+.card-pair-right {
+    margin-left: 16px;
 }
 
 .player-fixture-data .ant-tabs-nav {
@@ -532,6 +550,21 @@ code {
 .top-btn-container,
 .bottom-btn-container {
     text-align: center;
+}
+
+.transfer-stats-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.transfer-stats-titles {
+    display: inline-block;
+}
+
+.transfer-stats-values {
+    display: inline-block;
+    text-align: right;
 }
 
 .value-or-points {

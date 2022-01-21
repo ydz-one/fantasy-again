@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Divider, Layout, Statistic, Row, Col } from 'antd';
+import { Button, Divider, Layout, Row, Col } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import SquadLineup from './SquadLineup';
 import PlayerDetailsModal from './PlayerDetailsModal';
@@ -11,7 +11,7 @@ import { finalizeTransfers } from '../actions';
 import { TeamTag } from './TeamTag';
 import { assertIsPosition, getPlayerSellPrice, getTeamsOverMaxPlayerLimit, getTempBalance } from '../helpers';
 import { StoreState } from '../reducers';
-import { statisticsFontSize } from '../constants/ui';
+import { TransferMetrics } from './TransferMetrics';
 
 const { Content } = Layout;
 
@@ -261,30 +261,11 @@ const _Transfers = ({
                 <div className="page-title page-title-two-sections">
                     <div>Transfers</div>
                     <div className="center-when-mobile">
-                        <div className="transfers-metrics">
-                            <Statistic
-                                title="FT"
-                                value={tempFreeTransfers === Number.MAX_SAFE_INTEGER ? '∞' : tempFreeTransfers}
-                                valueStyle={{
-                                    ...statisticsFontSize,
-                                    color: tempFreeTransfers > 0 ? '#3f8600' : '#cf1322',
-                                }}
-                                className="top-metric"
-                            />
-                            <Statistic
-                                title="Cost"
-                                value={tempCost}
-                                valueStyle={{ ...statisticsFontSize, color: tempCost === 0 ? '#3f8600' : '#cf1322' }}
-                                className="top-metric"
-                            />
-                            <Statistic
-                                title="Bank (£)"
-                                value={tempBalance / 10}
-                                valueStyle={{ ...statisticsFontSize, color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
-                                precision={1}
-                                className="top-metric"
-                            />
-                        </div>
+                        <TransferMetrics
+                            tempFreeTransfers={tempFreeTransfers}
+                            tempBalance={tempBalance}
+                            tempCost={tempCost}
+                        />
                     </div>
                 </div>
                 <div className="top-btn-container">
@@ -384,6 +365,8 @@ const _Transfers = ({
                     playersBio={playersBio}
                     isModalVisible={isConfirmModalVisible}
                     transfers={transfers}
+                    tempFreeTransfers={tempFreeTransfers}
+                    tempBalance={tempBalance}
                     onOk={handleFinalizeTransfers}
                     onCancel={handleCancelTransfers}
                 />

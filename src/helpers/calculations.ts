@@ -256,3 +256,12 @@ export const getTempBalance = (balance: number, transfers: InGameTransfer[]) => 
         return tempBalance + transfer.playerToSell.sellPrice - transfer.playerToBuy.buyPrice;
     }, balance);
 };
+
+export const getAdditionalTransfers = (freeTransfers: number, transfersMade: number) => {
+    if (freeTransfers === Number.MAX_SAFE_INTEGER) {
+        return '0';
+    }
+    const additionalTransfers = transfersMade - freeTransfers;
+    const deductions = additionalTransfers * 4;
+    return `${additionalTransfers} (-${deductions} pts)`;
+};
