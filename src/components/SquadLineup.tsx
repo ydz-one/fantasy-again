@@ -1,7 +1,14 @@
 import { valueType } from 'antd/lib/statistic/utils';
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { didPlayerPlay, formatPoints, formatValue, getNextFixtures, didPlayerGetRedCard } from '../helpers';
+import {
+    didPlayerPlay,
+    formatPoints,
+    formatValue,
+    getNextFixtures,
+    didPlayerGetRedCard,
+    getPlayerSellPrice,
+} from '../helpers';
 import { StoreState } from '../reducers';
 import { FdrData, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
 import { EmptyPlayerCard } from './EmptyPlayerCard';
@@ -65,7 +72,7 @@ const _SquadLineup = ({
                 ? getNextFixtures(fdr, gameweek, teamCode)
                 : valueType === ValueType.POINTS
                 ? formatPoints(latestGwPoints * pointsMultiplyer)
-                : formatValue(value);
+                : formatValue(getPlayerSellPrice(code, squad, position, value));
         return (
             <PlayerCard
                 key={idx}
@@ -117,6 +124,7 @@ const mapStateToProps = (
         valueType: ValueType;
         showSubs?: boolean;
         showCap?: boolean;
+        squad?: Squad;
         checkPlayerClickable?: (playerCode: string) => boolean;
         getPlayerCustomClasses?: (playerCode: string) => string;
     }
@@ -129,6 +137,7 @@ const mapStateToProps = (
         valueType,
         showSubs = false,
         showCap = false,
+        squad: squadOverride = null,
         checkPlayerClickable = () => true,
         getPlayerCustomClasses = () => '',
     } = ownProps;
@@ -137,7 +146,7 @@ const mapStateToProps = (
         fdr,
         playersBio,
         playersStats,
-        squad,
+        squad: squadOverride ? squadOverride : squad,
         gameweek,
         handleClickPlayer,
         handleSetReplacePlayer,

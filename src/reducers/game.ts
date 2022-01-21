@@ -21,6 +21,8 @@ const getInitialGameState = (): GameState => {
         squadPointsHistory: [],
         gwPointsHistory: [],
         balance: STARTING_BALANCE,
+        freeTransfers: Number.MAX_SAFE_INTEGER, // MAX_SAFE_INTEGER denotes unlimited transfers (before first GW, and when FH and WC are active)
+        nextGwCost: 0,
     };
 };
 
@@ -194,6 +196,15 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
             return {
                 ...state,
                 squad: Object.assign(state.squad, squadChanges),
+            };
+        case GameActionTypes.FinalizeTransfers:
+            const { newSquad, newBalance, newNextGwCost, newFreeTransfers } = action.payload;
+            return {
+                ...state,
+                squad: JSON.parse(JSON.stringify(newSquad)),
+                balance: newBalance,
+                nextGwCost: newNextGwCost,
+                freeTransfers: newFreeTransfers,
             };
         default:
             return state;

@@ -1,6 +1,8 @@
 import { FdrFixture, FdrRow, PlayerStatsRow } from '../types';
 
 const TOTAL_MANAGERS = 6_000_000;
+const MILLION = 1_000_000;
+const THOUSAND = 1_000;
 
 function assertIsArrayOfFdrFixtures(obj: unknown): asserts obj is FdrFixture[] {
     if (Array.isArray(obj) && (obj.length === 0 || obj[0].opponent != null)) return;
@@ -33,3 +35,10 @@ export const formatSelected = (selected: number) =>
     Number(selected / TOTAL_MANAGERS).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 });
 
 export const formatPoints = (points: number) => points + ' pts';
+
+export const formatLargeNumber = (num: number) =>
+    Math.abs(num) > MILLION
+        ? Math.round((10 * num) / MILLION) / 10 + 'm'
+        : Math.abs(num) > THOUSAND
+        ? Math.round((10 * num) / THOUSAND) / 10 + 'K'
+        : num.toString();

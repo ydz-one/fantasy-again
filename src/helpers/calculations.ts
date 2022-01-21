@@ -3,6 +3,7 @@ import { getTeamCodeToId } from '../data';
 import {
     DEFAULT_SEASON,
     FdrData,
+    InGameTransfer,
     PlayerFixtureStats,
     PlayersBio,
     PlayersStats,
@@ -208,7 +209,7 @@ export const getSubstitutionTargets = (squad: Squad, position: string, playerToS
     if (position === Position.GK) {
         return squad.GK.map((player) => player.code).filter((playerCode) => playerCode !== playerToSubstitute);
     }
-    // If a player is a sub, they can substitute with any fielded player, as long as subbing the fielded player will not bring the number of fielded players in that position to be below the minumum
+    // If a player is a sub, they can substitute with any starting player, as long as subbing the starting player will not bring the number of starting players in that position to be below the minumum
     if (isSubstitute(squad, playerToSubstitute)) {
         return [Position.DEF, Position.MID, Position.FWD].reduce((targets: string[], currPosition) => {
             if (currPosition === position) {
@@ -228,11 +229,30 @@ export const getSubstitutionTargets = (squad: Squad, position: string, playerToS
             return targets.concat(squad[currPosition].map((player) => player.code));
         }, []);
     }
-    // If a player is fielded, they can substitute with any sub, unless his position is at the minimum number of fielded players, in which case he can only substitute subs in the same position as him
+    // If a player is starting, they can substitute with any sub, unless his position is at the minimum number of starting players, in which case he can only substitute subs in the same position as him
     if (checkIfMinPlayersInPosition(squad, position)) {
         return squad[position]
             .filter((player) => player.code !== playerToSubstitute && isSubstitute(squad, player.code))
             .map((player) => player.code);
     }
     return squad.subs;
+};
+
+export const getPlayerSellPrice = (
+    playerToReplace: string,
+    squad: Squad,
+    position: Position,
+    marketValue: number
+): number => {
+    const playerIndex = squad[position].findIndex((player) => player.code === playerToReplace);
+    const { buyPrice } = squad[position][playerIndex];
+    const priceDiff = marketValue - buyPrice;
+    const profit = priceDiff > 0 ? Math.floor(priceDiff / 2) : priceDiff;
+    return buyPrice + profit;
+};
+
+export const getTempBalance = (balance: number, transfers: InGameTransfer[]) => {
+    return transfers.reduce((tempBalance, transfer) => {
+        return tempBalance + transfer.playerToSell.sellPrice - transfer.playerToBuy.buyPrice;
+    }, balance);
 };

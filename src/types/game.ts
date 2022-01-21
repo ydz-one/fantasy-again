@@ -8,6 +8,8 @@ export interface GameState {
     squadPointsHistory: SquadPoints[];
     gwPointsHistory: number[];
     balance: number;
+    freeTransfers: number;
+    nextGwCost: number;
 }
 
 export type SquadPlayer = {
@@ -63,6 +65,11 @@ export const prevSeasonMap = {
 
 export const DEFAULT_SEASON = Season.S2020_2021;
 
+export type InGameTransfer = {
+    playerToSell: { code: string; sellPrice: number };
+    playerToBuy: { code: string; buyPrice: number };
+};
+
 export enum GameActionTypes {
     IncrementGameweek = 'IncrementGameweek',
     AddSquadPointsToHistory = 'AddSquadPointsToHistory',
@@ -73,6 +80,7 @@ export enum GameActionTypes {
     MakeCaptain = 'MakeCaptain',
     MakeViceCaptain = 'MakeViceCaptain',
     SubPlayer = 'SubPlayer',
+    FinalizeTransfers = 'FinalizeTransfers',
 }
 
 export interface IncrementGameweekAction {
@@ -131,6 +139,16 @@ export interface SubPlayer {
     };
 }
 
+export interface FinalizeTransfers {
+    type: GameActionTypes.FinalizeTransfers;
+    payload: {
+        newSquad: Squad;
+        newBalance: number;
+        newNextGwCost: number;
+        newFreeTransfers: number;
+    };
+}
+
 export type GameAction =
     | IncrementGameweekAction
     | AddSquadPointsToHistoryAction
@@ -140,4 +158,5 @@ export type GameAction =
     | SetSquad
     | MakeCaptain
     | MakeViceCaptain
-    | SubPlayer;
+    | SubPlayer
+    | FinalizeTransfers;

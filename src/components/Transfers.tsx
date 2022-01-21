@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Button, Divider, Layout, Statistic } from 'antd';
+import { Button, Divider, Layout, Statistic, Row, Col } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import SquadLineup from './SquadLineup';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SelectPlayerModal from './SelectPlayerModal';
-import { PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
-import { resetSquad, setSquad } from '../actions';
+import { ConfirmTransfersModal } from './ConfirmTransfersModal';
+import { InGameTransfer, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
+import { finalizeTransfers } from '../actions';
 import { TeamTag } from './TeamTag';
-import { getTeamsOverMaxPlayerLimit } from '../helpers';
+import { assertIsPosition, getPlayerSellPrice, getTeamsOverMaxPlayerLimit, getTempBalance } from '../helpers';
 import { StoreState } from '../reducers';
 import { statisticsFontSize } from '../constants/ui';
 
@@ -20,21 +21,39 @@ interface Props {
     squad: Squad;
     balance: number;
     isSquadComplete: boolean;
-    resetSquad: typeof resetSquad;
-    setSquad: typeof setSquad;
+    freeTransfers: number;
+    nextGwCost: number;
+    finalizeTransfers: typeof finalizeTransfers;
 }
 
-const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setSquad }: Props) => {
+const _Transfers = ({
+    playersBio,
+    playersStats,
+    squad,
+    balance,
+    freeTransfers,
+    nextGwCost,
+    finalizeTransfers,
+}: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
         playerToReplace: '',
     });
-    // playerClicked is the non-empty player card clicked in the Squad Selection screen; when set, it opens up a player data modal with a button to set that player to be replaced
+    // playerClicked is the non-empty player card clicked in the Transfers page; when set, it opens up a player data modal with a button to set that player to be replaced
     const [playerClicked, setPlayerClicked] = useState('');
     // playerToAdd is the player selected from the Player Stats Table; when set, it opens up a player data modal with a button to confirm transfer in
     const [playerToAdd, setPlayerToAdd] = useState('');
-    // playerToReplace is the empty or non-empty player selected to be replaced; when set, it opens up the Player Stats Table
+    // playerToReplace is the player selected to be replaced; when set, it opens up the Player Stats Table
     const { position, playerToReplace } = replacementInfo;
+    const [tempSquad, setTempSquad] = useState<Squad>(JSON.parse(JSON.stringify(squad)));
+    const [tempFreeTransfers, setTempFreeTransfers] = useState(freeTransfers);
+    const [tempCost, setTempCost] = useState(nextGwCost);
+    const [transfers, setTransfers] = useState<InGameTransfer[]>([]);
+    const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+
+    const isTransferTarget = (player: string) => {
+        return transfers.findIndex((transfer) => transfer.playerToBuy.code === player) > -1;
+    };
 
     const handleClickPlayer = (playerClicked: string) => {
         setPlayerClicked(playerClicked);
@@ -56,19 +75,185 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
         setPlayerClicked(() => '');
     };
 
-    const handleAddPlayerToSquad = () => {
+    const handleAddTransfer = () => {
+        const transferTargetIndex = transfers.findIndex((transfer) => transfer.playerToBuy.code === playerToReplace);
+        const playerToSellIndex = transfers.findIndex((transfer) => transfer.playerToSell.code === playerToAdd);
+
+        if (transferTargetIndex > -1 && playerToSellIndex > -1 && transferTargetIndex === playerToSellIndex) {
+            // Case 1: Replacing an existing transfer target with the original squad player he is replacing
+            // This is a transfer that is an exact reverse of an existing transfer, so we just need to delete that existing transfer
+            const deletedTransfer = transfers[transferTargetIndex];
+            setTransfers(transfers.slice(0, transferTargetIndex).concat(transfers.slice(transferTargetIndex + 1)));
+            const playerToRestoreIndex = tempSquad[position].findIndex(
+                (player) => player.code === deletedTransfer.playerToBuy.code
+            );
+            setTempSquad({
+                ...tempSquad,
+                [position]: tempSquad[position]
+                    .slice(0, playerToRestoreIndex)
+                    .concat(squad[position][playerToRestoreIndex])
+                    .concat(tempSquad[position].slice(playerToRestoreIndex + 1)),
+            });
+        } else if (transferTargetIndex > -1) {
+            // Case 2: A player to be replaced is an existing transfer target
+            // Modify that transfer to change the target to the new playerToAdd
+            const prevTransTarget = transfers[transferTargetIndex].playerToBuy;
+            const updatedTransfer = {
+                playerToSell: {
+                    ...transfers[transferTargetIndex].playerToSell,
+                },
+                playerToBuy: {
+                    code: playerToAdd,
+                    buyPrice: playersStats[playerToAdd].value,
+                },
+            };
+            setTransfers(
+                transfers
+                    .slice(0, transferTargetIndex)
+                    .concat(updatedTransfer)
+                    .concat(transfers.slice(transferTargetIndex + 1))
+            );
+            const playerToReplaceIndex = tempSquad[position].findIndex(
+                (player) => player.code === prevTransTarget.code
+            );
+            setTempSquad({
+                ...tempSquad,
+                [position]: tempSquad[position]
+                    .slice(0, playerToReplaceIndex)
+                    .concat(updatedTransfer.playerToBuy)
+                    .concat(tempSquad[position].slice(playerToReplaceIndex + 1)),
+            });
+        } else if (playerToSellIndex > -1) {
+            // Case 3: A player to be added is a player to be sold in an existing transfer T
+            // Delete T and restore that player, and create a new transfer where the player to be added is the transfer target of T
+            const deletedTransfer = transfers[playerToSellIndex];
+            const newTransfer = {
+                playerToSell: {
+                    code: playerToReplace,
+                    sellPrice: getPlayerSellPrice(
+                        playerToReplace,
+                        squad,
+                        position,
+                        playersStats[playerToReplace].value
+                    ),
+                },
+                playerToBuy: {
+                    ...deletedTransfer.playerToBuy,
+                },
+            };
+            setTransfers(
+                transfers.slice(0, playerToSellIndex).concat(transfers.slice(playerToSellIndex + 1).concat(newTransfer))
+            );
+            const playerToRestoreIndex = tempSquad[position].findIndex(
+                (player) => player.code === deletedTransfer.playerToBuy.code
+            );
+            const playerToReplaceIndex = tempSquad[position].findIndex(
+                (player) => player.code === newTransfer.playerToSell.code
+            );
+            let updatedLineup = tempSquad[position]
+                .slice(0, playerToRestoreIndex)
+                .concat(squad[position][playerToRestoreIndex])
+                .concat(tempSquad[position].slice(playerToRestoreIndex + 1));
+            updatedLineup = updatedLineup
+                .slice(0, playerToReplaceIndex)
+                .concat(newTransfer.playerToBuy)
+                .concat(updatedLineup.slice(playerToReplaceIndex + 1));
+            setTempSquad({
+                ...tempSquad,
+                [position]: updatedLineup,
+            });
+        } else {
+            // Case 4: Add a new transfer
+            const newTransfer = {
+                playerToSell: {
+                    code: playerToReplace,
+                    sellPrice: getPlayerSellPrice(
+                        playerToReplace,
+                        squad,
+                        position,
+                        playersStats[playerToReplace].value
+                    ),
+                },
+                playerToBuy: {
+                    code: playerToAdd,
+                    buyPrice: playersStats[playerToAdd].value,
+                },
+            };
+            setTransfers(transfers.concat(newTransfer));
+            if (freeTransfers !== Number.MAX_SAFE_INTEGER) {
+                setTempFreeTransfers(Math.max(tempFreeTransfers - 1, 0));
+                setTempCost(nextGwCost + Math.max((freeTransfers - transfers.length) * 4, 0));
+            }
+            const playerToReplaceIndex = tempSquad[position].findIndex(
+                (player) => player.code === newTransfer.playerToSell.code
+            );
+            setTempSquad({
+                ...tempSquad,
+                [position]: tempSquad[position]
+                    .slice(0, playerToReplaceIndex)
+                    .concat(newTransfer.playerToBuy)
+                    .concat(tempSquad[position].slice(playerToReplaceIndex + 1)),
+            });
+        }
         handleCloseSelectPlayerModal();
     };
 
-    const handleReadyReplacePlayer = (playerClicked: string) => {};
+    // Restore playerClicked, who must be a transfer target, to its original squad member and cancel its transfer
+    const handleRestorePlayer = () => {
+        const transferTargetIndex = transfers.findIndex((transfer) => transfer.playerToBuy.code === playerClicked);
+        setTransfers(transfers.slice(0, transferTargetIndex).concat(transfers.slice(transferTargetIndex + 1)));
+        const { position: playerClickedPosition } = playersBio[playerClicked];
+        assertIsPosition(playerClickedPosition);
+        const playerToRestoreIndex = tempSquad[playerClickedPosition].findIndex(
+            (player) => player.code === playerClicked
+        );
+        setTempSquad({
+            ...tempSquad,
+            [playerClickedPosition]: tempSquad[playerClickedPosition]
+                .slice(0, playerToRestoreIndex)
+                .concat(squad[playerClickedPosition][playerToRestoreIndex])
+                .concat(tempSquad[playerClickedPosition].slice(playerToRestoreIndex + 1)),
+        });
+        setPlayerClicked('');
+    };
 
-    const handleFinalizeSquad = () => {};
+    const handleReadyReplacePlayer = () => {
+        const { position: playerClickedPosition } = playersBio[playerClicked];
+        assertIsPosition(playerClickedPosition);
+        handleSetReplacePlayer(playerClicked, playerClickedPosition);
+        setPlayerClicked('');
+    };
 
-    const isPositiveBalance = balance >= 0;
-    const teamsOverPlayerLimit = getTeamsOverMaxPlayerLimit(squad, playersBio);
+    const highlightTransfers = (playerCode: string) => {
+        if (transfers.findIndex((transfer) => transfer.playerToBuy.code === playerCode) > -1) {
+            return ' player-card-transfer';
+        }
+        return '';
+    };
+
+    const handleResetTransfers = () => {
+        setTransfers([]);
+        setTempSquad(JSON.parse(JSON.stringify(squad)));
+    };
+
+    const handleProceedWithTransfers = () => {
+        setIsConfirmModalVisible(true);
+    };
+
+    const handleCancelTransfers = () => {
+        setIsConfirmModalVisible(false);
+    };
+
+    const handleFinalizeTransfers = () => {
+        finalizeTransfers(tempSquad, tempBalance, tempCost, tempFreeTransfers);
+        setIsConfirmModalVisible(false);
+        setTransfers([]);
+    };
+
+    const tempBalance = getTempBalance(balance, transfers);
+    const isPositiveBalance = tempBalance >= 0;
+    const teamsOverPlayerLimit = getTeamsOverMaxPlayerLimit(tempSquad, playersBio);
     const isSquadValid = isPositiveBalance && teamsOverPlayerLimit.length === 0;
-    const cost = 0;
-    const freeTransfers = 1;
 
     return (
         <Content className="site-layout-content">
@@ -79,19 +264,22 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
                         <div className="transfers-metrics">
                             <Statistic
                                 title="FT"
-                                value={freeTransfers}
-                                valueStyle={{ ...statisticsFontSize, color: freeTransfers > 0 ? '#3f8600' : '#cf1322' }}
+                                value={tempFreeTransfers === Number.MAX_SAFE_INTEGER ? '∞' : tempFreeTransfers}
+                                valueStyle={{
+                                    ...statisticsFontSize,
+                                    color: tempFreeTransfers > 0 ? '#3f8600' : '#cf1322',
+                                }}
                                 className="top-metric"
                             />
                             <Statistic
                                 title="Cost"
-                                value={cost}
-                                valueStyle={{ ...statisticsFontSize, color: cost === 0 ? '#3f8600' : '#cf1322' }}
+                                value={tempCost}
+                                valueStyle={{ ...statisticsFontSize, color: tempCost === 0 ? '#3f8600' : '#cf1322' }}
                                 className="top-metric"
                             />
                             <Statistic
                                 title="Bank (£)"
-                                value={balance / 10}
+                                value={tempBalance / 10}
                                 valueStyle={{ ...statisticsFontSize, color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
                                 precision={1}
                                 className="top-metric"
@@ -113,50 +301,92 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
                     handleSetReplacePlayer={handleSetReplacePlayer}
                     showSubs
                     valueType={ValueType.PRICE}
+                    squad={tempSquad}
+                    getPlayerCustomClasses={highlightTransfers}
                 />
                 <Divider className="custom-divider" />
                 <div className="bottom-btn-container">
-                    <Button size="large" onClick={handleFinalizeSquad} className="bottom-btn">
-                        Cancel
+                    <Button
+                        size="large"
+                        onClick={handleResetTransfers}
+                        className="bottom-btn"
+                        disabled={transfers.length === 0}
+                    >
+                        Reset
                     </Button>
                     <Button
                         size="large"
                         type="primary"
-                        onClick={handleFinalizeSquad}
+                        onClick={handleProceedWithTransfers}
                         className="bottom-btn"
-                        disabled={!isSquadValid}
+                        disabled={!isSquadValid || transfers.length === 0}
                     >
                         Next
                     </Button>
-                    {teamsOverPlayerLimit.length > 0 && (
-                        <div className="error-note">
-                            Too many players from{' '}
-                            {teamsOverPlayerLimit.map((team) => (
-                                <TeamTag teamCode={team} />
-                            ))}
-                        </div>
-                    )}
+                    <div className="error-note">
+                        {!isPositiveBalance && <span>Not enough money in the bank. </span>}
+                        {teamsOverPlayerLimit.length > 0 && (
+                            <span>
+                                Too many players from{' '}
+                                {teamsOverPlayerLimit.map((team) => (
+                                    <TeamTag teamCode={team} />
+                                ))}
+                            </span>
+                        )}
+                    </div>
                 </div>
                 {playerClicked.length > 0 && (
-                    <PlayerDetailsModal
-                        selectedPlayer={playerClicked}
-                        onClose={() => setPlayerClicked('')}
-                        onAccept={() => handleReadyReplacePlayer(playerClicked)}
-                    />
+                    <PlayerDetailsModal selectedPlayer={playerClicked} onClose={() => setPlayerClicked('')}>
+                        <Row>
+                            <Col span={12}>
+                                <Button
+                                    size="large"
+                                    className="player-details-modal-btn btn-pair-left"
+                                    disabled={!isTransferTarget(playerClicked)}
+                                    onClick={handleRestorePlayer}
+                                >
+                                    Restore
+                                </Button>
+                            </Col>
+                            <Col span={12}>
+                                <Button
+                                    type="primary"
+                                    size="large"
+                                    className="player-details-modal-btn btn-pair-right"
+                                    onClick={handleReadyReplacePlayer}
+                                >
+                                    Replace
+                                </Button>
+                            </Col>
+                        </Row>
+                    </PlayerDetailsModal>
                 )}
                 <SelectPlayerModal
                     position={position}
                     playerToReplace={playerToReplace}
+                    squad={tempSquad}
                     onChangePlayerToAdd={(playerToAdd: string) => setPlayerToAdd(playerToAdd)}
                     onClose={handleCloseSelectPlayerModal}
                 />
                 {playerToAdd.length > 0 && (
-                    <PlayerDetailsModal
-                        selectedPlayer={playerToAdd}
-                        onClose={() => setPlayerToAdd('')}
-                        onAccept={handleAddPlayerToSquad}
-                    />
+                    <PlayerDetailsModal selectedPlayer={playerToAdd} onClose={() => setPlayerToAdd('')}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="player-details-modal-btn"
+                            onClick={handleAddTransfer}
+                        >
+                            Select
+                        </Button>
+                    </PlayerDetailsModal>
                 )}
+                <ConfirmTransfersModal
+                    playersBio={playersBio}
+                    isModalVisible={isConfirmModalVisible}
+                    transfers={transfers}
+                    onOk={handleFinalizeTransfers}
+                    onCancel={handleCancelTransfers}
+                />
             </div>
         </Content>
     );
@@ -164,14 +394,16 @@ const _Transfers = ({ playersBio, playersStats, squad, balance, resetSquad, setS
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { squad, balance, isSquadComplete } = game;
+    const { squad, balance, isSquadComplete, freeTransfers, nextGwCost } = game;
     return {
         playersBio,
         playersStats,
         squad,
         balance,
         isSquadComplete,
+        freeTransfers,
+        nextGwCost,
     };
 };
 
-export default connect(mapStateToProps, { resetSquad, setSquad })(checkSquadCompleteHOC(_Transfers));
+export default connect(mapStateToProps, { finalizeTransfers })(checkSquadCompleteHOC(_Transfers));

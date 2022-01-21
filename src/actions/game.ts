@@ -60,3 +60,18 @@ export const subPlayer = (player1: string, player2: string): GameAction => ({
         player2,
     },
 });
+
+export const finalizeTransfers = (
+    newSquad: Squad,
+    newBalance: number,
+    newNextGwCost: number,
+    newFreeTransfers: number
+): GameAction => ({
+    type: GameActionTypes.FinalizeTransfers,
+    payload: {
+        newSquad,
+        newBalance,
+        newNextGwCost,
+        newFreeTransfers,
+    },
+});

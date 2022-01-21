@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, Divider, Layout, Statistic } from 'antd';
@@ -77,10 +77,9 @@ const _SquadSelection = ({
         handleCloseSelectPlayerModal();
     };
 
-    const handleReadyReplacePlayer = (playerClicked: string) => {
-        const key = playersBio[playerClicked].position;
-        assertIsPosition(key);
-        const position = Position[key];
+    const handleReadyReplacePlayer = () => {
+        const { position } = playersBio[playerClicked];
+        assertIsPosition(position);
         handleSetReplacePlayer(playerClicked, position);
         setPlayerClicked('');
     };
@@ -172,7 +171,7 @@ const _SquadSelection = ({
                             type="primary"
                             size="large"
                             className="player-details-modal-btn"
-                            onClick={() => handleReadyReplacePlayer(playerClicked)}
+                            onClick={handleReadyReplacePlayer}
                         >
                             Replace
                         </Button>

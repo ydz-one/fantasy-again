@@ -317,6 +317,10 @@ code {
     background-color: #ab43f1;
 }
 
+.player-card-transfer {
+    background-color: #f1ce43;
+}
+
 .player-cell-info {
     display: flex;
 }
@@ -384,6 +388,14 @@ code {
 .player-details-modal-btn {
     margin: 16px 0;
     width: 100%;
+}
+
+.btn-pair-left {
+    margin-right: 8px;
+}
+
+.btn-pair-right {
+    margin-left: 8px;
 }
 
 .player-fixture-data .ant-tabs-nav {

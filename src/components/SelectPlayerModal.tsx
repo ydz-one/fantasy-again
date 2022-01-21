@@ -89,14 +89,15 @@ const mapStateToProps = (
     ownProps: {
         position: Position;
         playerToReplace: string;
+        squad?: Squad;
         onChangePlayerToAdd: Function;
         onClose: MouseEventHandler;
     }
 ) => {
     const { squad } = game;
-    const { position, playerToReplace, onChangePlayerToAdd, onClose } = ownProps;
+    const { position, playerToReplace, squad: squadOverride = null, onChangePlayerToAdd, onClose } = ownProps;
     return {
-        squad,
+        squad: squadOverride ? squadOverride : squad,
         position,
         playerToReplace,
         onChangePlayerToAdd,
