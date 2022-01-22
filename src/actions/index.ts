@@ -1,6 +1,6 @@
 import { AnyAction } from '@reduxjs/toolkit';
 import { ThunkAction } from 'redux-thunk';
-import { autoSub, calcGwPointsTotal, getSquadPoints } from '../helpers';
+import { autoSub, calcGwPointsTotal, getDidPlayerPlayMap, getSquadPoints } from '../helpers';
 import { StoreState } from '../reducers';
 import { PlayersBio, Squad } from '../types';
 import { loadNewGwData } from './data';
@@ -14,8 +14,8 @@ export const goToNextGameweek =
     (dispatch, getState) => {
         dispatch(loadNewGwData(gameweek + 1));
         dispatch(incrementGameweek());
-        const autoSubbedSquad = autoSub(squad);
         const { playersStats: updatedPlayersStats } = getState().data;
+        const autoSubbedSquad = autoSub(squad, getDidPlayerPlayMap(squad, updatedPlayersStats));
         dispatch(
             updateGameStateAfterGw(
                 getSquadPoints(autoSubbedSquad, updatedPlayersStats, playersBio, gameweek),

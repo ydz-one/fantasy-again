@@ -96,13 +96,13 @@ const _Points = ({ gameweek, gwPointsHistory, transfersHistory, deductionsHistor
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
-                {gwToShow === 0 || gwToShow === gameweek ? (
+                {gwToShow === 0 ? (
                     <SquadLineup handleClickPlayer={handleClickPlayer} valueType={ValueType.POINTS} showCap />
                 ) : (
                     <SquadPointsLineup gameweek={gwToShow} handleClickPlayer={handleClickPlayer} />
                 )}
                 <Divider className="custom-divider" />
-                {gwToShow === 0 || gwToShow === gameweek ? (
+                {gwToShow === 0 ? (
                     <PlayerBench handleClickPlayer={handleClickPlayer} valueType={ValueType.POINTS} />
                 ) : (
                     <PlayerPointsBench gameweek={gwToShow} handleClickPlayer={handleClickPlayer} />

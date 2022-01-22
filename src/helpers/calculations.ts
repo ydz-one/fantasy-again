@@ -132,9 +132,63 @@ export const getNextFixtures = (fdr: FdrData, gameweek: number, teamCode: string
     return fdr[teamId][gameweek];
 };
 
-export const autoSub = (squad: Squad) => {
-    // TODO: Implement
-    return squad;
+export const getDidPlayerPlayMap = (squad: Squad, playersStats: PlayersStats): { [key: string]: boolean } => {
+    return [Position.GK, Position.DEF, Position.MID, Position.FWD].reduce(
+        (didPlayerPlayMap: { [key: string]: boolean }, position) => {
+            assertIsPosition(position);
+            squad[position].forEach((player) => {
+                didPlayerPlayMap[player.code] = didPlayerPlay(player.code, playersStats);
+            });
+            return didPlayerPlayMap;
+        },
+        {}
+    );
+};
+
+export const getStartingPlayerCodes = (squad: Squad, position: string): string[] => {
+    assertIsPosition(position);
+    if (position === Position.GK) {
+        return squad[position].filter((player) => player.code !== squad.subGk).map((player) => player.code);
+    }
+    return squad[position].filter((player) => !squad.subs.includes(player.code)).map((player) => player.code);
+};
+
+export const autoSub = (squad: Squad, didPlayerPlayMap: { [key: string]: boolean }) => {
+    const updatedSquad: Squad = JSON.parse(JSON.stringify(squad));
+    if (!didPlayerPlayMap[squad.captain] && didPlayerPlayMap[squad.viceCaptain]) {
+        updatedSquad.captain = squad.viceCaptain;
+        updatedSquad.viceCaptain = squad.captain;
+    }
+    const startingGk = getStartingPlayerCodes(squad, Position.GK)[0];
+    if (!didPlayerPlayMap[startingGk] && didPlayerPlayMap[squad.subGk]) {
+        updatedSquad.subGk = startingGk;
+    }
+    const alreadySubbed = [false, false, false];
+    [Position.GK, Position.DEF, Position.MID, Position.FWD].forEach((position) => {
+        assertIsPosition(position);
+        updatedSquad[position].forEach((player) => {
+            if (!didPlayerPlayMap[player.code] && !isSubstitute(squad, player.code)) {
+                // if the number of starting players in this position is at a minimum, then we need to sub on the first sub of this position
+                // otherwise, sub on the first sub who played and who was not already subbed
+                let subIndex: number;
+                if (checkIfMinPlayersInPosition(updatedSquad, position)) {
+                    subIndex = updatedSquad.subs.findIndex(
+                        (sub, i) =>
+                            !alreadySubbed[i] &&
+                            didPlayerPlayMap[sub] &&
+                            updatedSquad[position].findIndex((player) => player.code === sub) > -1
+                    );
+                } else {
+                    subIndex = updatedSquad.subs.findIndex((sub, i) => !alreadySubbed[i] && didPlayerPlayMap[sub]);
+                }
+                if (subIndex > -1) {
+                    updatedSquad.subs[subIndex] = player.code;
+                    alreadySubbed[subIndex] = true;
+                }
+            }
+        });
+    });
+    return updatedSquad;
 };
 
 export const getPointsMultiplier = (isCaptain: boolean, isViceCaptain: boolean, didPlayerPlay: boolean) => {
