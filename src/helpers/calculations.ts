@@ -258,10 +258,10 @@ export const getTempBalance = (balance: number, transfers: InGameTransfer[]) => 
 };
 
 export const getAdditionalTransfers = (freeTransfers: number, transfersMade: number) => {
-    if (freeTransfers === Number.MAX_SAFE_INTEGER) {
+    const additionalTransfers = transfersMade - freeTransfers;
+    if (freeTransfers === Number.MAX_SAFE_INTEGER || additionalTransfers === 0) {
         return '0';
     }
-    const additionalTransfers = transfersMade - freeTransfers;
     const deductions = additionalTransfers * 4;
     return `${additionalTransfers} (-${deductions} pts)`;
 };

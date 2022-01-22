@@ -538,6 +538,9 @@ code {
 
 .top-metric-section {
     font-weight: normal;
+    display: flex;
+    justify-content: right;
+    text-align: center;
 }
 
 .top-btn,

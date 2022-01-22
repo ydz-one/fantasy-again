@@ -10,7 +10,7 @@ import PlayerBench from './PlayerBench';
 import PlayerPointsBench from './PlayerPointsBench';
 import { statisticsFontSize } from '../constants/ui';
 import { formatPoints } from '../helpers';
-import { ValueType } from '../types';
+import { InGameTransfer, ValueType } from '../types';
 
 const { Content } = Layout;
 
@@ -18,9 +18,26 @@ interface Props {
     gameweek: number;
     isSquadComplete: boolean;
     gwPointsHistory: number[];
+    transfersHistory: InGameTransfer[][];
+    deductionsHistory: number[];
 }
 
-const _Points = ({ gameweek, gwPointsHistory }: Props) => {
+const renderTransfersAndHits = (
+    transfersHistory: InGameTransfer[][],
+    deductionsHistory: number[],
+    gwToShow: number
+) => {
+    // Squad changes made on the Transfers page before the first GW should not count as transfers to be deplayed on this page
+    if (gwToShow === 0 || gwToShow === 1) {
+        return '0';
+    }
+    if (deductionsHistory[gwToShow - 1] === 0) {
+        return transfersHistory[gwToShow - 1].length.toString();
+    }
+    return `${transfersHistory[gwToShow - 1].length} (${deductionsHistory[gwToShow - 1]} pts)`;
+};
+
+const _Points = ({ gameweek, gwPointsHistory, transfersHistory, deductionsHistory }: Props) => {
     const [playerClicked, setPlayerClicked] = useState('');
     const [gwToShow, setGwToShow] = useState(gameweek);
 
@@ -49,6 +66,12 @@ const _Points = ({ gameweek, gwPointsHistory }: Props) => {
                         <Statistic
                             title={'GW' + (gwToShow || 1)}
                             value={formatPoints(gwPointsHistory[gwToShow - 1] || 0)}
+                            valueStyle={statisticsFontSize}
+                            className="top-metric"
+                        />
+                        <Statistic
+                            title={'Transfers'}
+                            value={renderTransfersAndHits(transfersHistory, deductionsHistory, gwToShow)}
                             valueStyle={statisticsFontSize}
                             className="top-metric"
                         />
@@ -93,11 +116,13 @@ const _Points = ({ gameweek, gwPointsHistory }: Props) => {
 };
 
 const mapStateToProps = ({ game }: StoreState) => {
-    const { isSquadComplete, gameweek, gwPointsHistory } = game;
+    const { isSquadComplete, gameweek, gwPointsHistory, transfersHistory, deductionsHistory } = game;
     return {
         isSquadComplete,
         gameweek,
         gwPointsHistory,
+        transfersHistory,
+        deductionsHistory,
     };
 };
 
