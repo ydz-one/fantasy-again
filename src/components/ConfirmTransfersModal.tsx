@@ -8,7 +8,7 @@ interface Props {
     playersBio: PlayersBio;
     isModalVisible: boolean;
     transfers: InGameTransfer[];
-    tempFreeTransfers: number;
+    freeTransfers: number;
     tempBalance: number;
     onOk: MouseEventHandler;
     onCancel: MouseEventHandler;
@@ -18,7 +18,7 @@ export const ConfirmTransfersModal = ({
     playersBio,
     isModalVisible,
     transfers,
-    tempFreeTransfers,
+    freeTransfers,
     tempBalance,
     onOk,
     onCancel,
@@ -65,11 +65,11 @@ export const ConfirmTransfersModal = ({
             </div>
             <div className="transfer-stats-values">
                 <p>
-                    {tempFreeTransfers === Number.MAX_SAFE_INTEGER
+                    {freeTransfers === Number.MAX_SAFE_INTEGER
                         ? transfers.length
-                        : Math.min(transfers.length, tempFreeTransfers)}
+                        : Math.min(transfers.length, freeTransfers)}
                 </p>
-                <p>{getAdditionalTransfers(tempFreeTransfers, transfers.length)}</p>
+                <p>{getAdditionalTransfers(freeTransfers, transfers.length)}</p>
                 <p>{formatValue(tempBalance)}</p>
             </div>
         </div>

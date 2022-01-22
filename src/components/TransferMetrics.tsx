@@ -15,7 +15,7 @@ export const TransferMetrics = ({ tempFreeTransfers, tempCost, tempBalance }: Pr
             value={tempFreeTransfers === Number.MAX_SAFE_INTEGER ? '∞' : tempFreeTransfers}
             valueStyle={{
                 ...statisticsFontSize,
-                color: tempFreeTransfers > 0 ? '#3f8600' : '#cf1322',
+                color: tempFreeTransfers >= 0 ? '#3f8600' : '#cf1322',
             }}
             className="top-metric"
         />

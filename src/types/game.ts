@@ -8,6 +8,7 @@ export interface GameState {
     squadPointsHistory: SquadPoints[];
     gwPointsHistory: number[];
     transfersHistory: InGameTransfer[][]; // array where i is gameweek - 1, and each element is an array of transfers before that gameweek
+    deductionsHistory: number[];
     balance: number;
     freeTransfers: number;
     nextGwCost: number;
@@ -73,7 +74,7 @@ export type InGameTransfer = {
 
 export enum GameActionTypes {
     IncrementGameweek = 'IncrementGameweek',
-    AddSquadPointsToHistory = 'AddSquadPointsToHistory',
+    UpdateGameStateAfterGw = 'UpdateGameStateAfterGw',
     AddPlayerToSquad = 'AddPlayerToSquad',
     FinalizeSquad = 'FinalizeSquad',
     ResetSquad = 'ResetSquad',
@@ -89,7 +90,7 @@ export interface IncrementGameweekAction {
 }
 
 export interface AddSquadPointsToHistoryAction {
-    type: GameActionTypes.AddSquadPointsToHistory;
+    type: GameActionTypes.UpdateGameStateAfterGw;
     payload: {
         squadPoints: SquadPoints;
         gwPoints: number;

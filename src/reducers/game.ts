@@ -22,6 +22,7 @@ const getInitialGameState = (): GameState => {
         squadPointsHistory: [],
         gwPointsHistory: [],
         transfersHistory: getPreGwDates(DEFAULT_SEASON).map(() => []),
+        deductionsHistory: [],
         balance: STARTING_BALANCE,
         freeTransfers: Number.MAX_SAFE_INTEGER, // MAX_SAFE_INTEGER denotes unlimited transfers (before first GW, and when FH and WC are active)
         nextGwCost: 0,
@@ -86,6 +87,13 @@ const updateCaptainsAndSubsForTransfers = (squad: Squad, transfers: InGameTransf
     }, JSON.parse(JSON.stringify(squad)));
 };
 
+const getNextGwFreeTransfers = (freeTransfers: number) => {
+    if (freeTransfers === Number.MAX_SAFE_INTEGER) {
+        return 1;
+    }
+    return Math.min(2, freeTransfers + 1);
+};
+
 export const gameReducer = (state: GameState = getInitialGameState(), action: GameAction): GameState => {
     switch (action.type) {
         case GameActionTypes.IncrementGameweek:
@@ -93,12 +101,15 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 ...state,
                 gameweek: state.gameweek + 1,
             };
-        case GameActionTypes.AddSquadPointsToHistory:
+        case GameActionTypes.UpdateGameStateAfterGw:
             return {
                 ...state,
                 squadPointsHistory: state.squadPointsHistory.concat(action.payload.squadPoints),
                 gwPointsHistory: state.gwPointsHistory.concat(action.payload.gwPoints),
-                points: state.points + action.payload.gwPoints,
+                points: state.points + action.payload.gwPoints + state.nextGwCost,
+                deductionsHistory: state.deductionsHistory.concat(state.nextGwCost),
+                nextGwCost: 0,
+                freeTransfers: getNextGwFreeTransfers(state.freeTransfers),
             };
         case GameActionTypes.AddPlayerToSquad:
             const { position, playerToReplace, playerToAdd } = action.payload;

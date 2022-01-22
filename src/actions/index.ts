@@ -4,7 +4,7 @@ import { autoSub, calcGwPointsTotal, getSquadPoints } from '../helpers';
 import { StoreState } from '../reducers';
 import { PlayersBio, Squad } from '../types';
 import { loadNewGwData } from './data';
-import { addSquadPointsToHistory, incrementGameweek } from './game';
+import { updateGameStateAfterGw, incrementGameweek } from './game';
 
 export * from './data';
 export * from './game';
@@ -17,7 +17,7 @@ export const goToNextGameweek =
         const autoSubbedSquad = autoSub(squad);
         const { playersStats: updatedPlayersStats } = getState().data;
         dispatch(
-            addSquadPointsToHistory(
+            updateGameStateAfterGw(
                 getSquadPoints(autoSubbedSquad, updatedPlayersStats, playersBio, gameweek),
                 calcGwPointsTotal(autoSubbedSquad, updatedPlayersStats)
             )

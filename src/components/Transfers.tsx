@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button, Divider, Layout, Row, Col } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
@@ -7,7 +7,7 @@ import PlayerDetailsModal from './PlayerDetailsModal';
 import SelectPlayerModal from './SelectPlayerModal';
 import { ConfirmTransfersModal } from './ConfirmTransfersModal';
 import { InGameTransfer, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
-import { finalizeTransfers } from '../actions';
+import { finalizeTransfers, setSquad } from '../actions';
 import { TeamTag } from './TeamTag';
 import { assertIsPosition, getPlayerSellPrice, getTeamsOverMaxPlayerLimit, getTempBalance } from '../helpers';
 import { StoreState } from '../reducers';
@@ -50,6 +50,13 @@ const _Transfers = ({
     const [tempCost, setTempCost] = useState(nextGwCost);
     const [transfers, setTransfers] = useState<InGameTransfer[]>([]);
     const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
+
+    useEffect(() => {
+        setTempFreeTransfers(freeTransfers);
+        setTempCost(nextGwCost);
+        setTempSquad(JSON.parse(JSON.stringify(squad)));
+        setTransfers([]);
+    }, [freeTransfers, nextGwCost]);
 
     const isTransferTarget = (player: string) => {
         return transfers.findIndex((transfer) => transfer.playerToBuy.code === player) > -1;
@@ -179,10 +186,11 @@ const _Transfers = ({
                     buyPrice: playersStats[playerToAdd].value,
                 },
             };
-            setTransfers(transfers.concat(newTransfer));
+            const updatedTransfers = transfers.concat(newTransfer);
+            setTransfers(updatedTransfers);
             if (freeTransfers !== Number.MAX_SAFE_INTEGER) {
                 setTempFreeTransfers(Math.max(tempFreeTransfers - 1, 0));
-                setTempCost(nextGwCost + Math.max((freeTransfers - transfers.length) * 4, 0));
+                setTempCost(nextGwCost + Math.min((freeTransfers - updatedTransfers.length) * 4, 0));
             }
             const playerToReplaceIndex = tempSquad[position].findIndex(
                 (player) => player.code === newTransfer.playerToSell.code
@@ -234,6 +242,8 @@ const _Transfers = ({
     const handleResetTransfers = () => {
         setTransfers([]);
         setTempSquad(JSON.parse(JSON.stringify(squad)));
+        setTempCost(nextGwCost);
+        setTempFreeTransfers(freeTransfers);
     };
 
     const handleProceedWithTransfers = () => {
@@ -365,7 +375,7 @@ const _Transfers = ({
                     playersBio={playersBio}
                     isModalVisible={isConfirmModalVisible}
                     transfers={transfers}
-                    tempFreeTransfers={tempFreeTransfers}
+                    freeTransfers={freeTransfers}
                     tempBalance={tempBalance}
                     onOk={handleFinalizeTransfers}
                     onCancel={handleCancelTransfers}
