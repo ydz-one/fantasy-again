@@ -44,8 +44,8 @@ const getMagnusPointsComparison = (points: number) => {
             <a href="https://en.wikipedia.org/wiki/Magnus_Carlsen" target="_blank" rel="noopener noreferrer">
                 Magnus Carlsen
             </a>{' '}
-            (ranked {magnusRank}) beat you by <span className="text-bold">{magnusPoints - points}</span> points, even
-            though you had access to all of the fixture results. Shame on you!
+            (ranked {magnusRank}) beat you by <span className="text-bold">{magnusPoints - points}</span> points even
+            though you had access to all of the fixture results, you donkey!
         </p>
     );
 };
