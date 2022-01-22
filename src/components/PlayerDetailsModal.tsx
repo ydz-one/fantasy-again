@@ -17,6 +17,7 @@ import {
 } from '../helpers';
 import { TeamTag } from './TeamTag';
 import { PositionTag } from './PositionTag';
+import { statisticsFontSize } from '../constants';
 
 const { TabPane } = Tabs;
 const { Title } = Typography;
@@ -57,7 +58,11 @@ const _PlayerDetailsModal = ({
             </p>
             <Row>
                 <Col span={6}>
-                    <Statistic title="Current Price" value={formatValue(value)} />
+                    <Statistic
+                        title="Current Price"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatValue(value)}
+                    />
                 </Col>
                 <Col span={6}>
                     <Statistic
@@ -65,37 +70,78 @@ const _PlayerDetailsModal = ({
                         value={
                             buyPrice > 0 ? formatValue(getPlayerSellPrice(selectedPlayer, squad, position, value)) : '-'
                         }
+                        valueStyle={{ ...statisticsFontSize }}
                     />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Purchase" value={buyPrice > 0 ? formatValue(buyPrice) : '-'} />
+                    <Statistic
+                        title="Purchase"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={buyPrice > 0 ? formatValue(buyPrice) : '-'}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Form" value={formatOneDecimalPlace(form)} />
+                    <Statistic
+                        title="Form"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatOneDecimalPlace(form)}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Selected" value={formatSelected(selected)} />
+                    <Statistic
+                        title="Selected"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatSelected(selected)}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title={`GW ${gameweek}`} value={formatPoints(latestGwPoints)} />
+                    <Statistic
+                        title={`GW ${gameweek}`}
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatPoints(latestGwPoints)}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Total Points" value={formatPoints(seasonPoints)} />
+                    <Statistic
+                        title="Total Points"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatPoints(seasonPoints)}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="GW Trans In" value={formatLargeNumber(transfersIn)} />
+                    <Statistic
+                        title="GW Trans In"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatLargeNumber(transfersIn)}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="GW Trans Out" value={formatLargeNumber(transfersOut)} />
+                    <Statistic
+                        title="GW Trans Out"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatLargeNumber(transfersOut)}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="GW Net Trans" value={formatLargeNumber(transfersIn - transfersOut)} />
+                    <Statistic
+                        title="GW Net Trans"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatLargeNumber(transfersIn - transfersOut)}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="Bonus Points" value={formatPoints(bonus)} />
+                    <Statistic
+                        title="Bonus Points"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatPoints(bonus)}
+                    />
                 </Col>
                 <Col span={6}>
-                    <Statistic title="ICT Index" value={formatIctValues(ictIndex)} />
+                    <Statistic
+                        title="ICT Index"
+                        valueStyle={{ ...statisticsFontSize }}
+                        value={formatIctValues(ictIndex)}
+                    />
                 </Col>
             </Row>
             {children}
