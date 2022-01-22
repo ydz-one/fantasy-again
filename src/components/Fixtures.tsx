@@ -6,12 +6,14 @@ import { DEFAULT_SEASON, FdrData, FdrFixture, FdrRow } from '../types';
 import { getTeamFullNames } from '../data';
 import { fdrFixtureComparatorFactory } from '../helpers';
 import { FdrCell } from './FdrCell';
+import { checkSeasonEndHOC } from './checkSeasonEndHOC';
 
 const { Content } = Layout;
 
 interface Props {
     fdr: FdrData;
     gameweek: number;
+    isSeasonEnd: boolean;
 }
 
 const createFdrTable = (fdr: FdrData, gameweek: number) => {
@@ -96,11 +98,12 @@ const _Fixtures = ({ fdr, gameweek }: Props) => (
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { fdr } = data;
-    const { gameweek } = game;
+    const { gameweek, isSeasonEnd } = game;
     return {
         fdr,
         gameweek,
+        isSeasonEnd,
     };
 };
 
-export default connect(mapStateToProps)(_Fixtures);
+export default connect(mapStateToProps)(checkSeasonEndHOC(_Fixtures));

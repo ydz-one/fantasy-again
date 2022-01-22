@@ -555,6 +555,10 @@ code {
     text-align: center;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 .transfer-stats-container {
     display: flex;
     justify-content: space-between;

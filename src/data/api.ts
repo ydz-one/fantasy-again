@@ -27,6 +27,11 @@ import {
 import { getGw as getGw2021, getGwMeta as getGwMeta2021 } from './2020_2021/gw';
 import { preGwDates as preGwDates2021 } from './2020_2021/preGwDates';
 import { scoutPickGW1 as scoutPicksGW1_2021 } from './2020_2021/scoutPicksGw1';
+import {
+    MAGNUS_POINTS as MAGNUS_POINTS_2021,
+    MAGNUS_RANK as MAGNUS_RANK_2021,
+    FIRST_PLACE_POINTS as FIRST_PLACE_POINTS_2021,
+} from './2020_2021/managers';
 
 export const getFdr = (season: Season): FdrData => {
     switch (season) {
@@ -167,6 +172,33 @@ export const getScoutPicksGW1 = (season: Season): Squad => {
     switch (season) {
         case Season.S2020_2021:
             return scoutPicksGW1_2021;
+        default:
+            throw new Error('Season not found');
+    }
+};
+
+export const getMagnusPoints = (season: Season): number => {
+    switch (season) {
+        case Season.S2020_2021:
+            return MAGNUS_POINTS_2021;
+        default:
+            throw new Error('Season not found');
+    }
+};
+
+export const getMagnusRank = (season: Season): number => {
+    switch (season) {
+        case Season.S2020_2021:
+            return MAGNUS_RANK_2021;
+        default:
+            throw new Error('Season not found');
+    }
+};
+
+export const getFirstPlacePoints = (season: Season): number => {
+    switch (season) {
+        case Season.S2020_2021:
+            return FIRST_PLACE_POINTS_2021;
         default:
             throw new Error('Season not found');
     }
