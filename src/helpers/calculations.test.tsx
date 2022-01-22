@@ -7,76 +7,76 @@ describe('getSubstitutionTargets', () => {
         squad = {
             GK: [
                 {
-                    code: '58376',
+                    code: 'gk1',
                     buyPrice: 45,
                 },
                 {
-                    code: '131897',
+                    code: 'gk2',
                     buyPrice: 45,
                 },
             ],
             DEF: [
                 {
-                    code: '169187',
+                    code: 'def1',
                     buyPrice: 75,
                 },
                 {
-                    code: '156074',
+                    code: 'def2',
                     buyPrice: 45,
                 },
                 {
-                    code: '220627',
+                    code: 'def3',
                     buyPrice: 45,
                 },
                 {
-                    code: '244723',
+                    code: 'def4',
                     buyPrice: 40,
                 },
                 {
-                    code: '214048',
+                    code: 'def5',
                     buyPrice: 40,
                 },
             ],
             MID: [
                 {
-                    code: '170137',
+                    code: 'mid1',
                     buyPrice: 55,
                 },
                 {
-                    code: '118748',
+                    code: 'mid2',
                     buyPrice: 120,
                 },
                 {
-                    code: '178186',
+                    code: 'mid3',
                     buyPrice: 65,
                 },
                 {
-                    code: '54694',
+                    code: 'mid4',
                     buyPrice: 120,
                 },
                 {
-                    code: '40845',
+                    code: 'mid5',
                     buyPrice: 45,
                 },
             ],
             FWD: [
                 {
-                    code: '200439',
+                    code: 'fwd1',
                     buyPrice: 60,
                 },
                 {
-                    code: '78830',
+                    code: 'fwd2',
                     buyPrice: 105,
                 },
                 {
-                    code: '165153',
+                    code: 'fwd3',
                     buyPrice: 95,
                 },
             ],
-            subs: ['214048', '40845', '165153'],
-            subGk: '131897',
-            captain: '118748',
-            viceCaptain: '54694',
+            subs: ['def5', 'mid5', 'fwd3'],
+            subGk: 'gk2',
+            captain: 'mid2',
+            viceCaptain: 'mid4',
         };
     });
     describe('GK substitutions', () => {
@@ -130,7 +130,7 @@ describe('getSubstitutionTargets', () => {
     });
     describe('3-5-2 formation substitutions', () => {
         beforeEach(() => {
-            squad.subs = ['244723', '214048', '165153'];
+            squad.subs = ['def4', 'def5', 'fwd3'];
         });
         test('the substitution targets for a starting defender should be all defender subs', () => {
             expect(getSubstitutionTargets(squad, Position.DEF, squad.DEF[0].code)).toStrictEqual(
@@ -167,7 +167,7 @@ describe('getSubstitutionTargets', () => {
     });
     describe('5-2-3 formation substitutions', () => {
         beforeEach(() => {
-            squad.subs = ['178186', '54694', '40845'];
+            squad.subs = ['mid3', 'mid4', 'mid5'];
         });
         test('the substitution targets for a starting defender should be all subs', () => {
             expect(getSubstitutionTargets(squad, Position.DEF, squad.DEF[0].code)).toStrictEqual(squad.subs);
@@ -191,7 +191,7 @@ describe('getSubstitutionTargets', () => {
     });
     describe('5-4-1 formation substitutions', () => {
         beforeEach(() => {
-            squad.subs = ['40845', '78830', '165153'];
+            squad.subs = ['mid5', 'fwd2', 'fwd3'];
         });
         test('the substitution targets for a starting defender should be all subs', () => {
             expect(getSubstitutionTargets(squad, Position.DEF, squad.DEF[0].code)).toStrictEqual(squad.subs);
