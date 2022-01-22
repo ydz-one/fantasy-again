@@ -230,9 +230,9 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 nextGwCost: newNextGwCost,
                 freeTransfers: newFreeTransfers,
                 transfersHistory: [
-                    ...transfersHistory.slice(0, gameweek - 1),
-                    transfersHistory[gameweek - 1].concat(transfers),
-                    ...transfersHistory.slice(gameweek),
+                    ...transfersHistory.slice(0, gameweek),
+                    transfersHistory[gameweek].concat(transfers),
+                    ...transfersHistory.slice(gameweek + 1),
                 ],
             };
         default:
