@@ -451,7 +451,7 @@ code {
 }
 
 .sider-title {
-    color: #1890ff;
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -477,8 +477,8 @@ code {
     padding-top: 8px;
 }
 
-.slider-season {
-    color: #1890ff;
+.sider-season {
+    color: white;
     text-align: center;
     padding-bottom: 15px;
 }
@@ -668,10 +668,6 @@ code {
 
     .sider-nav {
         font-size: small;
-    }
-
-    .sider-season {
-        padding-bottom: 10px;
     }
 
     .site-layout-background {

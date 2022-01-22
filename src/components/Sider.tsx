@@ -46,12 +46,12 @@ const _Sider = ({ gameweek, isSquadComplete, isSeasonEnd, playersBio, squad, loc
                 <div className="sider-title">
                     <div className="sider-title-text">
                         <strong>
-                            <span className="desktop-text">Fantasy Again!</span>
-                            <span className="mobile-text">FA!</span>
+                            <span className="desktop-text">Fantasy Again</span>
+                            <span className="mobile-text">FA</span>
                         </strong>
                     </div>
                 </div>
-                <div className="slider-season">
+                <div className="sider-season">
                     <span className="desktop-text">Season:</span> {DEFAULT_SEASON}
                 </div>
                 <Menu
