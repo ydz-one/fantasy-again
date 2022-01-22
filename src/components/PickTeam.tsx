@@ -12,6 +12,7 @@ import moment from 'moment';
 import { statisticsFontSize } from '../constants/ui';
 import PlayerBench from './PlayerBench';
 import { getSubstitutionTargets, isSubstitute } from '../helpers';
+import { checkSeasonEndHOC } from './checkSeasonEndHOC';
 
 const { Content } = Layout;
 
@@ -22,6 +23,7 @@ interface Props {
     squad: Squad;
     balance: number;
     isSquadComplete: boolean;
+    isSeasonEnd: boolean;
     makeCaptain: typeof makeCaptain;
     makeViceCaptain: typeof makeViceCaptain;
     subPlayer: typeof subPlayer;
@@ -175,7 +177,7 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { gameweek, squad, balance, isSquadComplete } = game;
+    const { gameweek, squad, balance, isSquadComplete, isSeasonEnd } = game;
     return {
         playersBio,
         playersStats,
@@ -183,7 +185,10 @@ const mapStateToProps = ({ data, game }: StoreState) => {
         squad,
         balance,
         isSquadComplete,
+        isSeasonEnd,
     };
 };
 
-export default connect(mapStateToProps, { makeCaptain, makeViceCaptain, subPlayer })(checkSquadCompleteHOC(_PickTeam));
+export default connect(mapStateToProps, { makeCaptain, makeViceCaptain, subPlayer })(
+    checkSeasonEndHOC(checkSquadCompleteHOC(_PickTeam))
+);

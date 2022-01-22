@@ -4,6 +4,7 @@ export interface GameState {
     gameweek: number;
     points: number;
     isSquadComplete: boolean;
+    isSeasonEnd: boolean;
     squad: Squad;
     squadPointsHistory: SquadPoints[];
     gwPointsHistory: number[];

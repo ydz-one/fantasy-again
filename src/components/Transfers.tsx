@@ -12,6 +12,7 @@ import { TeamTag } from './TeamTag';
 import { assertIsPosition, getPlayerSellPrice, getTeamsOverMaxPlayerLimit, getTempBalance } from '../helpers';
 import { StoreState } from '../reducers';
 import { TransferMetrics } from './TransferMetrics';
+import { checkSeasonEndHOC } from './checkSeasonEndHOC';
 
 const { Content } = Layout;
 
@@ -21,6 +22,7 @@ interface Props {
     squad: Squad;
     balance: number;
     isSquadComplete: boolean;
+    isSeasonEnd: boolean;
     freeTransfers: number;
     nextGwCost: number;
     finalizeTransfers: typeof finalizeTransfers;
@@ -387,16 +389,17 @@ const _Transfers = ({
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { squad, balance, isSquadComplete, freeTransfers, nextGwCost } = game;
+    const { squad, balance, isSquadComplete, isSeasonEnd, freeTransfers, nextGwCost } = game;
     return {
         playersBio,
         playersStats,
         squad,
         balance,
         isSquadComplete,
+        isSeasonEnd,
         freeTransfers,
         nextGwCost,
     };
 };
 
-export default connect(mapStateToProps, { finalizeTransfers })(checkSquadCompleteHOC(_Transfers));
+export default connect(mapStateToProps, { finalizeTransfers })(checkSeasonEndHOC(checkSquadCompleteHOC(_Transfers)));

@@ -9,6 +9,7 @@ const getInitialGameState = (): GameState => {
         gameweek: 0,
         points: 0,
         isSquadComplete: false,
+        isSeasonEnd: false,
         squad: {
             GK: [],
             DEF: [],
@@ -100,6 +101,7 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
             return {
                 ...state,
                 gameweek: state.gameweek + 1,
+                isSeasonEnd: state.gameweek + 1 === getPreGwDates(DEFAULT_SEASON).length - 1,
             };
         case GameActionTypes.UpdateGameStateAfterGw:
             return {
