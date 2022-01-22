@@ -7,6 +7,7 @@ export interface GameState {
     squad: Squad;
     squadPointsHistory: SquadPoints[];
     gwPointsHistory: number[];
+    transfersHistory: InGameTransfer[][]; // array where i is gameweek - 1, and each element is an array of transfers before that gameweek
     balance: number;
     freeTransfers: number;
     nextGwCost: number;
@@ -146,6 +147,7 @@ export interface FinalizeTransfers {
         newBalance: number;
         newNextGwCost: number;
         newFreeTransfers: number;
+        transfers: InGameTransfer[];
     };
 }
 

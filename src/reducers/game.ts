@@ -1,5 +1,6 @@
+import { getPreGwDates } from '../data';
 import { calcSquadBuyPriceTotal } from '../helpers';
-import { GameState, GameAction, GameActionTypes, Squad, SquadPlayer } from '../types';
+import { GameState, GameAction, GameActionTypes, Squad, SquadPlayer, InGameTransfer, DEFAULT_SEASON } from '../types';
 
 const STARTING_BALANCE = 1000;
 
@@ -20,6 +21,7 @@ const getInitialGameState = (): GameState => {
         },
         squadPointsHistory: [],
         gwPointsHistory: [],
+        transfersHistory: getPreGwDates(DEFAULT_SEASON).map(() => []),
         balance: STARTING_BALANCE,
         freeTransfers: Number.MAX_SAFE_INTEGER, // MAX_SAFE_INTEGER denotes unlimited transfers (before first GW, and when FH and WC are active)
         nextGwCost: 0,
@@ -62,6 +64,26 @@ const autoAssignSubs = (squad: Squad) => {
         captain: captain.code,
         viceCaptain: viceCaptain.code,
     };
+};
+
+const updateCaptainsAndSubsForTransfers = (squad: Squad, transfers: InGameTransfer[]) => {
+    return transfers.reduce((updatedSquad, transfer) => {
+        const { code: playerToSellCode } = transfer.playerToSell;
+        const { code: playerToBuyCode } = transfer.playerToBuy;
+        if (updatedSquad.captain === playerToSellCode) {
+            updatedSquad.captain = playerToBuyCode;
+        } else if (updatedSquad.viceCaptain === playerToSellCode) {
+            updatedSquad.viceCaptain = playerToBuyCode;
+        } else if (updatedSquad.subGk === playerToSellCode) {
+            updatedSquad.subGk = playerToBuyCode;
+        } else {
+            const playerIndex = updatedSquad.subs.indexOf(playerToSellCode);
+            if (playerIndex > -1) {
+                updatedSquad.subs.splice(playerIndex, 1, playerToBuyCode);
+            }
+        }
+        return updatedSquad;
+    }, JSON.parse(JSON.stringify(squad)));
 };
 
 export const gameReducer = (state: GameState = getInitialGameState(), action: GameAction): GameState => {
@@ -198,13 +220,20 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 squad: Object.assign(state.squad, squadChanges),
             };
         case GameActionTypes.FinalizeTransfers:
-            const { newSquad, newBalance, newNextGwCost, newFreeTransfers } = action.payload;
+            const { gameweek, transfersHistory } = state;
+            const { newSquad, newBalance, newNextGwCost, newFreeTransfers, transfers } = action.payload;
+            const updatedNewSquad = updateCaptainsAndSubsForTransfers(newSquad, transfers);
             return {
                 ...state,
-                squad: JSON.parse(JSON.stringify(newSquad)),
+                squad: updatedNewSquad,
                 balance: newBalance,
                 nextGwCost: newNextGwCost,
                 freeTransfers: newFreeTransfers,
+                transfersHistory: [
+                    ...transfersHistory.slice(0, gameweek - 1),
+                    transfersHistory[gameweek - 1].concat(transfers),
+                    ...transfersHistory.slice(gameweek),
+                ],
             };
         default:
             return state;

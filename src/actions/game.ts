@@ -1,4 +1,4 @@
-import { GameAction, GameActionTypes, Position, Squad, SquadPlayer, SquadPoints } from '../types';
+import { GameAction, GameActionTypes, InGameTransfer, Position, Squad, SquadPlayer, SquadPoints } from '../types';
 
 export const incrementGameweek = (): GameAction => ({
     type: GameActionTypes.IncrementGameweek,
@@ -65,7 +65,8 @@ export const finalizeTransfers = (
     newSquad: Squad,
     newBalance: number,
     newNextGwCost: number,
-    newFreeTransfers: number
+    newFreeTransfers: number,
+    transfers: InGameTransfer[]
 ): GameAction => ({
     type: GameActionTypes.FinalizeTransfers,
     payload: {
@@ -73,5 +74,6 @@ export const finalizeTransfers = (
         newBalance,
         newNextGwCost,
         newFreeTransfers,
+        transfers,
     },
 });

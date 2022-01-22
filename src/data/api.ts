@@ -154,6 +154,15 @@ export const getPreGwDate = (season: Season, gwNum: number): string => {
     }
 };
 
+export const getPreGwDates = (season: Season): string[] => {
+    switch (season) {
+        case Season.S2020_2021:
+            return preGwDates2021;
+        default:
+            throw new Error('Season not found');
+    }
+};
+
 export const getScoutPicksGW1 = (season: Season): Squad => {
     switch (season) {
         case Season.S2020_2021:

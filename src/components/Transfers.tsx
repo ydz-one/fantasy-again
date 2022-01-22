@@ -245,7 +245,7 @@ const _Transfers = ({
     };
 
     const handleFinalizeTransfers = () => {
-        finalizeTransfers(tempSquad, tempBalance, tempCost, tempFreeTransfers);
+        finalizeTransfers(tempSquad, tempBalance, tempCost, tempFreeTransfers, transfers);
         setIsConfirmModalVisible(false);
         setTransfers([]);
     };
