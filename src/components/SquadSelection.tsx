@@ -5,7 +5,7 @@ import { Button, Divider, Layout, Statistic } from 'antd';
 import { StoreState } from '../reducers';
 import { addPlayerToSquad, finalizeSquad, resetSquad, setSquad } from '../actions';
 import { DEFAULT_SEASON, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
-import { calcNumPlayers, assertIsPosition } from '../helpers';
+import { calcNumPlayers, assertIsPosition, formatValue } from '../helpers';
 import SelectPlayerModal from './SelectPlayerModal';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import { getTeamsOverMaxPlayerLimit } from '../helpers';
@@ -118,10 +118,9 @@ const _SquadSelection = ({
                                 className="top-metric"
                             />
                             <Statistic
-                                title="Bank (£)"
-                                value={balance / 10}
+                                title="Balance"
+                                value={formatValue(balance)}
                                 valueStyle={{ ...statisticsFontSize, color: isPositiveBalance ? '#3f8600' : '#cf1322' }}
-                                precision={1}
                                 className="top-metric"
                             />
                         </div>

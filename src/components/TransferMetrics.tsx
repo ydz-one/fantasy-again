@@ -1,6 +1,7 @@
 import React from 'react';
 import { Statistic } from 'antd';
 import { statisticsFontSize } from '../constants';
+import { formatValue } from '../helpers';
 
 interface Props {
     tempFreeTransfers: number;
@@ -26,10 +27,9 @@ export const TransferMetrics = ({ tempFreeTransfers, tempCost, tempBalance }: Pr
             className="top-metric"
         />
         <Statistic
-            title="Bank (£)"
-            value={tempBalance / 10}
+            title="Balance"
+            value={formatValue(tempBalance)}
             valueStyle={{ ...statisticsFontSize, color: tempBalance >= 0 ? '#3f8600' : '#cf1322' }}
-            precision={1}
             className="top-metric"
         />
     </div>
