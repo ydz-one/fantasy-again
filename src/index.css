@@ -311,10 +311,6 @@ code {
     width: 180px;
 }
 
-.player-card-content-small {
-    width: 100%;
-}
-
 .player-card-sub-on {
     background-color: #99e325;
 }
@@ -655,6 +651,10 @@ code {
 
     .player-card {
         margin: 0 6px 12px;
+    }
+
+    .player-card-small .player-card-content {
+        width: 140px;
     }
 
     .position-row-bottom .player-card,
