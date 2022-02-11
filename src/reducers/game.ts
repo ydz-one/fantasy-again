@@ -278,10 +278,10 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
         case GameActionTypes.ActivateChip:
             const { activeChip, chipCount } = state;
             const updatedChipCount = { ...chipCount };
-            if (activeChip) {
+            if (activeChip != null) {
                 updatedChipCount[activeChip]++;
             }
-            if (action.payload) {
+            if (action.payload != null) {
                 updatedChipCount[action.payload]--;
             }
             return {
