@@ -1,4 +1,4 @@
-import { GameAction, GameActionTypes, InGameTransfer, Position, Squad, SquadPlayer, SquadPoints } from '../types';
+import { Chip, GameAction, GameActionTypes, InGameTransfer, Position, Squad, SquadPlayer, SquadPoints } from '../types';
 
 export const incrementGameweek = (): GameAction => ({
     type: GameActionTypes.IncrementGameweek,
@@ -77,3 +77,10 @@ export const finalizeTransfers = (
         transfers,
     },
 });
+
+export const activateChip = (chip: Chip | null): GameAction => ({
+    type: GameActionTypes.ActivateChip,
+    payload: chip,
+});
+
+export const deactivateChip = (): GameAction => activateChip(null);

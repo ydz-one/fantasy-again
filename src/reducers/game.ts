@@ -138,6 +138,7 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 nextGwCost: 0,
                 freeTransfers: getNextGwFreeTransfers(state.freeTransfers),
                 chipCount: getUpdatedChipCounts(state.gameweek, state.chipCount),
+                activeChip: null,
             };
         case GameActionTypes.AddPlayerToSquad:
             const { position, playerToReplace, playerToAdd } = action.payload;
@@ -273,6 +274,20 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                     transfersHistory[gameweek].concat(transfers),
                     ...transfersHistory.slice(gameweek + 1),
                 ],
+            };
+        case GameActionTypes.ActivateChip:
+            const { activeChip, chipCount } = state;
+            const updatedChipCount = { ...chipCount };
+            if (activeChip) {
+                updatedChipCount[activeChip]++;
+            }
+            if (action.payload) {
+                updatedChipCount[action.payload]--;
+            }
+            return {
+                ...state,
+                activeChip: action.payload,
+                chipCount: updatedChipCount,
             };
         default:
             return state;
