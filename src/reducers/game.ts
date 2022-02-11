@@ -1,6 +1,16 @@
-import { getPreGwDates } from '../data';
+import { getChipCountUpdateFns, getPreGwDates } from '../data';
 import { calcSquadBuyPriceTotal } from '../helpers';
-import { GameState, GameAction, GameActionTypes, Squad, SquadPlayer, InGameTransfer, DEFAULT_SEASON } from '../types';
+import {
+    GameState,
+    GameAction,
+    GameActionTypes,
+    Squad,
+    SquadPlayer,
+    InGameTransfer,
+    DEFAULT_SEASON,
+    Chip,
+    ChipCount,
+} from '../types';
 
 const STARTING_BALANCE = 1000;
 
@@ -27,6 +37,13 @@ const getInitialGameState = (): GameState => {
         balance: STARTING_BALANCE,
         freeTransfers: Number.MAX_SAFE_INTEGER, // MAX_SAFE_INTEGER denotes unlimited transfers (before first GW, and when FH and WC are active)
         nextGwCost: 0,
+        activeChip: null,
+        chipCount: {
+            [Chip.BENCH_BOOST]: 1,
+            [Chip.FREE_HIT]: 1,
+            [Chip.TRIPLE_CAPTAIN]: 1,
+            [Chip.WILD_CARD]: 1,
+        },
     };
 };
 
@@ -95,6 +112,14 @@ const getNextGwFreeTransfers = (freeTransfers: number) => {
     return Math.min(2, freeTransfers + 1);
 };
 
+const getUpdatedChipCounts = (gameweek: number, chipCount: ChipCount) => {
+    const chipCountUpdateFns = getChipCountUpdateFns(DEFAULT_SEASON);
+    if (chipCountUpdateFns[gameweek]) {
+        return chipCountUpdateFns[gameweek](chipCount);
+    }
+    return chipCount;
+};
+
 export const gameReducer = (state: GameState = getInitialGameState(), action: GameAction): GameState => {
     switch (action.type) {
         case GameActionTypes.IncrementGameweek:
@@ -112,6 +137,7 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 deductionsHistory: state.deductionsHistory.concat(state.nextGwCost),
                 nextGwCost: 0,
                 freeTransfers: getNextGwFreeTransfers(state.freeTransfers),
+                chipCount: getUpdatedChipCounts(state.gameweek, state.chipCount),
             };
         case GameActionTypes.AddPlayerToSquad:
             const { position, playerToReplace, playerToAdd } = action.payload;

@@ -10,6 +10,7 @@ import {
     TransferData,
     PlayerGwMeta,
     Squad,
+    ChipCount,
 } from '../types';
 import fdr2021 from './2020_2021/fdr.json';
 import fixtures2021 from './2020_2021/fixtures.json';
@@ -32,6 +33,7 @@ import {
     MAGNUS_RANK as MAGNUS_RANK_2021,
     FIRST_PLACE_POINTS as FIRST_PLACE_POINTS_2021,
 } from './2020_2021/managers';
+import { chipCountUpdateFns as chipCountUpdateFns2021 } from './2020_2021/chips';
 
 export const getFdr = (season: Season): FdrData => {
     switch (season) {
@@ -199,6 +201,15 @@ export const getFirstPlacePoints = (season: Season): number => {
     switch (season) {
         case Season.S2020_2021:
             return FIRST_PLACE_POINTS_2021;
+        default:
+            throw new Error('Season not found');
+    }
+};
+
+export const getChipCountUpdateFns = (season: Season): { [key: number]: (chipCount: ChipCount) => ChipCount } => {
+    switch (season) {
+        case Season.S2020_2021:
+            return chipCountUpdateFns2021;
         default:
             throw new Error('Season not found');
     }

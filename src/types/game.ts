@@ -13,7 +13,18 @@ export interface GameState {
     balance: number;
     freeTransfers: number;
     nextGwCost: number;
+    activeChip: Chip | null;
+    chipCount: ChipCount;
 }
+
+export enum Chip {
+    BENCH_BOOST,
+    FREE_HIT,
+    TRIPLE_CAPTAIN,
+    WILD_CARD,
+}
+
+export type ChipCount = { [key in Chip]: number };
 
 export type SquadPlayer = {
     code: string;
