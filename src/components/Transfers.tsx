@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Divider, Layout, Row, Col } from 'antd';
+import { Button, Divider, Layout, Row, Col, Modal } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import SquadLineup from './SquadLineup';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SelectPlayerModal from './SelectPlayerModal';
 import { ConfirmTransfersModal } from './ConfirmTransfersModal';
-import { InGameTransfer, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
-import { finalizeTransfers, setSquad } from '../actions';
+import { Chip, ChipCount, InGameTransfer, PlayersBio, PlayersStats, Position, Squad, ValueType } from '../types';
+import { finalizeTransfers, activateChip } from '../actions';
 import { TeamTag } from './TeamTag';
 import { assertIsPosition, getPlayerSellPrice, getTeamsOverMaxPlayerLimit, getTempBalance } from '../helpers';
 import { StoreState } from '../reducers';
@@ -19,23 +19,38 @@ const { Content } = Layout;
 interface Props {
     playersBio: PlayersBio;
     playersStats: PlayersStats;
+    gameweek: number;
     squad: Squad;
     balance: number;
     isSquadComplete: boolean;
     isSeasonEnd: boolean;
     freeTransfers: number;
     nextGwCost: number;
+    activeChip: Chip | null;
+    chipCount: ChipCount;
     finalizeTransfers: typeof finalizeTransfers;
+    activateChip: typeof activateChip;
 }
+
+const warnCannotDeactiveChip = () => {
+    Modal.warning({
+        title: 'Cannot Deactivate Chip',
+        content: 'After activation, Free Hit and Wild Card chips cannot be deactivated.',
+    });
+};
 
 const _Transfers = ({
     playersBio,
     playersStats,
+    gameweek,
     squad,
     balance,
     freeTransfers,
     nextGwCost,
+    activeChip,
+    chipCount,
     finalizeTransfers,
+    activateChip,
 }: Props) => {
     const [replacementInfo, setReplacementInfo] = useState({
         position: Position.GK,
@@ -262,10 +277,26 @@ const _Transfers = ({
         setTransfers([]);
     };
 
+    // Free Hit and Wild Card chips cannot be deactivated once activated
+    const handleClickChip = (chip: Chip) => {
+        if (activeChip === chip) {
+            warnCannotDeactiveChip();
+        } else {
+            activateChip(chip);
+        }
+    };
+
+    const shouldDisableChip = (chip: Chip) =>
+        gameweek === 0 || (activeChip !== null && activeChip !== chip) || (activeChip !== chip && chipCount[chip] < 1);
+
     const tempBalance = getTempBalance(balance, transfers);
     const isPositiveBalance = tempBalance >= 0;
     const teamsOverPlayerLimit = getTeamsOverMaxPlayerLimit(tempSquad, playersBio);
     const isSquadValid = isPositiveBalance && teamsOverPlayerLimit.length === 0;
+    const isFreeHitActive = activeChip === Chip.FREE_HIT;
+    const isWildCardActive = activeChip === Chip.WILD_CARD;
+    const isFreeHitUsed = chipCount[Chip.FREE_HIT] < 1;
+    const isWildCardUsed = chipCount[Chip.WILD_CARD] < 1;
 
     return (
         <Content className="site-layout-content">
@@ -281,11 +312,23 @@ const _Transfers = ({
                     </div>
                 </div>
                 <div className="top-btn-container">
-                    <Button size="large" className="top-btn">
-                        Free Hit
+                    <Button
+                        size="large"
+                        className="top-btn"
+                        disabled={shouldDisableChip(Chip.FREE_HIT)}
+                        type={isFreeHitActive ? 'primary' : 'default'}
+                        onClick={() => handleClickChip(Chip.FREE_HIT)}
+                    >
+                        {`Free Hit${isFreeHitActive ? ' (ON)' : isFreeHitUsed ? ' (USED)' : ''}`}
                     </Button>
-                    <Button size="large" className="top-btn">
-                        Wildcard
+                    <Button
+                        size="large"
+                        className="top-btn"
+                        disabled={shouldDisableChip(Chip.WILD_CARD)}
+                        type={isWildCardActive ? 'primary' : 'default'}
+                        onClick={() => handleClickChip(Chip.WILD_CARD)}
+                    >
+                        {`Wild Card${isWildCardActive ? ' (ON)' : isWildCardUsed ? ' (USED)' : ''}`}
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
@@ -389,17 +432,23 @@ const _Transfers = ({
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { squad, balance, isSquadComplete, isSeasonEnd, freeTransfers, nextGwCost } = game;
+    const { gameweek, squad, balance, isSquadComplete, isSeasonEnd, freeTransfers, nextGwCost, activeChip, chipCount } =
+        game;
     return {
         playersBio,
         playersStats,
+        gameweek,
         squad,
         balance,
         isSquadComplete,
         isSeasonEnd,
         freeTransfers,
         nextGwCost,
+        activeChip,
+        chipCount,
     };
 };
 
-export default connect(mapStateToProps, { finalizeTransfers })(checkSeasonEndHOC(checkSquadCompleteHOC(_Transfers)));
+export default connect(mapStateToProps, { finalizeTransfers, activateChip })(
+    checkSeasonEndHOC(checkSquadCompleteHOC(_Transfers))
+);

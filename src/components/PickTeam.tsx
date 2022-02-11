@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Button, Divider, Layout, Statistic, Checkbox, Row, Col } from 'antd';
 import { checkSquadCompleteHOC } from './checkSquadCompleteHOC';
 import { StoreState } from '../reducers';
-import { makeCaptain, makeViceCaptain, subPlayer } from '../actions';
-import { PlayersBio, PlayersStats, Squad, ValueType } from '../types';
+import { makeCaptain, makeViceCaptain, subPlayer, activateChip, deactivateChip } from '../actions';
+import { Chip, ChipCount, PlayersBio, PlayersStats, Squad, ValueType } from '../types';
 import PlayerDetailsModal from './PlayerDetailsModal';
 import SquadLineup from './SquadLineup';
 import { preGwDates } from '../data/2020_2021/preGwDates';
@@ -21,12 +21,15 @@ interface Props {
     playersStats: PlayersStats;
     gameweek: number;
     squad: Squad;
-    balance: number;
+    activeChip: Chip | null;
+    chipCount: ChipCount;
     isSquadComplete: boolean;
     isSeasonEnd: boolean;
     makeCaptain: typeof makeCaptain;
     makeViceCaptain: typeof makeViceCaptain;
     subPlayer: typeof subPlayer;
+    activateChip: typeof activateChip;
+    deactivateChip: typeof deactivateChip;
 }
 
 interface SubstitutionInfo {
@@ -34,7 +37,18 @@ interface SubstitutionInfo {
     substitutionTargets: string[];
 }
 
-const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, subPlayer }: Props) => {
+const _PickTeam = ({
+    playersBio,
+    gameweek,
+    squad,
+    activeChip,
+    chipCount,
+    makeCaptain,
+    makeViceCaptain,
+    subPlayer,
+    activateChip,
+    deactivateChip,
+}: Props) => {
     // playerClicked is the player card clicked whose Player Details modal should be displayed
     const [playerClicked, setPlayerClicked] = useState('');
     const [substitionInfo, setSubstitutionInfo] = useState<SubstitutionInfo>({
@@ -99,6 +113,22 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
         return '';
     };
 
+    const handleClickChip = (chip: Chip) => {
+        if (activeChip === chip) {
+            deactivateChip();
+        } else {
+            activateChip(chip);
+        }
+    };
+
+    const shouldDisableChip = (chip: Chip) =>
+        activeChip === Chip.FREE_HIT || activeChip === Chip.WILD_CARD || (chipCount[chip] < 1 && activeChip !== chip);
+
+    const isTripleCaptainActive = activeChip === Chip.TRIPLE_CAPTAIN;
+    const isBenchBoostActive = activeChip === Chip.BENCH_BOOST;
+    const isTripleCaptainUsed = chipCount[Chip.TRIPLE_CAPTAIN] < 1;
+    const isBenchBoostUsed = chipCount[Chip.BENCH_BOOST] < 1;
+
     return (
         <Content className="site-layout-content">
             <div className="site-layout-background">
@@ -114,11 +144,23 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
                     </div>
                 </div>
                 <div className="top-btn-container">
-                    <Button size="large" className="top-btn-large top-btn-large-left">
-                        Bench Boost
+                    <Button
+                        size="large"
+                        className="top-btn-large top-btn-large-left"
+                        disabled={shouldDisableChip(Chip.BENCH_BOOST)}
+                        type={isBenchBoostActive ? 'primary' : 'default'}
+                        onClick={() => handleClickChip(Chip.BENCH_BOOST)}
+                    >
+                        {`Bench Boost${isBenchBoostActive ? ' (ON)' : isBenchBoostUsed ? ' (USED)' : ''}`}
                     </Button>
-                    <Button size="large" className="top-btn-large">
-                        Triple Captain
+                    <Button
+                        size="large"
+                        className="top-btn-large"
+                        disabled={shouldDisableChip(Chip.TRIPLE_CAPTAIN)}
+                        type={isTripleCaptainActive ? 'primary' : 'default'}
+                        onClick={() => handleClickChip(Chip.TRIPLE_CAPTAIN)}
+                    >
+                        {`TripleCaptain${isTripleCaptainActive ? ' (ON)' : isTripleCaptainUsed ? ' (USED)' : ''}`}
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
@@ -177,18 +219,20 @@ const _PickTeam = ({ playersBio, gameweek, squad, makeCaptain, makeViceCaptain, 
 
 const mapStateToProps = ({ data, game }: StoreState) => {
     const { playersBio, playersStats } = data;
-    const { gameweek, squad, balance, isSquadComplete, isSeasonEnd } = game;
+    const { gameweek, squad, balance, isSquadComplete, isSeasonEnd, activeChip, chipCount } = game;
     return {
         playersBio,
         playersStats,
         gameweek,
         squad,
         balance,
+        activeChip,
+        chipCount,
         isSquadComplete,
         isSeasonEnd,
     };
 };
 
-export default connect(mapStateToProps, { makeCaptain, makeViceCaptain, subPlayer })(
+export default connect(mapStateToProps, { makeCaptain, makeViceCaptain, subPlayer, activateChip, deactivateChip })(
     checkSeasonEndHOC(checkSquadCompleteHOC(_PickTeam))
 );
