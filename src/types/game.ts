@@ -96,6 +96,7 @@ export enum GameActionTypes {
     SubPlayer = 'SubPlayer',
     FinalizeTransfers = 'FinalizeTransfers',
     ActivateChip = 'ActivateChip',
+    ResetGameState = 'ResetGameState',
 }
 
 export interface IncrementGameweekAction {
@@ -170,6 +171,10 @@ export interface ActivateChip {
     payload: Chip | null;
 }
 
+export interface ResetGameStateAction {
+    type: GameActionTypes.ResetGameState;
+}
+
 export type GameAction =
     | IncrementGameweekAction
     | AddSquadPointsToHistoryAction
@@ -181,4 +186,5 @@ export type GameAction =
     | MakeViceCaptain
     | SubPlayer
     | FinalizeTransfers
-    | ActivateChip;
+    | ActivateChip
+    | ResetGameStateAction;

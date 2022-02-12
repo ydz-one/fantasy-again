@@ -84,3 +84,7 @@ export const activateChip = (chip: Chip | null): GameAction => ({
 });
 
 export const deactivateChip = (): GameAction => activateChip(null);
+
+export const resetGameState = (): GameAction => ({
+    type: GameActionTypes.ResetGameState,
+});

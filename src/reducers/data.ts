@@ -16,6 +16,7 @@ import {
     DEFAULT_SEASON,
     InitialPlayersStats,
     InjuryHistory,
+    LoadNewGwDataAction,
     PlayerFixtureStats,
     PlayersBio,
     PlayersHistory,
@@ -108,7 +109,7 @@ const getInitialDataState = () => {
     };
 };
 
-const updatePlayersBio = (state: DataState, action: DataAction): PlayersBio => {
+const updatePlayersBio = (state: DataState, action: LoadNewGwDataAction): PlayersBio => {
     const { gwNum } = action;
     const transfers = getTransfers(DEFAULT_SEASON);
     if (!transfers[gwNum]) {
@@ -142,7 +143,7 @@ const calculateForm = (preGwDate: Moment, playerFixtures: PlayerFixtureStats[]):
     return n > 0 ? sum / n : 0;
 };
 
-const updatePlayersStats = (state: DataState, action: DataAction): PlayersStats => {
+const updatePlayersStats = (state: DataState, action: LoadNewGwDataAction): PlayersStats => {
     const { gwNum, payload, shouldResetPoints } = action;
     const newPlayersStats: PlayersStats = {};
     const noFixturePlayers = new Set<string>();
@@ -238,6 +239,8 @@ export const dataReducer = (state: DataState = getInitialDataState(), action: Da
                 playersBio: updatePlayersBio(state, action),
                 playersStats: updatePlayersStats(state, action),
             };
+        case DataActionTypes.ResetDataState:
+            return getInitialDataState();
         default:
             return state;
     }

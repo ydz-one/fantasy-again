@@ -289,6 +289,8 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 activeChip: action.payload,
                 chipCount: updatedChipCount,
             };
+        case GameActionTypes.ResetGameState:
+            return getInitialGameState();
         default:
             return state;
     }

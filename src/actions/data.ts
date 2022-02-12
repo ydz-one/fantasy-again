@@ -1,7 +1,7 @@
-import { DataActionTypes, DEFAULT_SEASON, LoadNewGwDataAction } from '../types';
+import { DataAction, DataActionTypes, DEFAULT_SEASON } from '../types';
 import { getGw, getGwMeta } from '../data';
 
-export const loadNewGwData = (gwNum: number): LoadNewGwDataAction => ({
+export const loadNewGwData = (gwNum: number): DataAction => ({
     type: DataActionTypes.loadNewGwData,
     payload: {
         gw: getGw(DEFAULT_SEASON, gwNum),
@@ -9,4 +9,8 @@ export const loadNewGwData = (gwNum: number): LoadNewGwDataAction => ({
     },
     gwNum,
     shouldResetPoints: gwNum === 1, //set shouldResetPoints to true if it's gw1 because we need to reset the total points from the previous season
+});
+
+export const resetDataState = (): DataAction => ({
+    type: DataActionTypes.ResetDataState,
 });

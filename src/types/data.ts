@@ -11,6 +11,7 @@ export interface DataState {
 
 export enum DataActionTypes {
     loadNewGwData = 'loadNewGwData',
+    ResetDataState = 'ResetDataState',
 }
 
 export interface LoadNewGwDataAction {
@@ -23,7 +24,11 @@ export interface LoadNewGwDataAction {
     shouldResetPoints: boolean;
 }
 
-export type DataAction = LoadNewGwDataAction;
+export interface ResetDataStateAction {
+    type: DataActionTypes.ResetDataState;
+}
+
+export type DataAction = LoadNewGwDataAction | ResetDataStateAction;
 
 // 3D array with the following dimensions:
 // i: the index position of teams in TEAM_FULL_NAMES and TEAM_NAMES from teams.ts
