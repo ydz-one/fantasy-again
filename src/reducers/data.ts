@@ -233,7 +233,7 @@ const updatePlayersStats = (state: DataState, action: LoadNewGwDataAction): Play
 
 export const dataReducer = (state: DataState = getInitialDataState(), action: DataAction): DataState => {
     switch (action.type) {
-        case DataActionTypes.loadNewGwData:
+        case DataActionTypes.LoadNewGwData:
             return {
                 ...state,
                 playersBio: updatePlayersBio(state, action),

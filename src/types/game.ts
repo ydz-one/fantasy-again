@@ -111,7 +111,7 @@ export interface AddSquadPointsToHistoryAction {
     };
 }
 
-export interface AddPlayerToSquad {
+export interface AddPlayerToSquadAction {
     type: GameActionTypes.AddPlayerToSquad;
     payload: {
         position: Position;
@@ -120,34 +120,34 @@ export interface AddPlayerToSquad {
     };
 }
 
-export interface FinalizeSquad {
+export interface FinalizeSquadAction {
     type: GameActionTypes.FinalizeSquad;
 }
 
-export interface ResetSquad {
+export interface ResetSquadAction {
     type: GameActionTypes.ResetSquad;
 }
 
-export interface SetSquad {
+export interface SetSquadAction {
     type: GameActionTypes.SetSquad;
     payload: Squad;
 }
 
-export interface MakeCaptain {
+export interface MakeCaptainAction {
     type: GameActionTypes.MakeCaptain;
     payload: {
         playerCode: string;
     };
 }
 
-export interface MakeViceCaptain {
+export interface MakeViceCaptainAction {
     type: GameActionTypes.MakeViceCaptain;
     payload: {
         playerCode: string;
     };
 }
 
-export interface SubPlayer {
+export interface SubPlayerAction {
     type: GameActionTypes.SubPlayer;
     payload: {
         player1: string;
@@ -155,7 +155,7 @@ export interface SubPlayer {
     };
 }
 
-export interface FinalizeTransfers {
+export interface FinalizeTransfersAction {
     type: GameActionTypes.FinalizeTransfers;
     payload: {
         newSquad: Squad;
@@ -166,7 +166,7 @@ export interface FinalizeTransfers {
     };
 }
 
-export interface ActivateChip {
+export interface ActivateChipAction {
     type: GameActionTypes.ActivateChip;
     payload: Chip | null;
 }
@@ -178,13 +178,13 @@ export interface ResetGameStateAction {
 export type GameAction =
     | IncrementGameweekAction
     | AddSquadPointsToHistoryAction
-    | AddPlayerToSquad
-    | FinalizeSquad
-    | ResetSquad
-    | SetSquad
-    | MakeCaptain
-    | MakeViceCaptain
-    | SubPlayer
-    | FinalizeTransfers
-    | ActivateChip
+    | AddPlayerToSquadAction
+    | FinalizeSquadAction
+    | ResetSquadAction
+    | SetSquadAction
+    | MakeCaptainAction
+    | MakeViceCaptainAction
+    | SubPlayerAction
+    | FinalizeTransfersAction
+    | ActivateChipAction
     | ResetGameStateAction;

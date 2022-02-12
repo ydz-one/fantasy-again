@@ -10,12 +10,12 @@ export interface DataState {
 }
 
 export enum DataActionTypes {
-    loadNewGwData = 'loadNewGwData',
+    LoadNewGwData = 'LoadNewGwData',
     ResetDataState = 'ResetDataState',
 }
 
 export interface LoadNewGwDataAction {
-    type: DataActionTypes.loadNewGwData;
+    type: DataActionTypes.LoadNewGwData;
     payload: {
         gw: PlayerGw[];
         gwMeta: PlayerGwMeta[];

@@ -2,7 +2,7 @@ import { DataAction, DataActionTypes, DEFAULT_SEASON } from '../types';
 import { getGw, getGwMeta } from '../data';
 
 export const loadNewGwData = (gwNum: number): DataAction => ({
-    type: DataActionTypes.loadNewGwData,
+    type: DataActionTypes.LoadNewGwData,
     payload: {
         gw: getGw(DEFAULT_SEASON, gwNum),
         gwMeta: getGwMeta(DEFAULT_SEASON, gwNum + 1), //request gw metadata from a week into the future for accuracy
