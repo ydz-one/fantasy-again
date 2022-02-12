@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import { StoreState } from '../reducers';
 import { getFirstPlacePoints, getMagnusPoints, getMagnusRank } from '../data';
 import { DEFAULT_SEASON } from '../types';
@@ -9,6 +9,7 @@ interface Props {
     points: number;
     isModalVisible: boolean;
     onCancel: MouseEventHandler;
+    onRestartGame: MouseEventHandler;
 }
 
 const getMagnusPointsComparison = (points: number) => {
@@ -87,8 +88,17 @@ const getFirstPlacePointsComparison = (points: number) => {
     );
 };
 
-const _SummaryModal = ({ points, isModalVisible, onCancel }: Props) => (
-    <Modal title="Season Summary" visible={isModalVisible} onCancel={onCancel} footer={[]}>
+const _SummaryModal = ({ points, isModalVisible, onCancel, onRestartGame }: Props) => (
+    <Modal
+        title="Season Summary"
+        visible={isModalVisible}
+        onCancel={onCancel}
+        footer={[
+            <Button size="large" className="top-btn-large top-btn-large-left" onClick={onRestartGame} type="primary">
+                Restart Game
+            </Button>,
+        ]}
+    >
         <p>
             You finished the {DEFAULT_SEASON} season with <strong>{points}</strong> points!
         </p>
@@ -97,13 +107,17 @@ const _SummaryModal = ({ points, isModalVisible, onCancel }: Props) => (
     </Modal>
 );
 
-const mapStateToProps = ({ game }: StoreState, ownProps: { isModalVisible: boolean; onCancel: MouseEventHandler }) => {
+const mapStateToProps = (
+    { game }: StoreState,
+    ownProps: { isModalVisible: boolean; onCancel: MouseEventHandler; onRestartGame: MouseEventHandler }
+) => {
     const { points } = game;
-    const { isModalVisible, onCancel } = ownProps;
+    const { isModalVisible, onCancel, onRestartGame } = ownProps;
     return {
         points,
         isModalVisible,
         onCancel,
+        onRestartGame,
     };
 };
 

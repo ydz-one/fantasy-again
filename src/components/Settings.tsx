@@ -21,8 +21,8 @@ const _Settings = ({ resetGameState, resetDataState }: Props) => {
     const handleOk = () => {
         resetGameState();
         resetDataState();
-        history.push('/squadselection');
         setIsModalVisible(false);
+        history.push('/squadselection');
     };
 
     const handleCancel = () => {

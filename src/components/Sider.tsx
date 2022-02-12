@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
 import { Button, Modal } from 'antd';
-import { goToNextGameweek } from '../actions';
-import { DEFAULT_SEASON, PlayersBio, PlayersStats, Squad } from '../types';
+import { goToNextGameweek, resetGameState, resetDataState } from '../actions';
+import { DEFAULT_SEASON, PlayersBio, Squad } from '../types';
 import { StoreState } from '../reducers';
 import SummaryModal from './SummaryModal';
 
@@ -17,6 +17,8 @@ interface Props extends RouteComponentProps<{}> {
     playersBio: PlayersBio;
     squad: Squad;
     goToNextGameweek: Function;
+    resetGameState: typeof resetGameState;
+    resetDataState: typeof resetDataState;
 }
 
 const { Sider } = Layout;
@@ -29,7 +31,18 @@ const warnSquadIncomplete = () => {
     });
 };
 
-const _Sider = ({ gameweek, isSquadComplete, isSeasonEnd, playersBio, squad, location, goToNextGameweek }: Props) => {
+const _Sider = ({
+    gameweek,
+    isSquadComplete,
+    isSeasonEnd,
+    playersBio,
+    squad,
+    location,
+    goToNextGameweek,
+    resetGameState,
+    resetDataState,
+}: Props) => {
+    const history = useHistory();
     const [isSummaryModalVisible, setIsSummaryModalVisible] = useState(false);
 
     const handleIncrementGameweek = () => {
@@ -38,6 +51,13 @@ const _Sider = ({ gameweek, isSquadComplete, isSeasonEnd, playersBio, squad, loc
         } else {
             warnSquadIncomplete();
         }
+    };
+
+    const handleRestartGame = () => {
+        resetGameState();
+        resetDataState();
+        setIsSummaryModalVisible(false);
+        history.push('/squadselection');
     };
 
     return (
@@ -117,7 +137,11 @@ const _Sider = ({ gameweek, isSquadComplete, isSeasonEnd, playersBio, squad, loc
                     )}
                 </div>
             </Sider>
-            <SummaryModal isModalVisible={isSummaryModalVisible} onCancel={() => setIsSummaryModalVisible(false)} />
+            <SummaryModal
+                isModalVisible={isSummaryModalVisible}
+                onCancel={() => setIsSummaryModalVisible(false)}
+                onRestartGame={handleRestartGame}
+            />
         </Fragment>
     );
 };
@@ -134,4 +158,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps, { goToNextGameweek })(withRouter(_Sider));
+export default connect(mapStateToProps, { goToNextGameweek, resetGameState, resetDataState })(withRouter(_Sider));
