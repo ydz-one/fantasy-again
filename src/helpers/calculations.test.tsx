@@ -1,4 +1,4 @@
-import { autoSub } from '.';
+import { autoSub, getAdditionalTransfers } from '.';
 import { Position, Squad } from '../types';
 import { getSubstitutionTargets } from './calculations';
 
@@ -437,5 +437,27 @@ describe('autoSub', () => {
             updatedDidPlayerPlayMap[playerCode] = false;
         }
         expect(autoSub(squad, updatedDidPlayerPlayMap)).toStrictEqual(squad);
+    });
+});
+
+describe('getAdditionalTransfers', () => {
+    test('two FT and one transfer made should return 0', () => {
+        expect(getAdditionalTransfers(2, 1)).toStrictEqual('0');
+    });
+
+    test('one FT and one transfer made should return 0', () => {
+        expect(getAdditionalTransfers(1, 1)).toStrictEqual('0');
+    });
+
+    test('zero FT and one transfer made should return 1 (-4 pts)', () => {
+        expect(getAdditionalTransfers(0, 1)).toStrictEqual('1 (-4 pts)');
+    });
+
+    test('one FT and two transfers made should return 1 (-4 pts)', () => {
+        expect(getAdditionalTransfers(1, 2)).toStrictEqual('1 (-4 pts)');
+    });
+
+    test('two FT and seven transfers made should return 5 (-20 pts)', () => {
+        expect(getAdditionalTransfers(2, 7)).toStrictEqual('5 (-20 pts)');
     });
 });
