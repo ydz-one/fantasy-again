@@ -160,7 +160,7 @@ const _PickTeam = ({
                         type={isTripleCaptainActive ? 'primary' : 'default'}
                         onClick={() => handleClickChip(Chip.TRIPLE_CAPTAIN)}
                     >
-                        {`TripleCaptain${isTripleCaptainActive ? ' (ON)' : isTripleCaptainUsed ? ' (USED)' : ''}`}
+                        {`Triple Captain${isTripleCaptainActive ? ' (ON)' : isTripleCaptainUsed ? ' (USED)' : ''}`}
                     </Button>
                 </div>
                 <Divider className="custom-divider" />
