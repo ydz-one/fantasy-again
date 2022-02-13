@@ -104,7 +104,8 @@ export const didPlayerGetRedCard = (fixtureStats: PlayerFixtureStats[], gameweek
 export const calcGwPointsTotal = (squad: Squad, playersStats: PlayersStats, activeChip: Chip | null) => {
     return calcSquadSum(
         (player) => playersStats[player.code].latestGwPoints,
-        (player) => player.code !== squad.subGk && !squad.subs.includes(player.code),
+        (player) =>
+            activeChip === Chip.BENCH_BOOST ? true : player.code !== squad.subGk && !squad.subs.includes(player.code),
         (squad) =>
             // No need to consider vice captain because autoSub() would have already assigned the capatain armband to the vice captain if the captain did not play and the vice captain did
             activeChip === Chip.TRIPLE_CAPTAIN
