@@ -551,6 +551,11 @@ code {
     text-align: center;
 }
 
+.options-btn {
+    display: block;
+    margin-bottom: 10px;
+}
+
 .text-bold {
     font-weight: bold;
 }
