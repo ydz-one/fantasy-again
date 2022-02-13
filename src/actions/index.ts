@@ -15,11 +15,12 @@ export const goToNextGameweek =
         dispatch(loadNewGwData(gameweek + 1));
         dispatch(incrementGameweek());
         const { playersStats: updatedPlayersStats } = getState().data;
+        const { activeChip } = getState().game;
         const autoSubbedSquad = autoSub(squad, getDidPlayerPlayMap(squad, updatedPlayersStats));
         dispatch(
             updateGameStateAfterGw(
-                getSquadPoints(autoSubbedSquad, updatedPlayersStats, playersBio, gameweek),
-                calcGwPointsTotal(autoSubbedSquad, updatedPlayersStats)
+                getSquadPoints(autoSubbedSquad, updatedPlayersStats, playersBio, gameweek, activeChip),
+                calcGwPointsTotal(autoSubbedSquad, updatedPlayersStats, activeChip)
             )
         );
     };

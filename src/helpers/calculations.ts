@@ -1,6 +1,7 @@
 import { POINTS_SYSTEM } from '../constants';
 import { getTeamCodeToId } from '../data';
 import {
+    Chip,
     DEFAULT_SEASON,
     FdrData,
     InGameTransfer,
@@ -100,16 +101,15 @@ export const didPlayerGetRedCard = (fixtureStats: PlayerFixtureStats[], gameweek
     return redCardCount > 0;
 };
 
-export const calcGwPointsTotal = (squad: Squad, playersStats: PlayersStats) => {
+export const calcGwPointsTotal = (squad: Squad, playersStats: PlayersStats, activeChip: Chip | null) => {
     return calcSquadSum(
         (player) => playersStats[player.code].latestGwPoints,
         (player) => player.code !== squad.subGk && !squad.subs.includes(player.code),
-        (squad) => {
-            if (didPlayerPlay(squad.captain, playersStats)) {
-                return playersStats[squad.captain].latestGwPoints;
-            }
-            return playersStats[squad.viceCaptain].latestGwPoints;
-        }
+        (squad) =>
+            // No need to consider vice captain because autoSub() would have already assigned the capatain armband to the vice captain if the captain did not play and the vice captain did
+            activeChip === Chip.TRIPLE_CAPTAIN
+                ? playersStats[squad.captain].latestGwPoints * 2
+                : playersStats[squad.captain].latestGwPoints
     )(squad);
 };
 
@@ -191,24 +191,27 @@ export const autoSub = (squad: Squad, didPlayerPlayMap: { [key: string]: boolean
     return updatedSquad;
 };
 
-export const getPointsMultiplier = (isCaptain: boolean, isViceCaptain: boolean, didPlayerPlay: boolean) => {
+export const getPointsMultiplier = (isCaptain: boolean, isTripleCaptainActive: boolean) => {
     if (isCaptain) {
-        return 2;
-    }
-    if (isViceCaptain && !didPlayerPlay) {
-        return 2;
+        return isTripleCaptainActive ? 3 : 2;
     }
     return 1;
 };
 
-export const getSquadPoints = (squad: Squad, playersStats: PlayersStats, playersBio: PlayersBio, gameweek: number) => {
+export const getSquadPoints = (
+    squad: Squad,
+    playersStats: PlayersStats,
+    playersBio: PlayersBio,
+    gameweek: number,
+    activeChip: Chip | null
+) => {
     const getPlayerGwPoints = (code: string) => {
         const { webName, teamCode, position } = playersBio[code];
         const { injured, injury, injuryEnd, latestGwPoints, fixtureStats } = playersStats[code];
         const hasRedCard = didPlayerGetRedCard(fixtureStats, gameweek.toString());
         const isCaptain = squad.captain === code;
         const isViceCaptain = squad.viceCaptain === code;
-        const pointsMultiplyer = getPointsMultiplier(isCaptain, isViceCaptain, didPlayerPlay(code, playersStats));
+        const pointsMultiplyer = getPointsMultiplier(isCaptain, activeChip === Chip.TRIPLE_CAPTAIN);
         const value = formatPoints(latestGwPoints * pointsMultiplyer);
         const captainStatus = isCaptain ? 'C' : isViceCaptain ? 'VC' : '';
         const subStatus = '';
