@@ -283,16 +283,22 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
         case GameActionTypes.ActivateChip:
             const { activeChip, chipCount } = state;
             const updatedChipCount = { ...chipCount };
+            const freeTransfersUpdates: Partial<GameState> = {};
             if (activeChip != null) {
                 updatedChipCount[activeChip]++;
             }
             if (action.payload != null) {
                 updatedChipCount[action.payload]--;
             }
+            if (action.payload === Chip.WILD_CARD) {
+                freeTransfersUpdates.freeTransfers = Number.MAX_SAFE_INTEGER;
+                freeTransfersUpdates.nextGwCost = 0;
+            }
             return {
                 ...state,
                 activeChip: action.payload,
                 chipCount: updatedChipCount,
+                ...freeTransfersUpdates,
             };
         case GameActionTypes.ResetGameState:
             return getInitialGameState();
