@@ -314,7 +314,7 @@ const _Transfers = ({
                 <div className="top-btn-container">
                     <Button
                         size="large"
-                        className="top-btn"
+                        className="top-btn-large top-btn-large-left"
                         disabled={shouldDisableChip(Chip.FREE_HIT)}
                         type={isFreeHitActive ? 'primary' : 'default'}
                         onClick={() => handleClickChip(Chip.FREE_HIT)}
@@ -323,7 +323,7 @@ const _Transfers = ({
                     </Button>
                     <Button
                         size="large"
-                        className="top-btn"
+                        className="top-btn-large"
                         disabled={shouldDisableChip(Chip.WILD_CARD)}
                         type={isWildCardActive ? 'primary' : 'default'}
                         onClick={() => handleClickChip(Chip.WILD_CARD)}
