@@ -3,7 +3,6 @@ import { Badge, Card, Tag } from 'antd';
 import { PositionTag } from './PositionTag';
 import { TeamTag } from './TeamTag';
 import { InjurySymbol } from './InjurySymbol';
-import { SubTag } from './SubTag';
 import { DEFAULT_SEASON, FdrFixture } from '../types';
 import { getTeamNames } from '../data';
 

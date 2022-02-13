@@ -1,4 +1,4 @@
-import { assertIsNumber, assertIsSquadPlayer } from '.';
+import { assertIsSquadPlayer } from '.';
 import { POINTS_SYSTEM } from '../constants';
 import { getTeamCodeToId } from '../data';
 import {

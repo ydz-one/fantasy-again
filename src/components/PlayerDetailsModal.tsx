@@ -2,7 +2,7 @@ import React, { MouseEventHandler, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Tabs, Statistic, Row, Col, Typography } from 'antd';
 import { StoreState } from '../reducers';
-import { PlayersBio, PlayersStats, positionData, Squad } from '../types';
+import { PlayersBio, PlayersStats, Squad } from '../types';
 import PlayerFixtureHistory from './PlayerFixtureHistory';
 import FutureFixtures from './FutureFixtures';
 import {
