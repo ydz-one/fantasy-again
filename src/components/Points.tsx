@@ -10,7 +10,8 @@ import PlayerBench from './PlayerBench';
 import PlayerPointsBench from './PlayerPointsBench';
 import { statisticsFontSize } from '../constants/ui';
 import { formatPoints } from '../helpers';
-import { InGameTransfer, ValueType } from '../types';
+import { ChipHistory, InGameTransfer, ValueType } from '../types';
+import { CHIP_LABELS } from '../constants';
 
 const { Content } = Layout;
 
@@ -20,6 +21,7 @@ interface Props {
     gwPointsHistory: number[];
     transfersHistory: InGameTransfer[][];
     deductionsHistory: number[];
+    chipHistory: ChipHistory;
 }
 
 const renderTransfersAndHits = (
@@ -37,7 +39,7 @@ const renderTransfersAndHits = (
     return `${transfersHistory[gwToShow - 1].length} (${deductionsHistory[gwToShow - 1]} pts)`;
 };
 
-const _Points = ({ gameweek, gwPointsHistory, transfersHistory, deductionsHistory }: Props) => {
+const _Points = ({ gameweek, gwPointsHistory, transfersHistory, deductionsHistory, chipHistory }: Props) => {
     const [playerClicked, setPlayerClicked] = useState('');
     const [gwToShow, setGwToShow] = useState(gameweek);
 
@@ -63,6 +65,14 @@ const _Points = ({ gameweek, gwPointsHistory, transfersHistory, deductionsHistor
                 <div className="page-title page-title-two-sections">
                     <div>Points</div>
                     <div className="top-metric-section center-when-mobile">
+                        {chipHistory[gwToShow] != null && (
+                            <Statistic
+                                title={'Chip Used:'}
+                                value={CHIP_LABELS[chipHistory[gwToShow]]}
+                                valueStyle={statisticsFontSize}
+                                className="top-metric"
+                            />
+                        )}
                         <Statistic
                             title={'GW' + (gwToShow || 1)}
                             value={formatPoints(gwPointsHistory[gwToShow - 1] || 0)}
@@ -116,13 +126,14 @@ const _Points = ({ gameweek, gwPointsHistory, transfersHistory, deductionsHistor
 };
 
 const mapStateToProps = ({ game }: StoreState) => {
-    const { isSquadComplete, gameweek, gwPointsHistory, transfersHistory, deductionsHistory } = game;
+    const { isSquadComplete, gameweek, gwPointsHistory, transfersHistory, deductionsHistory, chipHistory } = game;
     return {
         isSquadComplete,
         gameweek,
         gwPointsHistory,
         transfersHistory,
         deductionsHistory,
+        chipHistory,
     };
 };
 

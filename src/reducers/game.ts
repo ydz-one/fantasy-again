@@ -44,6 +44,7 @@ const getInitialGameState = (): GameState => {
             [Chip.TRIPLE_CAPTAIN]: 1,
             [Chip.WILD_CARD]: 1,
         },
+        chipHistory: {},
     };
 };
 
@@ -139,6 +140,10 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
                 freeTransfers: getNextGwFreeTransfers(state.freeTransfers),
                 chipCount: getUpdatedChipCounts(state.gameweek, state.chipCount),
                 activeChip: null,
+                chipHistory:
+                    state.activeChip == null
+                        ? state.chipHistory
+                        : { ...state.chipHistory, [state.gameweek]: state.activeChip },
             };
         case GameActionTypes.AddPlayerToSquad:
             const { position, playerToReplace, playerToAdd } = action.payload;

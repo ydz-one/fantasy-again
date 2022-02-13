@@ -15,6 +15,7 @@ export interface GameState {
     nextGwCost: number;
     activeChip: Chip | null;
     chipCount: ChipCount;
+    chipHistory: ChipHistory;
 }
 
 export enum Chip {
@@ -25,6 +26,8 @@ export enum Chip {
 }
 
 export type ChipCount = { [key in Chip]: number };
+
+export type ChipHistory = { [key: number]: Chip };
 
 export type SquadPlayer = {
     code: string;

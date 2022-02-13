@@ -1,4 +1,4 @@
-import { PlayerFixtureStats } from '../types';
+import { Chip, PlayerFixtureStats } from '../types';
 
 export const PLAYER_STATS_COLUMN_LABELS: { [key: string]: string } = {
     player: 'Player',
@@ -50,4 +50,11 @@ export const PLAYER_FIXTURE_STATS_FIELD_LABELS: { [key in keyof PlayerFixtureSta
     kickoffTime: 'Kickoff',
     round: 'Round',
     totalPoints: 'Total points',
+};
+
+export const CHIP_LABELS: { [key in Chip]: string } = {
+    [Chip.BENCH_BOOST]: 'Bench Boost',
+    [Chip.FREE_HIT]: 'Free Hit',
+    [Chip.TRIPLE_CAPTAIN]: 'Triple Captain',
+    [Chip.WILD_CARD]: 'Wild Card',
 };
