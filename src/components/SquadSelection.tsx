@@ -127,10 +127,15 @@ const _SquadSelection = ({
                     </div>
                 </div>
                 <div className="top-btn-container">
-                    <Button size="large" className="top-btn" onClick={handleSetScoutPicks} disabled={!isSquadEmpty}>
-                        Preset
+                    <Button
+                        size="large"
+                        className="top-btn-large top-btn-large-left"
+                        onClick={handleSetScoutPicks}
+                        disabled={!isSquadEmpty}
+                    >
+                        Scout Picks
                     </Button>
-                    <Button size="large" className="top-btn" onClick={handleReset} disabled={isSquadEmpty}>
+                    <Button size="large" className="top-btn-large" onClick={handleReset} disabled={isSquadEmpty}>
                         Reset
                     </Button>
                 </div>
