@@ -10,6 +10,7 @@ export interface GameState {
     gwPointsHistory: number[];
     transfersHistory: InGameTransfer[][]; // array where i is gameweek - 1, and each element is an array of transfers before that gameweek
     deductionsHistory: number[];
+    balanceHistory: number[];
     balance: number;
     freeTransfers: number;
     nextGwCost: number;
@@ -46,6 +47,7 @@ export type SquadPlayerPoints = {
     hasRedCard: boolean;
     captainStatus: string;
     subStatus: string;
+    buyPrice: number;
 };
 
 // The first four keys are kept in all caps to match the position names from the data

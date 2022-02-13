@@ -1,5 +1,5 @@
 import { getChipCountUpdateFns, getPreGwDates } from '../data';
-import { calcSquadBuyPriceTotal } from '../helpers';
+import { assertIsSquadPoints, calcSquadBuyPriceTotal } from '../helpers';
 import {
     GameState,
     GameAction,
@@ -10,6 +10,9 @@ import {
     DEFAULT_SEASON,
     Chip,
     ChipCount,
+    SquadPoints,
+    SquadPlayerPoints,
+    Position,
 } from '../types';
 
 const STARTING_BALANCE = 1000;
@@ -35,6 +38,7 @@ const getInitialGameState = (): GameState => {
         transfersHistory: getPreGwDates(DEFAULT_SEASON).map(() => []),
         deductionsHistory: [],
         balance: STARTING_BALANCE,
+        balanceHistory: [],
         freeTransfers: Number.MAX_SAFE_INTEGER, // MAX_SAFE_INTEGER denotes unlimited transfers (before first GW, and when FH and WC are active)
         nextGwCost: 0,
         activeChip: null,
@@ -121,6 +125,40 @@ const getUpdatedChipCounts = (gameweek: number, chipCount: ChipCount) => {
     return chipCount;
 };
 
+const getSquadPlayer = ({ code, buyPrice }: SquadPlayerPoints): SquadPlayer => ({ code, buyPrice });
+
+const getPlayerCode = ({ code }: SquadPlayerPoints): string => code;
+
+const findCaptainOrViceCaptainCode = (squadPoints: SquadPoints, captainStatus: string) =>
+    [Position.GK, Position.DEF, Position.MID, Position.FWD].reduce((targetCode, position) => {
+        const playerIndex = squadPoints[position].findIndex((player) => player.captainStatus === captainStatus);
+        if (playerIndex > -1) {
+            targetCode = squadPoints[position][playerIndex].code;
+        }
+        return targetCode;
+    }, '-1');
+
+const getLastGwSquad = (squadPointsHistory: SquadPoints[]): Squad => {
+    const lastGwSquadPoints = squadPointsHistory[squadPointsHistory.length - 1];
+    assertIsSquadPoints(lastGwSquadPoints);
+    const { GK, DEF, MID, FWD, subs, subGk } = lastGwSquadPoints;
+
+    const getSubsInPosition = (position: Position) => subs.filter((player) => player.position === position);
+
+    return {
+        GK: GK.concat(subGk).map(getSquadPlayer),
+        DEF: DEF.concat(getSubsInPosition(Position.DEF)).map(getSquadPlayer),
+        MID: MID.concat(getSubsInPosition(Position.MID)).map(getSquadPlayer),
+        FWD: FWD.concat(getSubsInPosition(Position.FWD)).map(getSquadPlayer),
+        subs: subs.map(getPlayerCode),
+        subGk: getPlayerCode(subGk),
+        captain: findCaptainOrViceCaptainCode(lastGwSquadPoints, 'C'),
+        viceCaptain: findCaptainOrViceCaptainCode(lastGwSquadPoints, 'VC'),
+    };
+};
+
+const getLastGwBalance = (balanceHistory: number[]) => balanceHistory[balanceHistory.length - 1];
+
 export const gameReducer = (state: GameState = getInitialGameState(), action: GameAction): GameState => {
     switch (action.type) {
         case GameActionTypes.IncrementGameweek:
@@ -132,6 +170,9 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
         case GameActionTypes.UpdateGameStateAfterGw:
             return {
                 ...state,
+                squad: state.activeChip === Chip.FREE_HIT ? getLastGwSquad(state.squadPointsHistory) : state.squad,
+                balance: state.activeChip === Chip.FREE_HIT ? getLastGwBalance(state.balanceHistory) : state.balance,
+                balanceHistory: state.balanceHistory.concat(state.balance),
                 squadPointsHistory: state.squadPointsHistory.concat(action.payload.squadPoints),
                 gwPointsHistory: state.gwPointsHistory.concat(action.payload.gwPoints),
                 points: state.points + action.payload.gwPoints + state.nextGwCost,
@@ -283,22 +324,22 @@ export const gameReducer = (state: GameState = getInitialGameState(), action: Ga
         case GameActionTypes.ActivateChip:
             const { activeChip, chipCount } = state;
             const updatedChipCount = { ...chipCount };
-            const freeTransfersUpdates: Partial<GameState> = {};
+            const chipRelatedUpdates: Partial<GameState> = {};
             if (activeChip != null) {
                 updatedChipCount[activeChip]++;
             }
             if (action.payload != null) {
                 updatedChipCount[action.payload]--;
             }
-            if (action.payload === Chip.WILD_CARD) {
-                freeTransfersUpdates.freeTransfers = Number.MAX_SAFE_INTEGER;
-                freeTransfersUpdates.nextGwCost = 0;
+            if (action.payload === Chip.WILD_CARD || action.payload === Chip.FREE_HIT) {
+                chipRelatedUpdates.freeTransfers = Number.MAX_SAFE_INTEGER;
+                chipRelatedUpdates.nextGwCost = 0;
             }
             return {
                 ...state,
                 activeChip: action.payload,
                 chipCount: updatedChipCount,
-                ...freeTransfersUpdates,
+                ...chipRelatedUpdates,
             };
         case GameActionTypes.ResetGameState:
             return getInitialGameState();

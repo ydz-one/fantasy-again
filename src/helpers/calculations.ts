@@ -1,3 +1,4 @@
+import { assertIsNumber, assertIsSquadPlayer } from '.';
 import { POINTS_SYSTEM } from '../constants';
 import { getTeamCodeToId } from '../data';
 import {
@@ -80,6 +81,11 @@ export const calcSquadValueTotal = (squad: Squad, playersStats: PlayersStats) =>
 };
 
 export const didPlayerPlay = (playerCode: string, playersStats: PlayersStats) => {
+    const player = playersStats[playerCode];
+    // Some obscure players do not exist in playersStats due to their data being unavailable
+    if (player == null) {
+        return false;
+    }
     const { latestGw, fixtureStats } = playersStats[playerCode];
     return (
         fixtureStats.reduce((totalMinutesPlayed, fixture) => {
@@ -216,6 +222,10 @@ export const getSquadPoints = (
         const value = formatPoints(latestGwPoints * pointsMultiplyer);
         const captainStatus = isCaptain ? 'C' : isViceCaptain ? 'VC' : '';
         const subStatus = '';
+        assertIsPosition(position);
+        const player = squad[position].find((player) => player.code === code);
+        assertIsSquadPlayer(player);
+        const { buyPrice } = player;
         return {
             position,
             name: webName,
@@ -228,6 +238,7 @@ export const getSquadPoints = (
             hasRedCard,
             captainStatus,
             subStatus,
+            buyPrice,
         };
     };
     const squadPlayerToSquadPlayerPoints = (player: SquadPlayer) => {
