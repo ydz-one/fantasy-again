@@ -14,6 +14,7 @@ const _Options = ({ resetGameState, resetDataState }: Props) => {
     const history = useHistory();
     const [isResetGameModalVisible, setIsResetGameModalVisible] = useState(false);
     const [isAboutModalVisible, setIsAboutModalVisible] = useState(false);
+    const [isHelpModalVisible, setIsHelpModalVisible] = useState(false);
 
     const handleConfirmRestartGame = () => {
         setIsResetGameModalVisible(true);
@@ -38,12 +39,23 @@ const _Options = ({ resetGameState, resetDataState }: Props) => {
         setIsAboutModalVisible(false);
     };
 
+    const handleShowHelpModal = () => {
+        setIsHelpModalVisible(true);
+    };
+
+    const handleHelpCancel = () => {
+        setIsHelpModalVisible(false);
+    };
+
     return (
         <Content className="site-layout-content">
             <div className="site-layout-background">
                 <div className="page-title">Options</div>
                 <div className="flex-center-item">
                     <div>
+                        <Button size="large" className="top-btn-large options-btn" onClick={handleShowHelpModal}>
+                            Help
+                        </Button>
                         <Button size="large" className="top-btn-large options-btn" onClick={handleShowAboutModal}>
                             About
                         </Button>
@@ -51,6 +63,36 @@ const _Options = ({ resetGameState, resetDataState }: Props) => {
                             Restart Game
                         </Button>
                     </div>
+                    <Modal title="Help" visible={isHelpModalVisible} onCancel={handleHelpCancel} footer={[]}>
+                        <p>
+                            If you have no idea how to play Fantasy Premier League (FPL), don't worry. There are many
+                            beginner guides to help you get started. For example,{' '}
+                            <a
+                                href="https://www.beatingbetting.co.uk/fantasy-premier-league/beginners-guide/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                this great article
+                            </a>{' '}
+                            is the one that helped me several years ago before my first season.
+                        </p>
+                        <p>
+                            <a
+                                href="https://fantasy.premierleague.com/help/rules"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Here
+                            </a>{' '}
+                            are the official FPL rules for reference.
+                        </p>
+                        <p>
+                            <a href="https://www.reddit.com/r/FantasyPL/" target="_blank" rel="noopener noreferrer">
+                                The FPL subreddit
+                            </a>{' '}
+                            is also a great place to get the latest news and discuss strategies on the current season.
+                        </p>
+                    </Modal>
                     <Modal
                         title="About This Game"
                         visible={isAboutModalVisible}
