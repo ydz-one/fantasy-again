@@ -110,8 +110,8 @@ const _Sider = ({
                     <Menu.Item key="/statistics">
                         <Link to="/statistics">Statistics</Link>
                     </Menu.Item>
-                    <Menu.Item key="/settings">
-                        <Link to="/settings">Settings</Link>
+                    <Menu.Item key="/options">
+                        <Link to="/options">Options</Link>
                     </Menu.Item>
                 </Menu>
                 <div className="sider-next-gw">

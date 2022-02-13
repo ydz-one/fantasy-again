@@ -10,7 +10,7 @@ interface Props {
     resetDataState: typeof resetDataState;
 }
 
-const _Settings = ({ resetGameState, resetDataState }: Props) => {
+const _Options = ({ resetGameState, resetDataState }: Props) => {
     const history = useHistory();
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -32,7 +32,7 @@ const _Settings = ({ resetGameState, resetDataState }: Props) => {
     return (
         <Content className="site-layout-content">
             <div className="site-layout-background">
-                <div className="page-title">Settings</div>
+                <div className="page-title">Options</div>
                 <div className="flex-center-item">
                     <Button
                         size="large"
@@ -63,4 +63,4 @@ const _Settings = ({ resetGameState, resetDataState }: Props) => {
     );
 };
 
-export default connect(() => {}, { resetGameState, resetDataState })(_Settings);
+export default connect(() => {}, { resetGameState, resetDataState })(_Options);

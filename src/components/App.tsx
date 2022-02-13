@@ -10,7 +10,7 @@ import Points from './Points';
 import PickTeam from './PickTeam';
 import Transfers from './Transfers';
 import Statistics from './Statistics';
-import Settings from './Settings';
+import Options from './Options';
 import SquadSelection from './SquadSelection';
 import { StoreState } from '../reducers';
 
@@ -30,7 +30,7 @@ const _App = ({ isSquadComplete }: Props) => (
                 <Route path="/pickteam" render={() => <PickTeam />} />
                 <Route path="/transfers" render={() => <Transfers />} />
                 <Route path="/statistics" render={() => <Statistics />} />
-                <Route path="/settings" render={() => <Settings />} />
+                <Route path="/options" render={() => <Options />} />
                 {isSquadComplete ? <Redirect to="/pickteam" /> : <Redirect to="/squadselection" />}
             </Switch>
         </Layout>
