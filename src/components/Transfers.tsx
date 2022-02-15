@@ -71,9 +71,12 @@ const _Transfers = ({
     useEffect(() => {
         setTempFreeTransfers(freeTransfers);
         setTempCost(nextGwCost);
+    }, [freeTransfers, nextGwCost]);
+
+    useEffect(() => {
         setTempSquad(JSON.parse(JSON.stringify(squad)));
         setTransfers([]);
-    }, [squad, freeTransfers, nextGwCost]);
+    }, [squad]);
 
     const isTransferTarget = (player: string) => {
         return transfers.findIndex((transfer) => transfer.playerToBuy.code === player) > -1;
