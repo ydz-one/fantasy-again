@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Modal, Button, notification } from 'antd';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { StoreState } from '../reducers';
-import { getFirstPlacePoints, getMagnusPoints, getMagnusRank, getPreGwDates } from '../data';
+import { getFirstPlacePoints, getMagnusPoints, getMagnusRank } from '../data';
 import { resetGameState, resetDataState } from '../actions';
 import { Chip, ChipHistory, DEFAULT_SEASON, InGameTransfer, PlayersBio, Position, SquadPoints } from '../types';
 import { CHIP_LABELS } from '../constants';

@@ -5,7 +5,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
 import { Button, Modal } from 'antd';
-import { goToNextGameweek, resetGameState, resetDataState } from '../actions';
+import { goToNextGameweek } from '../actions';
 import { DEFAULT_SEASON, PlayersBio, Squad } from '../types';
 import { StoreState } from '../reducers';
 import SummaryModal from './SummaryModal';
