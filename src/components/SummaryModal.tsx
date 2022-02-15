@@ -163,8 +163,8 @@ const _SummaryModal = ({
             if (idx > 0 && chipHistory[idx] !== Chip.FREE_HIT && chipHistory[idx] !== Chip.WILD_CARD) {
                 acc = acc.concat(printTransfers(transfersHistory[idx], playersBio));
             }
-            if (chipHistory[idx] != null) {
-                acc = acc.concat(`Chip: ${CHIP_LABELS[chipHistory[idx]]}. `);
+            if (chipHistory[idx + 1] != null) {
+                acc = acc.concat(`Chip: ${CHIP_LABELS[chipHistory[idx + 1]]}. `);
             }
             acc = acc.concat(
                 `Points: ${gwPointsHistory[idx]}` +
