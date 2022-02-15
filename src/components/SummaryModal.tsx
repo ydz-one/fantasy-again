@@ -136,7 +136,7 @@ const printSubs = (squadPoints: SquadPoints, playersBio: PlayersBio) => {
 };
 
 const printSummary = (points: number) =>
-    `Final points: ${points}. Beat Magnus Carlsen? ${
+    `Total points: ${points}. Beat Magnus Carlsen? ${
         points > getMagnusPoints(DEFAULT_SEASON) ? 'Yes' : 'No'
     }. Beat first place? ${points > getFirstPlacePoints(DEFAULT_SEASON) ? 'Yes\n' : 'No\n'}`;
 
