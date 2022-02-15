@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { RouteComponentProps, Link, useHistory } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { Layout, Menu } from 'antd';
 import { Button, Modal } from 'antd';
@@ -17,8 +17,6 @@ interface Props extends RouteComponentProps<{}> {
     playersBio: PlayersBio;
     squad: Squad;
     goToNextGameweek: Function;
-    resetGameState: typeof resetGameState;
-    resetDataState: typeof resetDataState;
 }
 
 const { Sider } = Layout;
@@ -31,18 +29,7 @@ const warnSquadIncomplete = () => {
     });
 };
 
-const _Sider = ({
-    gameweek,
-    isSquadComplete,
-    isSeasonEnd,
-    playersBio,
-    squad,
-    location,
-    goToNextGameweek,
-    resetGameState,
-    resetDataState,
-}: Props) => {
-    const history = useHistory();
+const _Sider = ({ gameweek, isSquadComplete, isSeasonEnd, playersBio, squad, location, goToNextGameweek }: Props) => {
     const [isSummaryModalVisible, setIsSummaryModalVisible] = useState(false);
 
     const handleIncrementGameweek = () => {
@@ -51,13 +38,6 @@ const _Sider = ({
         } else {
             warnSquadIncomplete();
         }
-    };
-
-    const handleRestartGame = () => {
-        resetGameState();
-        resetDataState();
-        setIsSummaryModalVisible(false);
-        history.push('/squadselection');
     };
 
     return (
@@ -137,11 +117,7 @@ const _Sider = ({
                     )}
                 </div>
             </Sider>
-            <SummaryModal
-                isModalVisible={isSummaryModalVisible}
-                onCancel={() => setIsSummaryModalVisible(false)}
-                onRestartGame={handleRestartGame}
-            />
+            <SummaryModal isModalVisible={isSummaryModalVisible} onCancel={() => setIsSummaryModalVisible(false)} />
         </Fragment>
     );
 };
@@ -158,4 +134,4 @@ const mapStateToProps = ({ data, game }: StoreState) => {
     };
 };
 
-export default connect(mapStateToProps, { goToNextGameweek, resetGameState, resetDataState })(withRouter(_Sider));
+export default connect(mapStateToProps, { goToNextGameweek })(withRouter(_Sider));
