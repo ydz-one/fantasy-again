@@ -90,16 +90,18 @@ export const TEAM_CODE_TO_ID: { [key: string]: number } = {
     '90': 3,
 };
 
-// the key is the GW number that the player first starts playing for the target team
+// the key is the GW number after which the player transfer goes through
 export const transfers = {
-    '2': [
+    '1': [
         {
-            gw: 2,
+            gw: 1,
             code: '98980',
             webName: 'Martínez',
             sourceTeam: '3',
             targetTeam: '7',
         },
+    ],
+    '2': [
         {
             gw: 2,
             code: '194634',
@@ -107,92 +109,90 @@ export const transfers = {
             sourceTeam: '39',
             targetTeam: '14',
         },
-    ],
-    '3': [
         {
-            gw: 3,
+            gw: 2,
             code: '40845',
             webName: 'Stephens',
             sourceTeam: '36',
             targetTeam: '90',
         },
     ],
-    '4': [
+    '3': [
         {
-            gw: 4,
-            code: '88894',
-            webName: 'Barkley',
-            sourceTeam: '8',
-            targetTeam: '7',
-        },
-        {
-            gw: 4,
+            gw: 3,
             code: '195473',
             webName: 'Brewster',
             sourceTeam: '14',
             targetTeam: '49',
         },
-    ],
-    '5': [
         {
-            gw: 5,
+            gw: 3,
+            code: '88894',
+            webName: 'Barkley',
+            sourceTeam: '8',
+            targetTeam: '7',
+        },
+    ],
+    '4': [
+        {
+            gw: 4,
             code: '20467',
             webName: 'Walcott',
             sourceTeam: '11',
             targetTeam: '20',
         },
         {
-            gw: 5,
+            gw: 4,
             code: '126187',
             webName: 'Loftus-Cheek',
             sourceTeam: '8',
             targetTeam: '54',
         },
     ],
-    '19': [
+    '18': [
         {
-            gw: 19,
+            gw: 18,
             code: '18987',
             webName: 'Snodgrass',
             sourceTeam: '21',
             targetTeam: '35',
         },
     ],
-    '20': [
+    '19': [
         {
-            gw: 20,
+            gw: 19,
             code: '131897',
             webName: 'Ryan',
             sourceTeam: '36',
             targetTeam: '3',
         },
     ],
-    '21': [
+    '20': [
         {
-            gw: 21,
+            gw: 20,
             code: '109322',
             webName: 'Lingard',
             sourceTeam: '1',
             targetTeam: '21',
         },
     ],
-    '22': [
+    '21': [
         {
-            gw: 22,
+            gw: 21,
             code: '154043',
             webName: 'Maitland-Niles',
             sourceTeam: '3',
             targetTeam: '35',
         },
         {
-            gw: 22,
+            gw: 21,
             code: '157882',
             webName: 'Minamino',
             sourceTeam: '14',
             targetTeam: '20',
         },
         {
-            gw: 22,
+            gw: 21,
             code: '200089',
             webName: 'Willock',
             sourceTeam: '3',
