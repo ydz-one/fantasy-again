@@ -13,7 +13,7 @@ import thunk from "redux-thunk";
 
 ConfigProvider.config({
   theme: {
-    primaryColor: "#6050e0",
+    primaryColor: "#6050e1",
   },
 });
 

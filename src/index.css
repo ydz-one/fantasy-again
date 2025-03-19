@@ -269,11 +269,11 @@ code {
 
 .next-gw-button,
 .next-gw-button:focus {
-  background: linear-gradient(to right, #35b4ff, #6050e0);
+  background: linear-gradient(to right, #35b4ff, #6050e1);
 }
 
 .next-gw-button:hover {
-  background: linear-gradient(to right, #6050e0, #35b4ff);
+  background: linear-gradient(to right, #6050e1, #35b4ff);
 }
 
 .opacity-50 {
