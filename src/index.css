@@ -267,7 +267,8 @@ code {
   font-size: 1em;
 }
 
-.next-gw-button {
+.next-gw-button,
+.next-gw-button:focus {
   background: linear-gradient(to right, #35b4ff, #6050e0);
 }
 
