@@ -1,694 +1,696 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.variable.min.css";
 
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-        'Droid Sans', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 .ant-tag {
-    margin-right: 6px;
+  margin-right: 6px;
 }
 
 .ant-statistic-title {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .ant-layout-sider-zero-width-trigger {
-    top: 48px;
+  top: 48px;
 }
 
 .app {
-    min-height: 100vh;
-    height: 100%;
+  min-height: 100vh;
+  height: 100%;
 }
 
 .custom-divider {
-    margin: 12px 0;
+  margin: 12px 0;
 }
 
 .custom-modal {
-    top: 50px;
-    right: -5vw;
+  top: 50px;
+  right: -5vw;
 }
 
 .custom-table .ant-table-cell {
-    height: 50px;
-    padding: 0;
-    text-align: center;
+  height: 50px;
+  padding: 0;
+  text-align: center;
 }
 
 .custom-table .ant-table-cell-fix-left {
-    padding: 6px 0 6px 12px;
-    text-align: left;
+  padding: 6px 0 6px 12px;
+  text-align: left;
 }
 
 .custom-table .ant-table-column-sorters {
-    padding: 2px 16px;
+  padding: 2px 16px;
 }
 
 .custom-table .ant-table-filter-column .ant-table-column-sorters {
-    padding: 0;
+  padding: 0;
 }
 
 .custom-table .ant-table-filter-trigger {
-    margin: 0;
+  margin: 0;
 }
 
 .dark-font {
-    color: black;
+  color: black;
 }
 
 .disabled-row {
-    color: #8c8c8c;
-    pointer-events: none;
+  color: #8c8c8c;
+  pointer-events: none;
 }
 
 .empty-state-text {
-    color: #8c8c8c;
+  color: #8c8c8c;
 }
 
 .enter-squad-btn {
-    width: 400px;
+  width: 400px;
 }
 
 .error-note {
-    color: red;
-    margin-top: 10px;
+  color: red;
+  margin-top: 10px;
 }
 
 .fdr {
-    height: 99%;
-    width: 99%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 99%;
+  width: 99%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .fdr-sub {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .fdr-double {
-    font-size: 12px;
-    width: 50%;
+  font-size: 12px;
+  width: 50%;
 }
 
 .fdr-triple {
-    font-size: 10px;
-    width: 33%;
+  font-size: 10px;
+  width: 33%;
 }
 
 .fdr-0 {
-    background-color: white;
+  background-color: white;
 }
 
 .fdr-1 {
-    background-color: #375523;
-    color: white;
+  background-color: #375523;
+  color: white;
 }
 
 .fdr-2 {
-    background-color: #01fc7a;
+  background-color: #01fc7a;
 }
 
 .fdr-3 {
-    background-color: #e7e7e7;
+  background-color: #e7e7e7;
 }
 
 .fdr-4 {
-    background-color: #ff1751;
-    color: white;
+  background-color: #ff1751;
+  color: white;
 }
 
 .fdr-5 {
-    background-color: #80072d;
-    color: white;
+  background-color: #80072d;
+  color: white;
 }
 
 .fdr-key {
-    display: flex;
+  display: flex;
 }
 
 .fdr-key-label {
-    font-size: 14px;
-    display: flex;
-    font-weight: bold;
-    justify-content: space-between;
+  font-size: 14px;
+  display: flex;
+  font-weight: bold;
+  justify-content: space-between;
 }
 
 .fdr-key-square {
-    height: 25px;
-    width: 25px;
-    text-align: center;
+  height: 25px;
+  width: 25px;
+  text-align: center;
 }
 
 .fdr-key-text {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .fdr-section {
-    display: flex;
-    font-size: 14px;
-    font-weight: normal;
+  display: flex;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .fdr-player-details-modal {
-    height: 100%;
-    width: 30px;
-    text-align: center;
-    margin-right: 10px;
+  height: 100%;
+  width: 30px;
+  text-align: center;
+  margin-right: 10px;
 }
 
 .fixture-score {
-    margin: 0 10px;
+  margin: 0 10px;
 }
 
 .fixture-stats-header-item {
-    width: 40px;
+  width: 40px;
 }
 
 .fixture-stats-container {
-    display: flex;
-    align-items: flex-start;
-    flex-wrap: nowrap;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
 }
 
 .fixture-stats-container p {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 .fixture-points-breakdown {
-    width: 70%;
+  width: 70%;
 }
 
 .fixture-value-pts {
-    width: 15%;
-    text-align: right;
+  width: 15%;
+  text-align: right;
 }
 
 .flex-center-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .flex-flex-start {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .flex-space-between {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .future-fixtures-list .ant-list-item {
-    padding: 0;
+  padding: 0;
 }
 
 .future-fixture {
-    padding: 10px 0;
+  padding: 10px 0;
 }
 
 .future-fixture-date {
-    display: inline-block;
-    width: 50px;
+  display: inline-block;
+  width: 50px;
 }
 
 .page-title-two-sections {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .header-item {
-    line-height: normal;
-    padding: 10px 30px 10px 0;
-    text-align: center;
+  line-height: normal;
+  padding: 10px 30px 10px 0;
+  text-align: center;
 }
 
 .header-item-key {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .header-item-value {
-    font-size: large;
+  font-size: large;
 }
 
 .header-metric {
-    padding: 5px 15px;
+  padding: 5px 15px;
 }
 
 .header-metric-right {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .no-margin {
-    margin: 0;
+  margin: 0;
 }
 
 .mobile-text {
-    display: none !important;
+  display: none !important;
 }
 
 .next-fixtures {
-    font-size: 1em;
+  font-size: 1em;
 }
 
 .opacity-50 {
-    opacity: 50%;
+  opacity: 50%;
 }
 
 .page-title {
-    padding: 0 12px 18px;
-    font-size: 18px;
-    font-weight: bold;
+  padding: 0 12px 18px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .player-add-card {
-    text-align: center;
+  text-align: center;
 }
 
 .player-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 6px 36px;
-    height: 60px;
-    width: 200px;
-    font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 6px 36px;
+  height: 60px;
+  width: 200px;
+  font-size: 1em;
 }
 
 .player-card-small {
-    width: auto;
-    justify-content: left;
-    margin: 0 0 16px;
+  width: auto;
+  justify-content: left;
+  margin: 0 0 16px;
 }
 
 .position-row-bottom .player-card,
 .player-bench-row .player-card {
-    margin: 0 6px;
+  margin: 0 6px;
 }
 
 .player-card .ant-card-body {
-    padding: 6px;
+  padding: 6px;
 }
 
 .player-card-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 180px;
 }
 
 .player-card-sub-on {
-    background-color: #99e325;
+  background-color: #99e325;
 }
 
 .player-card-sub-off {
-    background-color: #fea265;
+  background-color: #fea265;
 }
 
 .player-card-sub-other {
-    background-color: #ab43f1;
+  background-color: #ab43f1;
 }
 
 .player-card-transfer {
-    background-color: #f1ce43;
+  background-color: #f1ce43;
 }
 
 .player-cell-info {
-    display: flex;
+  display: flex;
 }
 
 .player-cell-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .player-section {
-    display: flex;
+  display: flex;
 }
 
 .player-search-input {
-    width: 200px;
+  width: 200px;
 }
 
 .player-search-input-modal {
-    margin-right: 30px;
+  margin-right: 30px;
 }
 
 .player-table .ant-table-row {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .position-card {
-    display: inline-block;
+  display: inline-block;
 }
 
 .position-card .ant-card-head {
-    min-height: 36px;
+  min-height: 36px;
 }
 
 .position-card .ant-card-head-title {
-    padding: 6px 0;
+  padding: 6px 0;
 }
 
 .position-gk .ant-card-head {
-    background-color: #ebff00;
+  background-color: #ebff00;
 }
 
 .position-def .ant-card-head {
-    background-color: #00ff87;
+  background-color: #00ff87;
 }
 
 .position-row {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .position-row-top {
-    margin-top: 24px;
+  margin-top: 24px;
 }
 
 .position-row-bottom {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .player-details-modal-gameweek {
-    width: 40px;
+  width: 40px;
 }
 
 .player-details-modal-btn {
-    margin: 16px 0;
-    width: 100%;
+  margin: 16px 0;
+  width: 100%;
 }
 
 .btn-pair-left {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 .btn-pair-right {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 .card-pair-left {
-    margin-right: 16px;
+  margin-right: 16px;
 }
 
 .card-pair-right {
-    margin-left: 16px;
+  margin-left: 16px;
 }
 
 .player-fixture-data .ant-tabs-nav {
-    margin: 0;
+  margin: 0;
 }
 
 .player-fixture-data .ant-tabs-nav-list {
-    width: 100%;
+  width: 100%;
 }
 
 .player-fixture-data .ant-tabs-tab {
-    width: 50%;
+  width: 50%;
 }
 
 .player-fixture-data .ant-tabs-tab-btn {
-    text-align: center;
-    width: 100%;
+  text-align: center;
+  width: 100%;
 }
 
 .player-fixture-data .ant-tabs .ant-tabs-nav .ant-tabs-nav-operations {
-    display: none;
+  display: none;
 }
 
 .red-card {
-    color: red;
-    height: 18px;
-    width: 10px;
-    transform: rotateY(16deg);
-    transform: rotateZ(6deg);
+  color: red;
+  height: 18px;
+  width: 10px;
+  transform: rotateY(16deg);
+  transform: rotateZ(6deg);
 }
 
 .select-player-modal-title {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .sider-title {
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sider-icon {
-    display: inline-block;
-    font-size: x-large;
-    padding: 10px;
-    vertical-align: middle;
+  display: inline-block;
+  font-size: x-large;
+  padding: 10px;
+  vertical-align: middle;
 }
 
 .sider-next-gw {
-    padding-top: 15px;
-    display: flex;
-    justify-content: center;
+  padding-top: 15px;
+  display: flex;
+  justify-content: center;
 }
 
 .sider-title-text {
-    display: inline-block;
-    font-size: large;
-    vertical-align: middle;
-    padding-top: 8px;
+  display: inline-block;
+  font-size: large;
+  vertical-align: middle;
+  padding-top: 8px;
 }
 
 .sider-season {
-    color: white;
-    text-align: center;
-    padding-bottom: 15px;
+  color: white;
+  text-align: center;
+  padding-bottom: 15px;
 }
 
 .site-layout-sub-header-background {
-    display: flex;
-    background: #fff;
-    padding: 0;
-    justify-content: flex-end;
-    align-content: center;
+  display: flex;
+  background: #fff;
+  padding: 0;
+  justify-content: flex-end;
+  align-content: center;
 }
 
 .site-layout-background {
-    background: #fff;
-    padding: 24px;
-    flex: 1 1 auto;
+  background: #fff;
+  padding: 24px;
+  flex: 1 1 auto;
 }
 
 .site-layout-content {
-    display: flex;
-    flex-flow: column;
-    margin: 24px 16px 16px;
+  display: flex;
+  flex-flow: column;
+  margin: 24px 16px 16px;
 }
 
-[data-theme='dark'] .site-layout-sub-header-background {
-    background: #141414;
+[data-theme="dark"] .site-layout-sub-header-background {
+  background: #141414;
 }
 
 .squad-selection-metrics,
 .transfers-metrics {
-    font-weight: normal;
-    display: flex;
-    justify-content: right;
-    text-align: center;
+  font-weight: normal;
+  display: flex;
+  justify-content: right;
+  text-align: center;
 }
 
 .team-tag {
-    width: 40px;
-    text-align: center;
+  width: 40px;
+  text-align: center;
 }
 
 .team-tag-fullname {
-    width: auto;
+  width: auto;
 }
 
 .text-align-center {
-    text-align: center;
+  text-align: center;
 }
 
 .text-align-right {
-    text-align: right;
+  text-align: right;
 }
 
 .top-metric {
-    padding: 0 15px;
+  padding: 0 15px;
 }
 
 .top-metric-section {
-    font-weight: normal;
-    display: flex;
-    justify-content: right;
-    text-align: center;
+  font-weight: normal;
+  display: flex;
+  justify-content: right;
+  text-align: center;
 }
 
 .top-btn,
 .top-btn-large,
 .bottom-btn {
-    margin: 0 6px 0 6px;
-    width: 200px;
+  margin: 0 6px 0 6px;
+  width: 200px;
 }
 
 .top-btn-container,
 .bottom-btn-container {
-    text-align: center;
+  text-align: center;
 }
 
 .options-btn {
-    display: block;
-    margin-bottom: 10px;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .text-bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .transfer-stats-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .transfer-stats-titles {
-    display: inline-block;
+  display: inline-block;
 }
 
 .transfer-stats-values {
-    display: inline-block;
-    text-align: right;
+  display: inline-block;
+  text-align: right;
 }
 
 .value-or-points {
-    font-size: 1.15em;
+  font-size: 1.15em;
 }
 
 @media only screen and (max-width: 1130px) {
-    .player-bench-row .player-card {
-        margin: 0 6px 36px;
-    }
+  .player-bench-row .player-card {
+    margin: 0 6px 36px;
+  }
 }
 
 @media only screen and (max-width: 1000px) {
-    .custom-modal {
-        right: 0;
-    }
+  .custom-modal {
+    right: 0;
+  }
 }
 
 @media only screen and (max-width: 600px) {
-    .ant-layout-sider {
-        min-width: 0 !important;
-        max-width: 100px !important;
-        width: 100px !important;
-    }
+  .ant-layout-sider {
+    min-width: 0 !important;
+    max-width: 100px !important;
+    width: 100px !important;
+  }
 
-    .center-when-mobile {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
+  .center-when-mobile {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
 
-    .custom-modal .ant-modal-header {
-        padding: 16px;
-    }
+  .custom-modal .ant-modal-header {
+    padding: 16px;
+  }
 
-    .custom-modal .ant-modal-body {
-        padding: 0;
-    }
+  .custom-modal .ant-modal-body {
+    padding: 0;
+  }
 
-    .desktop-text {
-        display: none !important;
-    }
+  .desktop-text {
+    display: none !important;
+  }
 
-    .enter-squad-btn {
-        width: 200px;
-    }
+  .enter-squad-btn {
+    width: 200px;
+  }
 
-    .top-btn,
-    .bottom-btn {
-        width: 93px;
-    }
+  .top-btn,
+  .bottom-btn {
+    width: 93px;
+  }
 
-    .top-btn-container,
-    .bottom-btn-container {
-        text-align: center;
-    }
+  .top-btn-container,
+  .bottom-btn-container {
+    text-align: center;
+  }
 
-    .top-btn-large-left {
-        margin-bottom: 10px;
-    }
+  .top-btn-large-left {
+    margin-bottom: 10px;
+  }
 
-    .fdr-section {
-        margin-top: 10px;
-    }
+  .fdr-section {
+    margin-top: 10px;
+  }
 
-    .mobile-text {
-        display: inline !important;
-    }
+  .mobile-text {
+    display: inline !important;
+  }
 
-    .player-search-input {
-        width: 160px;
-    }
+  .player-search-input {
+    width: 160px;
+  }
 
-    .player-search-input-modal {
-        margin-right: 36px;
-    }
+  .player-search-input-modal {
+    margin-right: 36px;
+  }
 
-    .page-title-two-sections {
-        flex-wrap: wrap;
-    }
+  .page-title-two-sections {
+    flex-wrap: wrap;
+  }
 
-    .player-card {
-        margin: 0 6px 12px;
-    }
+  .player-card {
+    margin: 0 6px 12px;
+  }
 
-    .player-card-small .player-card-content {
-        width: 140px;
-    }
+  .player-card-small .player-card-content {
+    width: 140px;
+  }
 
-    .position-row-bottom .player-card,
-    .player-bench-row .player-card {
-        margin: 0 6px 12px;
-    }
+  .position-row-bottom .player-card,
+  .player-bench-row .player-card {
+    margin: 0 6px 12px;
+  }
 
-    .position-row-bottom {
-        margin-bottom: 12px;
-    }
+  .position-row-bottom {
+    margin-bottom: 12px;
+  }
 
-    .sider-nav {
-        font-size: small;
-    }
+  .sider-nav {
+    font-size: small;
+  }
 
-    .site-layout-background {
-        padding: 12px 0;
-    }
+  .site-layout-background {
+    padding: 12px 0;
+  }
 
-    .site-layout-content {
-        margin: 16px 8px 8px;
-    }
+  .site-layout-content {
+    margin: 16px 8px 8px;
+  }
 
-    .squad-selection-metrics,
-    .transfers-metrics {
-        padding-top: 10px;
-    }
+  .squad-selection-metrics,
+  .transfers-metrics {
+    padding-top: 10px;
+  }
 
-    .transfers-metrics {
-        padding-top: 10px;
-    }
+  .transfers-metrics {
+    padding-top: 10px;
+  }
 }
